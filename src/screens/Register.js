@@ -26,16 +26,16 @@ const Register = () => {
                 setIsLoading(false)
                 localStorage.setItem('userShop', JSON.stringify(user))
                 navigate("/")
-                dispatch(getTypeToast("success"))
+                // dispatch(getTypeToast("success"))
             } else {
                 localStorage.setItem('userShop', null)
                 setIsLoading(false)
-                dispatch(getTypeToast("danger"))
+                // dispatch(getTypeToast("danger"))
             }
         })
-        setTimeout(() => {
-            dispatch(getTypeToast(null))
-        }, 3000)
+        // setTimeout(() => {
+        //     dispatch(getTypeToast(null))
+        // }, 3000)
 
     }
 
