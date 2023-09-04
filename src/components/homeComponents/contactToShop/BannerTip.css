@@ -1,0 +1,8 @@
+.banner-tip-input:focus {
+    background-color: white;
+}
+
+.banner-tip-submit-input:hover {
+    background-color: rgb(28, 184, 3);
+    color: white
+}

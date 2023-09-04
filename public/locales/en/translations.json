@@ -1,0 +1,18 @@
+{
+
+
+"header" : {
+    "product": "Product",
+    "inform": "Inform",
+    "contact&support": "Contact & Support",
+    "search": "T-shirt, pants, watch, shoe,...",
+    "english": "English",
+    "vietnamese": "Vietnamese",
+    "signUp": "Sign Up",
+    "logIn": "Log in",
+    "account": "Account",
+    "logOut": "Log out"
+}
+
+
+}

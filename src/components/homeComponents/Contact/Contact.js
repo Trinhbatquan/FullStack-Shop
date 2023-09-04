@@ -1,18 +1,15 @@
 import React from "react";
 
-import { BsFillTelephoneFill, BsCreditCardFill} from "react-icons/bs";
-import { GiPositionMarker} from "react-icons/gi";
-import { FaFax, FaCcMastercard, FaCcPaypal} from "react-icons/fa";
-import {RiVisaLine} from 'react-icons/ri'
+import { BsFillTelephoneFill, BsCreditCardFill } from "react-icons/bs";
+import { GiPositionMarker } from "react-icons/gi";
+import { FaFax, FaCcMastercard, FaCcPaypal } from "react-icons/fa";
+import { RiVisaLine } from "react-icons/ri";
 
 const Contact = () => {
   return (
-    <div
-      className="w-full flex flex-col justify-center"
-      style={{ height: "410px", minHeight: "410px" }}
-    >
+    <div className="w-full flex flex-col justify-center xl:h-510 medium:h-510 sm:h-600">
       <div
-        className="bg-white flex flex-row items-center justify-evenly"
+        className="bg-white flex flex-row sm:flex-col items-center justify-evenly"
         style={{ minHeight: "80%" }}
       >
         <div className="flex flex-col items-center justify-center">
@@ -55,20 +52,19 @@ const Contact = () => {
               height: "60px",
             }}
           />
-          <p className="font-semibold text-xl mt-3 text-headingColor">
-            Fax
-          </p>
+          <p className="font-semibold text-xl mt-3 text-headingColor">Fax</p>
           <p className="text-md mt-1">0796 065 535</p>
         </div>
       </div>
 
-      <div className="bg-slate-200 flex items-center justify-center"
-        style={{minHeight: '20%'}}
+      <div
+        className="bg-slate-200 flex items-center justify-center"
+        style={{ minHeight: "20%" }}
       >
-        <FaCcMastercard className="text-5xl mr-6 cursor-pointer text-cartBg"/>
-        <RiVisaLine className="text-5xl mr-6 cursor-pointer text-blue-800"/>
-        <FaCcPaypal className="text-5xl mr-6 cursor-pointer "/>
-        <BsCreditCardFill className="text-5xl mr-6 cursor-pointer text-gray-700"/>
+        <FaCcMastercard className="text-5xl mr-6 cursor-pointer text-cartBg" />
+        <RiVisaLine className="text-5xl mr-6 cursor-pointer text-blue-800" />
+        <FaCcPaypal className="text-5xl mr-6 cursor-pointer " />
+        <BsCreditCardFill className="text-5xl mr-6 cursor-pointer text-gray-700" />
       </div>
     </div>
   );
