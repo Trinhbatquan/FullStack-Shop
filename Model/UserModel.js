@@ -1,35 +1,35 @@
 const mongoose = require("mongoose");
 
-
 const userSchema = mongoose.Schema(
-    {
-        name: {
-            type: String,
-            required: true,
-        },
-        email: {
-            type: String,
-            required: true,
-        },
-        password: {
-            type: String,
-            required: true,
-        },
-        isAdmin: {
-            type: Boolean,
-            required: true,
-            default: false,
-        },
+  {
+    name: {
+      type: String,
+      required: true,
     },
+    email: {
+      type: String,
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    isAdmin: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    isIdentify: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+  },
 
-    {
-        timestamps: true
-    }
-
-
+  {
+    timestamps: true,
+  }
 );
-
-
 
 // userSchema.methods.validatePassword =  async function (currentPassword) {
 //    const result =  await bcrypt.compare(currentPassword, this.password, function (err, res) {

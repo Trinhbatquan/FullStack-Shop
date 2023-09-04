@@ -1,16 +1,22 @@
 const express = require("express");
 const products = require("./data/products");
-const ImportData = require('./DataImport')
+const ImportData = require("./DataImport");
 require("dotenv/config");
 const { default: mongoose } = require("mongoose");
 const cors = require("cors");
 const productRoutes = require("./Routes/ProductRoutes");
-const userRoutes = require("./Routes/UserRoutes")
-const orderRoutes = require("./Routes/OrderRoutes")
+const userRoutes = require("./Routes/UserRoutes");
+const orderRoutes = require("./Routes/OrderRoutes");
+const favoriteRoutes = require("./Routes/FavoriteRoutes");
+const notificationRoutes = require("./Routes/NotificationRoutes");
+
+// const Notification = require("./Model/Notification");
 
 const app = express();
 app.use(cors({ origin: true }));
-app.use(express.json());
+// app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb" }));
 
 app.get("/", (req, res) => {
   return res.json("hello world");
@@ -20,10 +26,12 @@ app.get("/", (req, res) => {
 
 const connectDatabase = async () => {
   try {
-    const connection = mongoose.connect(process.env.MONGO_CONNECT, {
-      useUnifiedTopology: true,
-      useNewUrlParser: true,
-    });
+    const connection = await mongoose.connect(process.env.MONGO_CONNECT);
+    //   {
+    //     useUnifiedTopology: true,
+    //     useNewUrlParser: true,
+    //   }
+    // );
 
     if (connection) {
       console.log("connect database successful");
@@ -34,7 +42,6 @@ const connectDatabase = async () => {
 };
 
 connectDatabase();
-
 
 //api
 // load data products all
@@ -57,10 +64,27 @@ connectDatabase();
 //     });
 //   }
 // });
-app.use("/api/importData", ImportData)
+app.use("/api/importData", ImportData);
 app.use("/api/products", productRoutes);
-app.use("/api/users", userRoutes)
-app.use("/api/orders", orderRoutes)
+app.use("/api/users", userRoutes);
+app.use("/api/orders", orderRoutes);
+app.use("/api/favorites", favoriteRoutes);
+app.use("/api/notifications", notificationRoutes);
+
+// app.post("/add/image", async (req, res) => {
+//   // const { titleVn, titleEn, detailVn, detailEn , image } = req.body;
+//   try {
+//     const newNoti = await new Notification({
+//       ...req.body,
+//     });
+
+//     await newNoti.save();
+//     res.status(200).send("success");
+//   } catch (e) {
+//     console.log(e);
+//     res.status(200).send("fail");
+//   }
+// });
 
 app.listen(4000, () => {
   console.log("server running....");
