@@ -22,11 +22,6 @@ const notificationSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    isRead: {
-      type: Boolean,
-      require: true,
-      default: false,
-    },
   },
   {
     timestamps: true,

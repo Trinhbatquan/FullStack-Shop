@@ -70,6 +70,11 @@ app.use("/api/users", userRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/favorites", favoriteRoutes);
 app.use("/api/notifications", notificationRoutes);
+app.get("/api/config/paypal", (req, res) => {
+  return res.send({
+    data: process.env.CLIENT_PAYPAL_ID,
+  });
+});
 
 // app.post("/add/image", async (req, res) => {
 //   // const { titleVn, titleEn, detailVn, detailEn , image } = req.body;

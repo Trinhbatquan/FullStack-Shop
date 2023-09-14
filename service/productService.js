@@ -288,7 +288,7 @@ const getProductBySearchService = (data) => {
   const { key, position, transport, page } = data;
 
   return new Promise(async (resolve, reject) => {
-    let type = key.toLowerCase();
+    let type = key;
     // transport.forEach((item) => (item = item.toLowerCase()));
     try {
       let result;
@@ -302,28 +302,28 @@ const getProductBySearchService = (data) => {
       //   .skip(pageSize * (page - 1));
       // return { products, page, pages: Math.ceil(count / pageSize) };
       if (position.length === 0 && transport.length === 0) {
-        result = await Product.find({ type }).limit(pageSize);
+        result = await Product.find({ $or: type });
       } else if (position.length === 0 && transport.length > 0) {
         console.log("trans");
         result = await Product.find({
-          $and: [{ type }, { $or: transport }],
-        }).limit(pageSize);
+          $and: [{ $or: type }, { $or: transport }],
+        });
       } else if (position.length > 0 && transport.length === 0) {
         result = await Product.find({
-          $and: [{ type }, { $or: position }],
-        }).limit(pageSize);
+          $and: [{ $or: type }, { $or: position }],
+        });
       } else if (position.length > 0 && transport.length > 0) {
         result = await Product.find({
-          $and: [{ type }, { $or: position }, { $or: transport }],
-        }).limit(pageSize);
+          $and: [{ $or: type }, { $or: position }, { $or: transport }],
+        });
       }
       const count = result?.length;
       if (count <= minPageSize && minPageSize > 0) {
-        // products = await Product.find({ type }).limit(pageSize);
         page -= 1;
-        // minPageSize -= pageSize;
       } else {
-        result = result.slice(minPageSize, count);
+        if (count > pageSize) {
+          result = result.slice((page - 1) * pageSize, page * pageSize);
+        }
       }
       resolve({
         code: 0,

@@ -17,7 +17,7 @@ const registerService = (name, email, password) => {
       if (user && user?.isIdentify) {
         resolve({
           code: 1,
-          mess: "Email đã tồn tại. Vui lòng thử email khác hoặc đăng nhập.",
+          mess: "Email existed. Please try another email or log in.",
         });
       } else if (!user) {
         const user = new User({
@@ -102,7 +102,7 @@ const registerService = (name, email, password) => {
         } else {
           resolve({
             code: 1,
-            mess: "Mật khẩu sai. Vui lòng nhập lại.",
+            mess: "Password wrong. Please try again.",
           });
         }
       }
@@ -187,21 +187,23 @@ const loginService = async (email, password) => {
       if (!user) {
         resolve({
           code: 1,
-          mess: "Không có tài khoản trong hệ thống. Vui lòng thử email khác hoặc đăng ký tài khoản mới.",
+          mess: "Not account in the system. Please try another email or sign up.",
         });
       }
       if (!(await bcrypt.compare(password, user?.password))) {
         resolve({
           code: 1,
-          mess: "Mật khẩu không chính xác. Vui lòng thử lại.",
+          mess: "Password wrong. Please try again.",
         });
       }
       if (user && !user.isIdentify) {
         resolve({
           code: 1,
-          mess: "Tài khoản chưa được xác thực. Vui lòng đăng ký để xác thực lại.",
+          mess: "This account is verified  yet. Please sign up to verify.",
         });
       }
+
+      //notification
 
       resolve({
         code: 0,
@@ -228,14 +230,14 @@ const sendEmailUpdatePasswordService = (email) => {
       if (!user) {
         resolve({
           code: 1,
-          mess: "Không có tài khoản trong hệ thống. Vui lòng thử email khác hoặc đăng ký tài khoản mới.",
+          mess: "Not account in the system. Please try another email or sign up.",
         });
       }
 
       if (user && !user.isIdentify) {
         resolve({
           code: 1,
-          mess: "Tài khoản chưa được xác thực. Vui lòng đăng ký để xác thực lại.",
+          mess: "This account is verified  yet. Please sign up to verify.",
         });
       }
 
@@ -319,7 +321,7 @@ const verifyUserAndUpdatePassService = (email, token, password) => {
       if (Math.abs(Math.floor((date_now - updateTime) / 1000)) > 5 * 60) {
         resolve({
           codeNumber: 3,
-          message: "Thời gian hết hạn. Vui lòng click vào Gửi link mới.",
+          message: "Token is expired. Please click into Send new link.",
         });
       }
 
@@ -333,7 +335,7 @@ const verifyUserAndUpdatePassService = (email, token, password) => {
       });
       resolve({
         code: 0,
-        mess: "Cập nhật mật khẩu thành công. Vui lòng đăng nhập lại.",
+        mess: "Update password successfully. Please log in again.",
       });
     } catch (e) {
       reject(e);

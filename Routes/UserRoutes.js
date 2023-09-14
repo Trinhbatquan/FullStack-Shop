@@ -20,7 +20,7 @@ userRoutes.post("/login", async (req, res) => {
     if (!email || !password) {
       return res.status(200).json({
         code: 1,
-        mess: "Vui lòng nhập đủ các trường.",
+        mess: "Please enter all field.",
       });
     }
     const data = await loginService(email, password);
@@ -28,7 +28,7 @@ userRoutes.post("/login", async (req, res) => {
   } catch (e) {
     return res.status(200).json({
       code: -1,
-      mess: "Có lỗi xảy ra. Vui lòng liên hệ với quản trị viên.",
+      mess: "Error. Contact with admin page.",
     });
   }
 });
@@ -39,7 +39,7 @@ userRoutes.post("/register", async (req, res) => {
   if (!name || !email || !password) {
     return res.status(401).json({
       code: 1,
-      mess: "Vui lòng nhập đủ các ô.",
+      mess: "Please enter all field.",
     });
   } else {
     try {
@@ -48,7 +48,7 @@ userRoutes.post("/register", async (req, res) => {
     } catch (e) {
       return res.status(200).json({
         code: -1,
-        mess: "Không thể đăng ký. Vui lòng thử cách khác.",
+        mess: "Error. Contact with admin page.",
       });
     }
   }
@@ -77,7 +77,7 @@ userRoutes.get("/identify", async (req, res) => {
     console.log(e);
     res.status(400).send({
       codeNumber: -1,
-      message: "Không thể xác minh email của bạn.",
+      message: "Error. Contact with admin page.",
     });
   }
 });
@@ -98,7 +98,7 @@ userRoutes.get("/send_email_updatePassWord", async (req, res) => {
     console.log(e);
     return res.status(200).json({
       code: -1,
-      mess: "Có lỗi xảy ra. Vui lòng liên hệ quản trị viên.",
+      mess: "Error. Contact with admin page.",
     });
   }
 });
@@ -109,7 +109,7 @@ userRoutes.post("/verify_user_update_pass", async (req, res) => {
     if (!email || !token || !password) {
       return res.status(200).json({
         code: 1,
-        mess: "Lỗi hệ thống. Vui lòng liên hệ quản trị viên.",
+        mess: "Error. Contact with admin page.",
       });
     }
 
@@ -119,7 +119,7 @@ userRoutes.post("/verify_user_update_pass", async (req, res) => {
     console.log(e);
     return res.status(200).json({
       code: -1,
-      mess: "Có lỗi xảy ra. Vui lòng liên hệ quản trị viên.",
+      mess: "Error. Contact with admin page.",
     });
   }
 });
@@ -138,7 +138,7 @@ userRoutes.get("/profile", checkingToken, async (req, res) => {
       });
     } else {
       res.status(404).send({
-        mess: "User Not Authorization",
+        mess: "Error. Contact with admin page.",
       });
     }
   }
@@ -172,7 +172,7 @@ userRoutes.put("/updateProfile", checkingToken, async (req, res) => {
       }
     } else {
       res.status(404).send({
-        mess: "User Not Authorization",
+        mess: "Error. Contact with admin page.",
       });
     }
   }
