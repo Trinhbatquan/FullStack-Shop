@@ -1,3 +1,7 @@
+@import "primereact/resources/themes/lara-light-indigo/theme.css";
+@import "primereact/resources/primereact.min.css";
+@import "primeicons/primeicons.css";
+
 html {
   /* mac dinh la 16px => 1 rem = 16px (do 100%), vi vay 62.5% tuong duong 
     voi 1 rem la 10px */

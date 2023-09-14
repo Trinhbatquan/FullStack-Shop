@@ -201,12 +201,12 @@ export const createNewOrder = async (order) => {
 export const orderById = async (id) => {
   const token = JSON.parse(localStorage.getItem("userShop")).token;
   try {
-    const orderId = await axios.get(`${baseUrl}api/orders/${id}`, {
+    const orderId = await axios.get(`${baseUrl}api/orders/getOrder?id=${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    if (orderId && orderId.data.orderItems) {
+    if (orderId) {
       return orderId.data;
     } else {
       return null;
@@ -231,7 +231,7 @@ export const updateOrderWhenPay = async (id, pay) => {
         },
       }
     );
-    if (orderId && orderId.data.isPaid) {
+    if (orderId) {
       return orderId.data;
     } else {
       return null;
@@ -395,23 +395,25 @@ export const getAllNotification = async () => {
   }
 };
 
-export const updateNotification = async (notification) => {
-  const token = JSON.parse(localStorage.getItem("userShop")).token;
-  try {
-    const res = await axios.get(
-      `${baseUrl}api/notifications/updateById?notification=${notification}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    if (res) {
-      return res.data;
-    } else {
-      return null;
-    }
-  } catch (error) {
-    console.log("update notification" + error);
-  }
-};
+// export const updateNotification = async (notification) => {
+//   const token = JSON.parse(localStorage.getItem("userShop")).token;
+//   try {
+//     const res = await axios.get(
+//       `${baseUrl}api/notifications/updateById?notification=${notification}`,
+//       {
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//         },
+//       }
+//     );
+//     if (res) {
+//       return res.data;
+//     } else {
+//       return null;
+//     }
+//   } catch (error) {
+//     console.log("update notification" + error);
+//   }
+// };
+
+console.log("checking");

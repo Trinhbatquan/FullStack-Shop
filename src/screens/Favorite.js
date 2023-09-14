@@ -26,7 +26,7 @@ const Favorite = () => {
   }, []);
 
   return (
-    <div style={{ backgroundColor: "#f5f5f5" }}>
+    <div style={{ height: "100vh", backgroundColor: "rgb(245,245,245)" }}>
       <Header />
       <div style={{ height: "65px", width: "100%" }}></div>
       <div className="w-full px-[10%] mx-auto pb-8 pt-3 bg-white flex flex-col items-start justify-center">
@@ -156,9 +156,6 @@ const Favorite = () => {
           </div>
         </div>
       </div>
-      <hr />
-
-      <Contact />
     </div>
   );
 };

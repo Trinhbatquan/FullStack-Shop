@@ -11,6 +11,7 @@ import { ToastContainer, toast } from "react-toastify";
 
 import { AiFillEyeInvisible } from "react-icons/ai";
 import { AiFillEye } from "react-icons/ai";
+import { useTranslation } from "react-i18next";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -18,21 +19,23 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [appearPw, setAppearPw] = useState(false);
 
+  const { i18n } = useTranslation();
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [messageLogin, setMessageLogin] = useState("");
   const location = useLocation()?.search?.split("?");
-  let redirectProduct = "";
+  let redirectState = "";
   let productIdRedirect = "";
-  let redirectFavorite = "";
+  // let redirectFavorite = "";
   let favoriteIdRedirect = "";
-  let favoriteProductList = "";
+  // let favoriteProductList = "";
   if (location) {
-    redirectProduct = location[1]?.split("=/")[1];
+    redirectState = location[1]?.split("=/")[1];
     productIdRedirect = location[2]?.split("=")[1];
-    redirectFavorite = location[1]?.split("=/")[1];
+    // redirectFavorite = location[1]?.split("=/")[1];
     favoriteIdRedirect = location[2]?.split("=")[1];
-    favoriteProductList = location[1]?.split("=/")[1];
+    // favoriteProductList = location[1]?.split("=/")[1];
   }
 
   // const currentUser = useSelector((state) => state.userSlice.user)
@@ -43,16 +46,16 @@ const Login = () => {
     let regexPassword =
       /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,15}$/;
     if (!email || !password) {
-      setMessageLogin("Vui lòng nhập đủ các ô.");
+      setMessageLogin("Please enter all field.");
       return false;
     }
     if (!regexEmail.test(email)) {
-      setMessageLogin("Vui lòng nhập đúng định dạng email.");
+      setMessageLogin("Please enter correct form of email.");
       return false;
     }
     if (!regexPassword.test(password)) {
       setMessageLogin(
-        "Mật khẩu phải có từ 7 đến 15 kí tự, trong đó phải có ít nhất một số và một kí tự đặc biệt. "
+        "Password must have the least 8 characters, 1 number and 1 a special character."
       );
       return false;
     }
@@ -74,27 +77,35 @@ const Login = () => {
           dispatch(loginUserShop(data?.user));
           setIsLoading(false);
           localStorage.setItem("userShop", JSON.stringify(data?.user));
-          if (redirectProduct === "product") {
+          if (redirectState === "product") {
             navigate(`/products/${productIdRedirect}`);
-          } else if (redirectProduct === "deliveryAddress") {
+          } else if (redirectState === "deliveryAddress") {
             navigate("/deliveryAddress");
-          } else if (redirectFavorite === "favorite") {
+          } else if (redirectState === "favorite") {
             navigate(`/products/${favoriteIdRedirect}`);
-          } else if (favoriteProductList === "favoriteProductList") {
+          } else if (redirectState === "favoriteProductList") {
             navigate("/favorite");
+          } else if (redirectState === "notification") {
+            navigate("/notification");
           } else {
             navigate("/");
           }
-
-          //    dispatch(getTypeToast("success"))
         } else {
           setIsLoading(false);
           localStorage.setItem("userShop", null);
           setMessageLogin(data?.mess);
-          // toast.error("Login Failed", {
-          //     theme: "colored",
-          //     autoClose: 3000
-          // })
+          toast.error(
+            `${
+              i18n.language === "en"
+                ? "Error. Please try again or contact admin page."
+                : "Có lỗi. Vui lòng thử lại hoặc liên hệ với quản trị viên."
+            }`,
+            {
+              theme: "colored",
+              autoClose: 3000,
+              position: "bottom-right",
+            }
+          );
         }
       });
     }
@@ -107,14 +118,19 @@ const Login = () => {
   }, []);
 
   return (
-    <>
+    <div
+      style={{
+        width: "100%",
+        height: "100vh",
+        backgroundColor: "rgb(245, 245, 245)",
+      }}
+    >
       <Header />
+      <div style={{ height: "65px", width: "100%" }}></div>
       <div className="flex items-center justify-center w-full">
-        <ToastContainer />
-
         <div
-          className="w-c-1/3 medium:w-1/2 sm:w-c-1 shadow-lg backdrop-blur-sm 
-                rounded-sm px-2 py-4 mt-16 border border-gray-200"
+          className="w-c-1/3 medium:w-1/2 sm:w-c-1 shadow-lg  
+                rounded-sm px-2 py-4 mt-16 border border-gray-200 bg-white"
         >
           <form
             onSubmit={handleSubmit}
@@ -124,7 +140,7 @@ const Login = () => {
             {isLoading && <Loading />}
 
             <div
-              className={`flex text-center items-center justify-center text-lg ${
+              className={`flex text-center items-center justify-center text-lg pb-1 ${
                 messageLogin?.code ? "text-blue-700" : "text-red-600"
               }`}
               style={
@@ -207,7 +223,7 @@ const Login = () => {
           </NavLink>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

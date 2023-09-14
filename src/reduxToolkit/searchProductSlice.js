@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { current } from "@reduxjs/toolkit";
 
 const initialState = {
+  valueSearch: "",
   productsOfSearch: {},
   filter: "normal",
 };
@@ -48,9 +49,16 @@ const searchProductSlice = createSlice({
         },
       };
     },
+    setValueSearch: (state, action) => {
+      return {
+        ...current(state),
+        valueSearch: action.payload,
+      };
+    },
   },
 });
 
 const { reducer, actions } = searchProductSlice;
-export const { getProductOfSearch, getProductOfFilter } = actions;
+export const { getProductOfSearch, getProductOfFilter, setValueSearch } =
+  actions;
 export default reducer;

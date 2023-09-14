@@ -24,10 +24,9 @@ const DeliveryAddress = () => {
   const cartsAddressDelivery = useSelector(
     (state) => state.cartSlice.deliveryAddress
   );
-  localStorage.setItem("deliveryAddress", JSON.stringify(cartsAddressDelivery));
 
   useEffect(() => {
-    if (cartsAddressDelivery !== {}) {
+    if (cartsAddressDelivery?.address) {
       setIsLoading(true);
       setAddress(cartsAddressDelivery?.address);
       setCity(cartsAddressDelivery?.city);
@@ -41,7 +40,7 @@ const DeliveryAddress = () => {
 
   const handleAddDeliveryAddress = () => {
     if (!address || !city || !postalCode || !country) {
-      toast.error("please enter all fields", {
+      toast.error("Please enter all fields", {
         autoClose: 2000,
       });
     } else {
@@ -54,14 +53,11 @@ const DeliveryAddress = () => {
           country,
         })
       );
-      // toast.success("Saved deliveryAddress Successfully", {
-      //     autoClose: 1500
-      // })
       setTimeout(() => {
         setIsLoading(false);
       }, 1000);
       setTimeout(() => {
-        navigate("/paymentMethod");
+        navigate("/checkout");
       }, 1000);
     }
   };
@@ -69,11 +65,13 @@ const DeliveryAddress = () => {
   return (
     <>
       <Header />
+      <div style={{ height: "65px", width: "100%" }}></div>
+
       <div className="flex items-center justify-center w-full">
         <ToastContainer />
 
         <div
-          className="w-c-1/3 medium:w-1/2 sm:w-c-1 shadow-lg backdrop-blur-sm medium:backdrop-blur-none sm:backdrop-blur-none
+          className="w-c-1/3 medium:w-1/2 sm:w-c-1 shadow-lg medium:backdrop-blur-none sm:backdrop-blur-none
                 rounded-sm px-2 py-4 mt-16 border border-gray-200"
         >
           <form
@@ -83,8 +81,8 @@ const DeliveryAddress = () => {
             {isLoading && <Loading />}
 
             <input
-              className="py-3 px-4 mb-3 mt-1 bg-slate-200 text-headingColor text-lg 
-                    placeholder:text-headingColor placeholder:text-lg
+              className="py-3 px-4 mb-3 mt-1 bg-slate-200 text-headingColor text-md 
+                    placeholder:text-headingColor placeholder:text-md
                     placeholder:opacity-70 mx-auto
                     medium:border-none medium:outline-none sm:border-none sm:outline-none"
               required
@@ -97,8 +95,8 @@ const DeliveryAddress = () => {
               ref={addressRef}
             />
             <input
-              className="py-3 px-4 mb-3 mt-1 bg-slate-200 text-headingColor text-lg 
-                    placeholder:text-headingColor placeholder:text-lg
+              className="py-3 px-4 mb-3 mt-1 bg-slate-200 text-headingColor text-md 
+                    placeholder:text-headingColor placeholder:text-md
                     placeholder:opacity-70 mx-auto
                     medium:border-none medium:outline-none sm:border-none sm:outline-none"
               required
@@ -112,8 +110,8 @@ const DeliveryAddress = () => {
             />
 
             <input
-              className="py-3 px-4 mb-3 mt-1 bg-slate-200 text-headingColor text-lg 
-                    placeholder:text-headingColor placeholder:text-lg
+              className="py-3 px-4 mb-3 mt-1 bg-slate-200 text-headingColor text-md 
+                    placeholder:text-headingColor placeholder:text-md
                     placeholder:opacity-70 mx-auto
                     medium:border-none medium:outline-none sm:border-none sm:outline-none"
               required
@@ -126,8 +124,8 @@ const DeliveryAddress = () => {
               ref={postalCodeRef}
             />
             <input
-              className="py-3 px-4 mb-6 mt-1 bg-slate-200 text-headingColor text-lg 
-                    placeholder:text-headingColor placeholder:text-lg
+              className="py-3 px-4 mb-6 mt-1 bg-slate-200 text-headingColor text-md 
+                    placeholder:text-headingColor placeholder:text-md
                     placeholder:opacity-70 mx-auto
                     medium:border-none medium:outline-none sm:border-none sm:outline-none"
               required
@@ -139,25 +137,17 @@ const DeliveryAddress = () => {
               onChange={(e) => setCountry(e.target.value)}
               ref={countryRef}
             />
-
-            <div
-              className="py-4 px-4 mb-6 mt-1 cursor-pointer text-headingColor text-lg 
-                        font-semibold opacity-80 hover:opacity-100
-                        mx-auto"
+            <button
+              type="button"
+              class="py-3.5 w-full px-5 mr-2 mb-2 text-lg font-medium text-white opacity-70 outline-none bg-red-600 rounded-lg hover:opacity-100"
+              onClick={handleAddDeliveryAddress}
               style={{
                 maxWidth: "90%",
                 width: "90%",
-                backgroundColor: "#1cb803",
               }}
             >
-              <button
-                type="button"
-                className="w-full"
-                onClick={handleAddDeliveryAddress}
-              >
-                CONTINUE
-              </button>
-            </div>
+              Continue
+            </button>
           </form>
         </div>
       </div>

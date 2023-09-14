@@ -41,15 +41,16 @@ const ForgetPassword = () => {
   };
 
   return (
-    <>
+    <div style={{ height: "100vh", backgroundColor: "rgb(245,245,245)" }}>
       <Header />
+      <div style={{ height: "65px", width: "100%" }}></div>
       <div className="flex-col items-center justify-center w-full mx-auto">
         <p className="text-headingColor text-lg mt-16 py-2 mx-auto flex items-center justify-center">
-          Vui lòng nhập email để cập nhật mật khẩu của bạn.
+          Please enter email to update your password.
         </p>
         <div
           className="w-c-1/3 medium:w-1/2 sm:w-c-1 shadow-lg backdrop-blur-sm 
-                  rounded-sm px-2 py-4  border border-gray-200 mx-auto"
+                  rounded-sm px-2 py-4  border border-gray-200 bg-white mx-auto"
         >
           <form
             onSubmit={handleSubmit}
@@ -59,7 +60,7 @@ const ForgetPassword = () => {
             {isLoading && <Loading />}
 
             <div
-              className={`flex text-center items-center justify-center text-lg ${
+              className={`flex text-center items-center justify-center pb-1 text-lg ${
                 color ? "text-blue-700" : "text-red-600"
               }`}
               style={
@@ -83,48 +84,13 @@ const ForgetPassword = () => {
               onChange={(e) => setEmail(e.target.value)}
               onFocus={() => setMessage("")}
             />
-            {/* <div className="relative" style={{ maxWidth: "90%", width: "90%" }}>
-              <input
-                className="py-3 px-4 mb-1 mt-1 bg-slate-200 text-headingColor text-lg 
-                        placeholder:text-headingColor placeholder:text-lg
-                        placeholder:opacity-70 mx-auto
-                        medium:border-none medium:outline-none sm:border-none sm:outline-none w-full"
-                name="password"
-                type={appearPw ? "text" : "password"}
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                onFocus={() => setMessage("")}
-              />
-              {appearPw ? (
-                <AiFillEye
-                  className="text-2xl opacity-60 hover:opacity-100 transition-all duration-300 absolute top-5 right-2 cursor-pointer"
-                  onClick={handleAppearPassWord}
-                />
-              ) : (
-                <AiFillEyeInvisible
-                  className="text-2xl opacity-60 hover:opacity-100 transition-all duration-300 absolute top-5 right-2 cursor-pointer"
-                  onClick={handleAppearPassWord}
-                />
-              )}
-            </div> */}
-
-            {/* <NavLink
-              to="/forgetPassword"
-              className="flex items-center justify-start"
-              style={{ maxWidth: "90%", width: "90%" }}
-            >
-              <p className="w-full text-md my-3 text-headingColor">
-                Forgot Password?
-              </p>
-            </NavLink> */}
 
             <input
               type="submit"
               className="py-4 px-4 mb-6 mt-1 cursor-pointer text-headingColor text-lg 
                       font-semibold opacity-80 hover:opacity-100
                       mx-auto"
-              value="Gửi"
+              value="Confirm"
               style={{
                 maxWidth: "90%",
                 width: "90%",
@@ -140,7 +106,7 @@ const ForgetPassword = () => {
           </NavLink> */}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

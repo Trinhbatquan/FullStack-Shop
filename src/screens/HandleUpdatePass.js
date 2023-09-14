@@ -7,6 +7,7 @@ import { Loading, Header } from "../components";
 import { AiFillEyeInvisible } from "react-icons/ai";
 import { AiFillEye } from "react-icons/ai";
 import { forgetPassword, verifyAndUpdatePass } from "api";
+import { toast } from "react-toastify";
 
 const UpdatePassword = () => {
   const param = useParams();
@@ -56,7 +57,7 @@ const UpdatePassword = () => {
     let regexPassword =
       /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,15}$/;
     if (!password || !confirmPassword) {
-      setMessage("Vui lòng nhập đủ các ô.");
+      setMessage("Please enter all field.");
       return false;
     }
     // if (!regexEmail.test(email)) {
@@ -65,12 +66,12 @@ const UpdatePassword = () => {
     // }
     if (!regexPassword.test(password) || !regexPassword.test(confirmPassword)) {
       setMessage(
-        "Mật khẩu phải có từ 7 đến 15 kí tự, trong đó phải có ít nhất một số và một kí tự đặc biệt. "
+        "Password must have the least 8 characters, 1 number and 1 a special character."
       );
       return false;
     }
     if (password.trim() !== confirmPassword.trim()) {
-      setMessage("Mật khẩu không khớp, vui lòng nhập lại.");
+      setMessage("Password not match. Please try again.");
       return false;
     }
     return true;
@@ -79,28 +80,28 @@ const UpdatePassword = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    setTimeout(() => {
-      if (checkAdvancedRegister()) {
-        setIsLoading(true);
-        setMessage("");
-        verifyAndUpdatePass(email, param?.token, password).then((data) => {
-          if (data?.code === 0) {
-            setColor(true);
-            setMessage(data?.mess);
-            setDisableButton(true);
-          } else if (data?.code === 3) {
-            setColor(false);
-            setMessage(data?.mess);
-          } else {
-            setColor(false);
-            setMessage(
-              "Có lỗi xảy ra. Vui lòng thử lại hoặc liên hệ quản trị viên."
-            );
-          }
-          setIsLoading(false);
-        });
-      }
-    }, 2000);
+    if (checkAdvancedRegister()) {
+      setIsLoading(true);
+      setMessage("");
+      verifyAndUpdatePass(email, param?.token, password).then((data) => {
+        if (data?.code === 0) {
+          setColor(true);
+          setMessage(data?.mess);
+          setDisableButton(true);
+        } else if (data?.code === 3) {
+          setColor(false);
+          setMessage(data?.mess);
+        } else {
+          setColor(false);
+          toast.error("Error.Please contact with admin page.", {
+            theme: "colored",
+            autoClose: 3000,
+            position: "bottom-right",
+          });
+        }
+        setIsLoading(false);
+      });
+    }
   };
 
   const handleSendAgainLink = () => {
@@ -119,16 +120,23 @@ const UpdatePassword = () => {
   };
 
   return (
-    <>
+    <div
+      style={{
+        width: "100%",
+        height: "100vh",
+        backgroundColor: "rgb(245, 245, 245)",
+      }}
+    >
       <Header />
+      <div style={{ height: "65px", width: "100%" }}></div>
       <div className="flex-col items-center justify-center w-full ">
         <p className="text-headingColor text-lg mt-16 py-2 mx-auto flex items-center justify-center gap-2">
-          Vui lòng nhập mật khẩu để cập nhật.
-          <span>{`Thời gian còn lại: ${expired}s`}</span>
+          Please enter new password to update.
+          <span>{`Time left: ${expired}s`}</span>
         </p>
         <div
           className="w-c-1/3 medium:w-1/2 sm:w-c-1 shadow-lg backdrop-blur-sm 
-                rounded-sm px-2 py-4 mt-2 border border-gray-200 mx-auto"
+                rounded-sm px-2 py-4 mt-2 border border-gray-200 bg-white mx-auto"
         >
           <form
             onSubmit={handleSubmit}
@@ -137,7 +145,7 @@ const UpdatePassword = () => {
           >
             {isLoading && <Loading />}
             <div
-              className={`flex text-center items-center justify-center text-md ${
+              className={`flex text-center items-center justify-center pb-1 text-lg ${
                 color ? "text-blue-700" : "text-red-600"
               }`}
               style={
@@ -150,7 +158,7 @@ const UpdatePassword = () => {
             </div>
 
             <input
-              className=" disabled py-3 px-4 mb-3 mt-1 bg-slate-200 opacity-40 text-headingColor text-lg 
+              className=" disabled py-3 px-4 mb-3 mt-1 border border-gray-300 opacity-40 text-headingColor text-lg 
                     placeholder:text-headingColor placeholder:text-lg
                     placeholder:opacity-70 mx-auto
                      medium:border-none medium:outline-none sm:border-none sm:outline-none"
@@ -201,29 +209,18 @@ const UpdatePassword = () => {
                   handleChangeValue("confirmPassword", e.target.value)
                 }
               />
-              {/* {appearPw ? (
-                <AiFillEye
-                  className="text-2xl opacity-60 hover:opacity-100 transition-all duration-300 absolute top-4 right-2 cursor-pointer"
-                  onClick={handleAppearPassWord}
-                />
-              ) : (
-                <AiFillEyeInvisible
-                  className="text-2xl opacity-60 hover:opacity-100 transition-all duration-300 absolute top-4 right-2 cursor-pointer"
-                  onClick={handleAppearPassWord}
-                />
-              )} */}
             </div>
 
             <input
               type={disableButton ? "text" : "submit"}
               className={`py-4 px-4 mb-6 mt-1  text-headingColor text-lg 
-                    font-semibold opacity-80 hover:opacity-100
+                    font-semibold opacity-80 hover:opacity-100 text-center
                     mx-auto ${
                       disableButton
                         ? "opacity-30 cursor-default"
                         : "cursor-pointer"
                     }`}
-              value="Gửi"
+              value="Confirm"
               style={{
                 maxWidth: "90%",
                 width: "90%",
@@ -233,19 +230,19 @@ const UpdatePassword = () => {
           </form>
 
           <p className="text-sm text-headingColor opacity-80 cursor-pointer mx-auto text-center flex items-center justify-center gap-2">
-            Token hết hạn.{" "}
+            Time end.{" "}
             <div>
               <span
                 className="text-blue-700 text-lg"
                 onClick={handleSendAgainLink}
               >
-                Gửi link mới.
+                Send a new link.
               </span>
             </div>
           </p>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

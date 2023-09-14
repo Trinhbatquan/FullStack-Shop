@@ -74,18 +74,16 @@ const ShopProduct = () => {
       sort,
     };
     setIsLoading(true);
-    setTimeout(() => {
-      getAllProducts(data).then((res) => {
-        console.log(res);
-        if (res?.code === 0) {
-          dispatch(getProductsByAll(res?.result));
-          setIsLoading(false);
-        } else {
-          dispatch(getProductsByAll(null));
-          setIsLoading(false);
-        }
-      });
-    }, 2000);
+    getAllProducts(data).then((res) => {
+      console.log(res);
+      if (res?.code === 0) {
+        dispatch(getProductsByAll(res?.result));
+        setIsLoading(false);
+      } else {
+        dispatch(getProductsByAll(null));
+        setIsLoading(false);
+      }
+    });
   }, [page, type, sort]);
 
   useEffect(() => {

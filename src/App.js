@@ -15,7 +15,6 @@ import {
   Login,
   NotFound,
   OrderScreen,
-  PaymentMethod,
   ProfileScreen,
   DetailProduct,
   HomeScreen,
@@ -63,31 +62,15 @@ const app = initializeApp(firebaseConfig);
 function App() {
   const [appearScrollTop, setAppearScrollTop] = useState(false);
 
-  console.log("state" + appearScrollTop);
-
   let handleScroll = (state) => {
     if (
       document.body.scrollTop > 500 ||
       document.documentElement.scrollTop > 500
     ) {
-      // setAppearScrollTop((state) => {
-      //   if (!state) {
-      //     return true;
-      //   } else {
-      //     return state;
-      //   }
-      // });
       if (!state) {
         setAppearScrollTop(true);
       }
     } else {
-      // setAppearScrollTop((state) => {
-      //   if (state) {
-      //     return false;
-      //   } else {
-      //     return state;
-      //   }
-      // });
       if (state) {
         setAppearScrollTop(false);
       }
@@ -108,7 +91,6 @@ function App() {
   }, [appearScrollTop]);
 
   const handleScrollTop = () => {
-    console.log("remove");
     window.scrollTo({ top: 0, behavior: "smooth" });
 
     // setAppearScrollTop(false);
@@ -116,7 +98,6 @@ function App() {
 
   return (
     <div>
-      {console.log("render")}
       <Router>
         <Routes>
           <Route
@@ -143,9 +124,8 @@ function App() {
           <Route path="profile" element={<ProfileScreen />} />
           <Route path="cart/:id?" element={<ScreenCart />} />
           <Route path="deliveryAddress" element={<DeliveryAddress />} />
-          <Route path="paymentMethod" element={<PaymentMethod />} />
           <Route path="order/:id?" element={<OrderScreen />} />
-          <Route path="placeOrder" element={<PlaceOrderScreen />} />
+          <Route path="checkout" element={<PlaceOrderScreen />} />
           <Route path="inform" element={<Inform />} />
           <Route path="connect" element={<Support />} />
           <Route path="favorite" element={<Favorite />} />
@@ -157,9 +137,7 @@ function App() {
           className="fixed bottom-6 right-3 text-3xl cursor-pointer
         text-gray-500"
           onClick={handleScrollTop}
-        >
-          {console.log(2)}
-        </BsArrowUpCircleFill>
+        ></BsArrowUpCircleFill>
       )}
     </div>
   );
@@ -172,7 +150,7 @@ Hàm k dc truyền => hàm closure => quan tâm đến biến mà định nghĩa
 nếu biến đó không thay đổi (biến bên ngoài phải là let và bên trong phải ++bien, --bien, bien -=bien,..)
 thì mãi mãi nhứng lần gọi sau biến vẫn nguyên giá trị.
 Ví dụ:
-setInterval (() => setState(state-1), 1000)
+setInterval (() => setState(state-1), 1000) //không được gán, chỉ trừ đi => lưu vào heap memory vs giá trị k đổi
 cứ 1s , call back được gọi mà callback là 1 hàm không được truyền gì => nó là closure nếu truy
 cập đến biến biên ngoài. Đúng vậy, setState là 1 hàm được truyền bình thường nên biến state trong hàm
 là được cập nhật thường xuyên và bị xoá khi hàm kết thúc, nhưng state ở đây trong hàm không khởi tạo nên
@@ -180,7 +158,7 @@ nó tạo tham chiếu trỏ ra ngoài setInterval lấy state bên ngoài và l
 không được update mà chỉ truyền vào làm đối số của hàm con nên cứ lần gọi sau, state không thay đổi vì
 lấy giá trị trong heap.
 
-setInterval (() => setState((state) => state - 1), 1000)
+setInterval (() => setState((state) => state - 1), 1000) //được gán + lưu
 ở đây lại khác, callback trong setState là 1 hàm bình thường. Vậy state trong hàm callback này
 lấy ở đâu. Nhớ, hàm bình thường thì quan tâm đến giá trị truyền vào lúc gọi hàm. NHư vậy,
 state ở đâu được truyền khi setState gọi hàm này và truyền cho nó giá trị mới nhất của state.

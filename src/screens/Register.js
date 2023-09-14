@@ -39,21 +39,21 @@ const Register = () => {
     let regexPassword =
       /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,15}$/;
     if (!name || !email || !password || !confirmPassword) {
-      setMessageRegister("Vui lòng nhập đủ các ô.");
+      setMessageRegister("Please enter all field.");
       return false;
     }
     if (!regexEmail.test(email)) {
-      setMessageRegister("Vui lòng nhập đúng định dạng email.");
+      setMessageRegister("Please enter correct form of email.");
       return false;
     }
     if (!regexPassword.test(password) || !regexPassword.test(confirmPassword)) {
       setMessageRegister(
-        "Mật khẩu phải có từ 7 đến 15 kí tự, trong đó phải có ít nhất một số và một kí tự đặc biệt. "
+        "Password must have the least 8 characters, 1 number and 1 a special character."
       );
       return false;
     }
     if (password.trim() !== confirmPassword.trim()) {
-      setMessageRegister("Mật khẩu không khớp, vui lòng nhập lại.");
+      setMessageRegister("Password not match. Please try again.");
       return false;
     }
     return true;
@@ -105,12 +105,19 @@ const Register = () => {
   }, []);
 
   return (
-    <>
+    <div
+      style={{
+        width: "100%",
+        height: "100vh",
+        backgroundColor: "rgb(245, 245, 245)",
+      }}
+    >
       <Header />
+      <div style={{ height: "65px", width: "100%" }}></div>
       <div className="flex items-center justify-center w-full">
         <div
           className="w-c-1/3 medium:w-1/2 sm:w-c-1 shadow-lg backdrop-blur-sm 
-                rounded-sm px-2 py-4 mt-16 border border-gray-200"
+                rounded-sm px-2 py-4 mt-16 border border-gray-200 bg-white"
         >
           <form
             onSubmit={handleSubmit}
@@ -119,7 +126,7 @@ const Register = () => {
           >
             {isLoading && <Loading />}
             <div
-              className={`flex text-center items-center justify-center text-lg ${
+              className={`flex text-center items-center justify-center pb-1 text-lg ${
                 color ? "text-blue-700" : "text-red-600"
               }`}
               style={
@@ -230,7 +237,7 @@ const Register = () => {
           </p>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

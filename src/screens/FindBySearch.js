@@ -1,5 +1,5 @@
 import { Contact, Header } from "components";
-import React from "react";
+import React, { useMemo } from "react";
 import { NavLink, useNavigation } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -53,16 +53,21 @@ const FindBySearch = () => {
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [showPrice, setShowPrice] = useState(false);
+  const [valueSearch, setValueSearch] = useState([]);
+  const [loadvalueSearch, setLoadValueSearch] = useState([]);
 
-  console.log(transport);
+  // console.log(transport);
   const productBySearch = useSelector(
     (state) => state?.productSearchSlice?.productsOfSearch
+  );
+  const valueSearchRedux = useSelector(
+    (state) => state?.productSearchSlice?.valueSearch
   );
   const filterOfProducts = useSelector(
     (state) => state?.productSearchSlice?.filter
   );
 
-  console.log(productBySearch);
+  // console.log(productBySearch);
 
   const { result, pages } = productBySearch;
   const pageOfNumber = productBySearch?.page;
@@ -85,37 +90,78 @@ const FindBySearch = () => {
     { value: "Vietnamese", label: "Vietnamese" },
   ].sort((a, b) => a.value.localeCompare(b.value));
 
-  //filter
-  let key = location?.search.split("?")[1]?.split("=")[1];
-  // let positionKey = false;
-  // let transportKey = false;
-  // const setPositionKey = (value) => {
-  //   positionKey = value;
-  // };
-  // const setTransportKey = (value) => {
-  //   transportKey = value;
-  // };
-  // const keyArr = ["position", "transport"];
-  // const variableArr = [setPositionKey, setTransportKey];
+  const dataListSearchEn = [
+    "shirt",
+    "pant",
+    "clock",
+    "jewelry",
+    "glasses",
+    "shoe",
+  ];
+  const dataListSearchVn = [
+    "áo",
+    "quần",
+    "đồng hồ",
+    "trang sức",
+    "kính mắt",
+    "giày",
+  ];
 
-  // const queryParams = useLocation()?.search;
-  // console.log(queryParams);
-  // let params = [];
-  // const splitString = queryParams?.split("?")[1];
-  // console.log(splitString);
-  // params = splitString?.split("&");
-  // console.log(params);
-  // if (params?.length > 0) {
-  //   params?.forEach((item) => {
-  //     for (let i = 0; i < keyArr.length; i++) {
-  //       if (item.split("=")[0] === keyArr[i]) {
-  //         variableArr[i](item.split("=")[1]);
-  //         break;
-  //       }
-  //     }
-  //   });
-  // }
-  // console.log(page, sort, type);
+  const checkValueSearch = () => {
+    console.log("run");
+    if (i18n.language === "en") {
+      let count = 0;
+      for (let i = 0; i < dataListSearchEn.length; i++) {
+        if (dataListSearchEn[i] === valueSearchRedux) {
+          setValueSearch([{ type: valueSearchRedux }]);
+          setLoadValueSearch([valueSearchRedux]);
+          break;
+        }
+        count++;
+      }
+      if (count === dataListSearchEn.length) {
+        const arr = [];
+        const loadArr = [];
+        for (let i = 0; i < dataListSearchEn.length; i++) {
+          if (
+            dataListSearchEn[i].includes(valueSearchRedux) ||
+            valueSearchRedux.includes(dataListSearchEn[i])
+          ) {
+            arr.push({ type: dataListSearchEn[i] });
+            loadArr.push(dataListSearchEn[i]);
+          }
+        }
+        setValueSearch(arr);
+        setLoadValueSearch(loadArr);
+      }
+    } else {
+      let count = 0;
+      for (let i = 0; i < dataListSearchVn.length; i++) {
+        if (dataListSearchVn[i] === valueSearchRedux) {
+          setValueSearch([{ type: dataListSearchEn[i] }]);
+          setLoadValueSearch([dataListSearchEn[i]]);
+          break;
+        }
+        count++;
+      }
+      if (count === dataListSearchEn.length) {
+        const arr = [];
+        const loadArr = [];
+        for (let i = 0; i < dataListSearchVn.length; i++) {
+          if (
+            dataListSearchVn[i].includes(valueSearchRedux) ||
+            valueSearchRedux.includes(dataListSearchVn[i])
+          ) {
+            arr.push({ type: dataListSearchEn[i] });
+            loadArr.push(dataListSearchEn[i]);
+          }
+        }
+        setValueSearch(arr);
+        setLoadValueSearch(loadArr);
+      }
+    }
+  };
+  const memoFunction = useMemo(() => checkValueSearch(), [valueSearchRedux]);
 
   useEffect(() => {
     const positionQuery = [];
@@ -133,11 +179,12 @@ const FindBySearch = () => {
     });
 
     const data = {
-      key,
+      key: valueSearch,
       position: positionQuery,
       transport: transportQuery,
       page,
     };
+    console.log(data);
     setIsLoading(true);
     setTimeout(() => {
       getAllProductsBySearch(data).then((res) => {
@@ -156,7 +203,7 @@ const FindBySearch = () => {
         setIsLoading(false);
       });
     }, 1000);
-  }, [position, loadTransport, key]);
+  }, [position, loadTransport, loadvalueSearch, page]);
 
   const handleTransportOption = (typeTransport, status, dataTransport) => {
     for (let i = 0; i < dataTransport.length; i++) {
@@ -358,7 +405,7 @@ const FindBySearch = () => {
             <div className="flex items-center justify-start mb-3 text-md gap-1">
               <span className="font-semibold">RESULT OF SEARCH:</span>
               <span className="font-semibold text-red-700 uppercase">
-                {` "${key}"`}
+                {/* {` "${key}"`} */}
               </span>
             </div>
             <div
@@ -563,7 +610,7 @@ const FindBySearch = () => {
                     <div className="flex items-center justify-center w-full">
                       <img
                         src={`/assets/image/no_product.png`}
-                        className="w-3/5"
+                        className="w-2/5"
                         alt="None"
                       />
                     </div>

@@ -7,6 +7,7 @@ import orderSlice from "./orderSlice";
 import productSearchSlice from "./searchProductSlice";
 import navbarReducer from "./navBarSlice";
 import favoriteReducer from "./favoriteSlice";
+import notificationReducer from "./notificationSlice";
 
 export const store = configureStore({
   reducer: {
@@ -18,5 +19,6 @@ export const store = configureStore({
     productSearchSlice,
     navbarReducer,
     favoriteReducer,
+    notificationReducer,
   },
 });

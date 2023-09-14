@@ -29,8 +29,10 @@ import { FaUserCircle } from "react-icons/fa";
 import { FaBars } from "react-icons/fa";
 import { MdOutlineArrowBackIosNew } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
-import { getFavoriteByUser } from "api";
+import { getAllNotification, getFavoriteByUser } from "api";
 import { getAllFavorites } from "reduxToolkit/favoriteSlice";
+import { saveTotalNotification } from "reduxToolkit/notificationSlice";
+import { setValueSearch } from "reduxToolkit/searchProductSlice";
 
 const Header = () => {
   const cartProduct = useSelector((state) => state.cartSlice.carts);
@@ -38,20 +40,32 @@ const Header = () => {
   const favoriteRedux = useSelector(
     (state) => state.favoriteReducer.favoriteProducts
   );
+  const readNotifications = useSelector(
+    (state) => state.notificationReducer.readNotification
+  );
+  const totalNotifications = useSelector(
+    (state) => state.notificationReducer.totalNotification
+  );
+  // console.log(readNotifications, totalNotifications);
   const dispatch = useDispatch();
 
   const location = useLocation().pathname;
   const navigate = useNavigate();
-  const dataListSearchEn = ["shirt", "pant", "clock", "jewelry", "glasses"];
+  const dataListSearchEn = [
+    "shirt",
+    "pant",
+    "clock",
+    "jewelry",
+    "glasses",
+    "shoe",
+  ];
   const dataListSearchVn = [
-    "Áo",
-    "Áo sơ mi",
-    "Quần",
-    "Quần bò",
-    "Đồng hồ cơ",
-    "Đồng hồ điện tử",
-    "Trang sức",
-    "Kính mắt",
+    "áo",
+    "quần",
+    "đồng hồ",
+    "trang sức",
+    "kính mắt",
+    "giày",
   ];
 
   const [input, setInput] = useState("");
@@ -76,6 +90,11 @@ const Header = () => {
           dispatch(getAllFavorites(res?.favoriteArr));
         }
       });
+      getAllNotification().then((res) => {
+        if (res?.code === 0) {
+          dispatch(saveTotalNotification(res?.notification?.length));
+        }
+      });
     }
   }, []);
   const handleProfile = () => {
@@ -91,7 +110,7 @@ const Header = () => {
   };
 
   const handleSearch = (e) => {
-    console.log(e.target.value);
+    dispatch(setValueSearch(e.target.value.toLowerCase()));
     navigate(`/search?type=${e.target.value}`);
   };
 
@@ -116,6 +135,14 @@ const Header = () => {
       navigate("/favorite");
     } else {
       navigate(`/login?redirect=/favoriteProductList`);
+    }
+  };
+
+  const handleNotificationProductList = () => {
+    if (user && user?.name) {
+      navigate("/notification");
+    } else {
+      navigate(`/login?redirect=/notification`);
     }
   };
 
@@ -238,16 +265,16 @@ const Header = () => {
                 onClick={handleSearch}
               /> */}
             </div>
-            <div className="flex items-center justify-between relative flex-1 gap-6">
+            <div className="ml-6 flex items-center justify-between relative flex-1 gap-4">
               <div
-                className="flex-1 cursor-pointer flex items-center justify-center gap-1 relative"
+                className="cursor-pointer flex items-center justify-center gap-1 relative"
                 onClick={handleShowTranslate}
-                style={{ minWidth: "90px" }}
+                // style={{ minWidth: "90px" }}
               >
                 <span className="cursor-pointer text-gray-600 block">
-                  {i18n.language === "en" ? "English" : "Tiếng Việt"}
+                  {i18n.language === "en" ? "EN" : "VN"}
                 </span>
-                <BsChevronDown />
+                <BsChevronDown className="text-sm" />
                 {/* <AnimatePresence> */}
                 {showTranslate && (
                   <ul
@@ -255,10 +282,10 @@ const Header = () => {
                     // animate={{ opacity: 1, translateY: 0 }}
                     // exit={{ opacity: 0, translateY: -50 }}
                     // transition={{ duration: 0.5, delay: 0.1 }}
-                    className="absolute right-0 top-12 bg-gray-200 w-32 shadow-sm rounded-sm"
+                    className="absolute -right-2 top-8 bg-white w-32 shadow-sm rounded-md"
                   >
                     <li
-                      className={`px-1 py-3 text-center border-b border-slate-50 ${
+                      className={`px-0.5 transition-all duration-500 py-2 text-center hover:text-blue-700 border-b border-gray-200 ${
                         i18n.language === "en"
                           ? "text-blue-700"
                           : "text-headingColor"
@@ -268,7 +295,7 @@ const Header = () => {
                       {t("header.english")}
                     </li>
                     <li
-                      className={`px-1 py-3 text-center ${
+                      className={`px-0.5 transition-all duration-500 py-2 text-center hover:text-blue-700 ${
                         i18n.language === "en"
                           ? "text-headingColor"
                           : "text-blue-700"
@@ -281,9 +308,27 @@ const Header = () => {
                 )}
                 {/* </AnimatePresence> */}
               </div>
-              <NavLink to="/notification" className=" cursor-pointer">
+              <div
+                className="flex items-center justify-center gap-0.5 cursor-pointer"
+                onClick={handleNotificationProductList}
+              >
                 <AiOutlineBell className="h-8 w-6 cursor-pointer text-gray-600" />
-              </NavLink>
+                {totalNotifications &&
+                totalNotifications - readNotifications?.length ? (
+                  <span
+                    style={{
+                      fontSize: "14px",
+                      position: "relative",
+                      top: "5px",
+                      opacity: 0.6,
+                    }}
+                  >{`(${
+                    totalNotifications - readNotifications?.length
+                  })`}</span>
+                ) : (
+                  ""
+                )}
+              </div>
               <div
                 className="flex items-center justify-center gap-0.5 cursor-pointer"
                 onClick={handleFavoriteProductList}
@@ -318,31 +363,6 @@ const Header = () => {
                     onClick={handleProfile}
                   >
                     <FaUserCircle className="avatar relative w-7 h-7 text-gray-400 cursor-pointer" />
-                    {/* <AnimatePresence>
-                      {isProfile && (
-                        <motion.div
-                          initial={{ opacity: 0, translateY: -50 }}
-                          animate={{ opacity: 1, translateY: 0 }}
-                          exit={{ opacity: 0, translateY: -50 }}
-                          transition={{ duration: 0.3, delay: 0.1 }}
-                          className="absolute top-12 left-0 w-28 z-40 bg-subColor text-black rounded-md overflow-hidden"
-                        >
-                          <ul className="w-full cursor-pointer">
-                            <NavLink to="/profile">
-                              <li className="text-sm py-4 pl-2 w-full hover:bg-black hover:text-subColor duration-300 transition-all ease-in-out">
-                                Profile
-                              </li>
-                            </NavLink>
-                            <li
-                              className="text-sm py-4 pl-2 w-full hover:bg-black hover:text-subColor duration-300 transition-all ease-in-out"
-                              onClick={handleLogOut}
-                            >
-                              Logout
-                            </li>
-                          </ul>
-                        </motion.div>
-                      )}
-                    </AnimatePresence> */}
                     <AnimatePresence>
                       {isProfile && (
                         <motion.div
@@ -350,7 +370,7 @@ const Header = () => {
                           animate={{ opacity: 1, translateY: 0 }}
                           exit={{ opacity: 0, translateY: -50 }}
                           transition={{ duration: 0.5, delay: 0.1 }}
-                          className="avatar-modal absolute top-12 right-0 z-50 rounded-lg  w-52 bg-gray-200 backdrop-blur-sm"
+                          className="avatar-modal absolute top-9 right-0 z-50 rounded-lg  w-fit bg-white"
                           style={{ boxShadow: "0 4px 20px rgba(0,0,0,.25)" }}
                         >
                           <div className="text-xs text-headingColor">
@@ -390,9 +410,9 @@ const Header = () => {
                               </div>
                             </div>
                           </div>
-                          <ul className="py-1 text-headingColor border-t border-b border-slate-50">
+                          <ul className="py-1 text-headingColor border-t border-b border-gray-200">
                             <NavLink to="/profile">
-                              <div className="flex items-center gap-2 px-4 py-2 hover:text-blue-700">
+                              <div className="flex transition-all duration-500 items-center gap-2 px-4 py-2 hover:text-blue-700">
                                 <AiFillEdit />{" "}
                                 <span className="text-md">
                                   {t("header.account")}
@@ -402,7 +422,7 @@ const Header = () => {
                           </ul>
                           <div className="py-1">
                             <div
-                              className="flex items-center gap-2 px-4 py-2  hover:text-blue-700 text-headingColor"
+                              className="flex transition-all duration-500 items-center gap-2 px-4 py-2  hover:text-blue-700 text-headingColor"
                               onClick={() => handleLogOut()}
                             >
                               <BiLogOutCircle />{" "}
@@ -418,49 +438,11 @@ const Header = () => {
                 </>
               ) : (
                 <>
-                  {/* <div className="xl:block medium:hidden sm:hidden">
-                    <NavLink
-                      to="/register"
-                      className="mr-4 font-semibold text-headingColor cursor-pointer"
-                    >
-                      <span>REGISTER</span>
-                    </NavLink>
-                    <NavLink
-                      to="/login"
-                      className="ml-1 font-semibold text-headingColor cursor-pointer"
-                    >
-                      <span>LOGIN</span>
-                    </NavLink>
-                  </div> */}
                   <div
                     className="sm:hidden relative"
                     onClick={handleShowLoginRegister}
                   >
                     <FaUserCircle className="avatar relative w-7 h-7 text-gray-400 cursor-pointer" />
-                    {/* <AnimatePresence>
-                      {isShowLoginRegister && (
-                        <motion.div
-                          initial={{ opacity: 0, translateY: -50 }}
-                          animate={{ opacity: 1, translateY: 0 }}
-                          exit={{ opacity: 0, translateY: -50 }}
-                          transition={{ duration: 0.3, delay: 0.1 }}
-                          className="absolute top-12 left-0 w-28 z-40 bg-subColor text-black rounded-md overflow-hidden"
-                        >
-                          <ul className="w-full cursor-pointer">
-                            <NavLink to="/register">
-                              <li className="text-sm py-4 pl-2 w-full hover:bg-black hover:text-subColor duration-300 transition-all ease-in-out">
-                                Register
-                              </li>
-                            </NavLink>
-                            <NavLink to="/login">
-                              <li className="text-sm py-4 pl-2 w-full hover:bg-black hover:text-subColor duration-300 transition-all ease-in-out">
-                                Login
-                              </li>
-                            </NavLink>
-                          </ul>
-                        </motion.div>
-                      )}
-                    </AnimatePresence> */}
                     <AnimatePresence>
                       {isShowLoginRegister && (
                         <motion.div
@@ -468,7 +450,7 @@ const Header = () => {
                           animate={{ opacity: 1, translateY: 0 }}
                           exit={{ opacity: 0, translateY: -50 }}
                           transition={{ duration: 0.5, delay: 0.1 }}
-                          className="avatar-modal absolute top-12 right-0 z-50 rounded-lg  w-52 bg-gray-200 backdrop-blur-sm"
+                          className="avatar-modal absolute top-9 right-0 z-50 rounded-lg  w-git bg-white"
                           style={{ boxShadow: "0 4px 20px rgba(0,0,0,.25)" }}
                         >
                           <div className="text-xs text-headingColor">
@@ -508,7 +490,7 @@ const Header = () => {
                               </div>
                             </div>
                           </div>
-                          <ul className="py-1 text-headingColor border-t border-b border-slate-50">
+                          <ul className="py-1 text-headingColor border-t border-b border-gray-200">
                             <NavLink to="/register">
                               <div className="flex items-center gap-2 px-4 py-2 hover:text-blue-700">
                                 <BiLogOutCircle />
