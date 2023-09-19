@@ -12,7 +12,52 @@
     "logIn": "Log in",
     "account": "Account",
     "logOut": "Log out"
-}
+},
 
+
+"rule": {
+    "var": "Various models.",
+    "ref": "Refund 10 times it found fake.",
+    "fre": "Free Transports.",
+    "fasts": "Fast Shipping, careful packing.",
+    "cha": "Change item within 7 days.",
+    "one": "One to one exchange within 7 days for defective products.",
+    "lon": "Long term warranty.",
+    "fasta": "Fast and reliable procedure.",
+    "ins": "Installment if buy online.",
+    "inst": "Installment up to 50% with 0% rate."
+},
+
+"category": {
+    "name": "Category",
+    "common": "Common",
+    "shirt": "T-Shirt",
+    "pant": "Pants",
+    "jewelry": "Jewelry",
+    "watch": "Watch",
+    "glass": "Glasses",
+    "shoe": "Shoe"
+},
+
+"sort": {
+    "by": "Sort by",
+    "normal": "Normal",
+    "newest": "Newest",
+    "rating": "Rating",
+    "price": "Price",
+    "asc": "From min to max",
+    "desc": "From max to min"
+},
+
+"banner": {
+    "tip": "Do you need more tips?",
+    "sign": "Sign up free and get the latest tips",
+    "mail": "Your email",
+    "yes": "Yes. I want!"
+},
+"contact": {
+    "call": "Call us 24x7",
+    "position": "Position"
+}
 
 }

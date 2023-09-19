@@ -13,6 +13,7 @@
     "i18next": "^23.4.4",
     "i18next-browser-languagedetector": "^7.1.0",
     "i18next-http-backend": "^2.2.1",
+    "lozad": "^1.16.0",
     "moment": "^2.29.4",
     "primeicons": "^6.0.1",
     "primereact": "^9.6.2",

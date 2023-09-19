@@ -13,7 +13,7 @@ const searchProductSlice = createSlice({
   reducers: {
     getProductOfSearch: (state, action) => {
       return {
-        ...state,
+        ...current(state),
         productsOfSearch: action.payload,
       };
     },
@@ -35,12 +35,15 @@ const searchProductSlice = createSlice({
         product.sort((a, b) => b.rating - a.rating);
       } else if (action.payload === "desc") {
         product = [...productsOfSearch?.result];
-        product.sort((a, b) => b.price - a.price);
+        console.log(product);
+        product.sort((a, b) => +b.price - +a.price);
+        // console.log(product);
       } else if (action.payload === "asc") {
         product = [...productsOfSearch?.result];
         product.sort((a, b) => a.price - b.price);
       }
       return {
+        ...current(state),
         filter: action.payload,
         productsOfSearch: {
           page,
@@ -49,16 +52,26 @@ const searchProductSlice = createSlice({
         },
       };
     },
-    setValueSearch: (state, action) => {
+    setValueSearchRedux: (state, action) => {
       return {
         ...current(state),
         valueSearch: action.payload,
+      };
+    },
+    setFilterRedux: (state, action) => {
+      return {
+        ...current(state),
+        filter: action.payload,
       };
     },
   },
 });
 
 const { reducer, actions } = searchProductSlice;
-export const { getProductOfSearch, getProductOfFilter, setValueSearch } =
-  actions;
+export const {
+  getProductOfSearch,
+  getProductOfFilter,
+  setValueSearchRedux,
+  setFilterRedux,
+} = actions;
 export default reducer;

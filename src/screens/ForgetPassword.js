@@ -11,11 +11,11 @@ const ForgetPassword = () => {
   const checkAdvancedRegister = () => {
     let regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     if (!email) {
-      setMessage("Vui lòng nhập email");
+      setMessage("Please enter email.");
       return false;
     }
     if (!regexEmail.test(email)) {
-      setMessage("Vui lòng nhập đúng định dạng email.");
+      setMessage("Please enter correct email format.");
       return false;
     }
     return true;

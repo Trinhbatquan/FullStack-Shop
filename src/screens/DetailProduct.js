@@ -25,6 +25,7 @@ import { TbTargetArrow } from "react-icons/tb";
 import { setNavBar } from "reduxToolkit/navBarSlice";
 import NavBar from "utils/NavBar";
 import { getAllFavorites } from "reduxToolkit/favoriteSlice";
+import { updateAllCart } from "reduxToolkit/cartSlice";
 
 const DetailProduct = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -90,6 +91,26 @@ const DetailProduct = () => {
 
   const handleCartProduct = () => {
     navigate(`/cart/${id.id}?qty=${qty}`);
+  };
+
+  const handleBuyNow = (product) => {
+    const data = {
+      product: product._id,
+      name: product.name,
+      image: product.image,
+      description: product.description,
+      rating: product.rating,
+      price: product.price,
+      numReviews: product.numReviews,
+      countInStock: product.countInStock,
+      reviews: product.reviews,
+      qty,
+    };
+    // console.log(data);
+    dispatch(updateAllCart([data]));
+    navigate(
+      user?.name ? "/deliveryAddress" : "/login?redirect=/deliveryAddress"
+    );
   };
 
   const handleAddReview = (e) => {
@@ -450,7 +471,7 @@ const DetailProduct = () => {
                 <button
                   type="button"
                   className="w-1/3 sm:w-full bg-red-600 rounded-md text-white sm:mx-auto p-3 text-lg opacity-70 hover:opacity-100"
-                  onClick={handleCartProduct}
+                  onClick={() => handleBuyNow(product)}
                 >
                   Buy Now
                 </button>

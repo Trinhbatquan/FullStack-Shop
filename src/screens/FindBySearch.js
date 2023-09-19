@@ -23,6 +23,8 @@ import { useTranslation } from "react-i18next";
 import {
   getProductOfFilter,
   getProductOfSearch,
+  setFilterRedux,
+  setValueSearchRedux,
 } from "reduxToolkit/searchProductSlice";
 import LoadingSkeleton from "components/homeComponents/ShopProduct/LoadingSkeleton";
 import ProductItem from "components/homeComponents/ShopProduct/ProductItem";
@@ -63,14 +65,23 @@ const FindBySearch = () => {
   const valueSearchRedux = useSelector(
     (state) => state?.productSearchSlice?.valueSearch
   );
+  console.log(valueSearchRedux);
   const filterOfProducts = useSelector(
     (state) => state?.productSearchSlice?.filter
   );
 
   // console.log(productBySearch);
 
-  const { result, pages } = productBySearch;
-  const pageOfNumber = productBySearch?.page;
+  let result = [],
+    pages,
+    pageOfNumber;
+  if (productBySearch?.result?.length > 0) {
+    result = productBySearch?.result;
+    pages = productBySearch?.pages;
+    pageOfNumber = productBySearch?.page;
+  }
+  // const { result, pages } = productBySearch;
+  // const pageOfNumber = productBySearch?.page;
 
   const positionOptions = [
     { value: "England", label: "England" },
@@ -184,25 +195,32 @@ const FindBySearch = () => {
       transport: transportQuery,
       page,
     };
-    console.log(data);
     setIsLoading(true);
+    console.log(data);
     setTimeout(() => {
-      getAllProductsBySearch(data).then((res) => {
-        console.log(res);
-        if (res?.code === 0) {
-          dispatch(getProductOfSearch(res?.productSearch));
-        } else {
-          toast.error(
-            `${
-              i18n.language === "en"
-                ? "Something error. Please contact with admin."
-                : "Có lỗi. Vui lòng liên hệ với quản trị viên"
-            } `
-          );
-        }
+      if (data?.key?.length > 0) {
+        getAllProductsBySearch(data).then((res) => {
+          console.log(res);
+          if (res?.code === 0) {
+            console.log(res?.productSearch);
+            dispatch(getProductOfSearch(res?.productSearch));
+          } else {
+            toast.error(
+              `${
+                i18n.language === "en"
+                  ? "Something error. Please contact with admin."
+                  : "Có lỗi. Vui lòng liên hệ với quản trị viên"
+              } `
+            );
+          }
+          setIsLoading(false);
+        });
+      } else {
+        dispatch(getProductOfSearch({}));
         setIsLoading(false);
-      });
+      }
     }, 1000);
+    dispatch(setFilterRedux("normal"));
   }, [position, loadTransport, loadvalueSearch, page]);
 
   const handleTransportOption = (typeTransport, status, dataTransport) => {
@@ -235,7 +253,11 @@ const FindBySearch = () => {
   const handleShowPrice = () => setShowPrice(!showPrice);
 
   const handleFilter = (filter) => {
+    setIsLoading(true);
     dispatch(getProductOfFilter(filter));
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
   };
 
   return (
@@ -399,11 +421,16 @@ const FindBySearch = () => {
             </div>
           </div>
           <div
-            className="products col l-10 m-grid-10 c-12"
+            className="products col l-10 m-grid-10 c-12 pt-10"
             // style={{ minWidth: "90%", width: "90%" }}
           >
             <div className="flex items-center justify-start mb-3 text-md gap-1">
-              <span className="font-semibold">RESULT OF SEARCH:</span>
+              <span className="flex text-md items-center justify-center gap-1">
+                RESULT OF SEARCH{" "}
+                <span className="text-md text-red-600">
+                  {`"${valueSearchRedux}"`}
+                </span>
+              </span>
               <span className="font-semibold text-red-700 uppercase">
                 {/* {` "${key}"`} */}
               </span>
@@ -425,7 +452,7 @@ const FindBySearch = () => {
                   Sort by
                 </span>
                 <div
-                  className="text-md block"
+                  className="text-md block cursor-pointer"
                   style={
                     filterOfProducts === "normal"
                       ? { color: "#fff", backgroundColor: "rgb(247, 70, 46)" }
@@ -438,7 +465,7 @@ const FindBySearch = () => {
                   </span>
                 </div>
                 <div
-                  className="text-md block"
+                  className="text-md block cursor-pointer"
                   style={
                     filterOfProducts === "newest"
                       ? { color: "#fff", backgroundColor: "rgb(247, 70, 46)" }
@@ -451,7 +478,7 @@ const FindBySearch = () => {
                   </span>
                 </div>
                 <div
-                  className="text-md block"
+                  className="text-md block cursor-pointer"
                   style={
                     filterOfProducts === "rating"
                       ? { color: "#fff", backgroundColor: "rgb(247, 70, 46)" }
@@ -504,7 +531,7 @@ const FindBySearch = () => {
                   items-start justify-center absolute top-12 left-0 w-full z-10"
                       >
                         <div
-                          className="w-full px-1.5 py-2.5"
+                          className="w-full px-1.5 py-2.5 cursor-pointer"
                           style={
                             filterOfProducts === "desc"
                               ? {
@@ -519,7 +546,7 @@ const FindBySearch = () => {
                         </div>
                         <hr />
                         <div
-                          className="w-full px-1.5 py-2.5"
+                          className="w-full px-1.5 py-2.5 cursor-pointer"
                           style={
                             filterOfProducts === "asc"
                               ? {
@@ -617,13 +644,13 @@ const FindBySearch = () => {
                   ) : (
                     result?.map((item, index) => {
                       return (
-                        <div
+                        <NavLink
                           to={`/products/${item._id}`}
                           key={index}
                           className="col l-2-4 m-grid-4 c-6 mb-3"
                         >
-                          <ProductItem product={item} />
-                        </div>
+                          <ProductItem product={item} type="search-page" />
+                        </NavLink>
                       );
                     })
                   )}

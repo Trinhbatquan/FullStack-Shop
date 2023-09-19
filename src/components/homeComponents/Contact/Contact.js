@@ -4,6 +4,7 @@ import { BsFillTelephoneFill, BsCreditCardFill } from "react-icons/bs";
 import { GiPositionMarker } from "react-icons/gi";
 import { FaFax, FaCcMastercard, FaCcPaypal } from "react-icons/fa";
 import { RiVisaLine } from "react-icons/ri";
+import { t } from "i18next";
 
 const Contact = () => {
   return (
@@ -23,7 +24,7 @@ const Contact = () => {
             }}
           />
           <p className="font-semibold text-xl mt-3 text-headingColor">
-            Call Us 24x7
+            {t("contact.call")}
           </p>
           <p className="text-md mt-1">0796 065 535</p>
         </div>
@@ -38,7 +39,7 @@ const Contact = () => {
             }}
           />
           <p className="font-semibold text-xl mt-3 text-headingColor">
-            Position
+            {t("contact.position")}
           </p>
           <p className="text-md mt-1">Ha Noi, Viet Nam</p>
         </div>

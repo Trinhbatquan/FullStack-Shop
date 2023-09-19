@@ -1,5 +1,6 @@
 import React from "react";
 import "./BannerTip.css";
+import { t } from "i18next";
 
 const BannerTip = () => {
   const handleSubmit = (e) => {
@@ -27,13 +28,13 @@ const BannerTip = () => {
             className="text-2xl font-semibold mb-1 opacity-90"
             style={{ color: "#fff", textShadow: "0 0 #fff", fontWeight: "800" }}
           >
-            DO YOU NEED MORE TIPS?
+            {t("banner.tip")}
           </h2>
           <p
             className="text-lg pb-4 opacity-90"
             style={{ color: "#fff", textShadow: "0 0 #fff", fontWeight: "800" }}
           >
-            Sign up free and get the latest tips.
+            {t("banner.sign")}
           </p>
           <form
             onSubmit={handleSubmit}
@@ -41,7 +42,7 @@ const BannerTip = () => {
             style={{ minWidth: "70%" }}
           >
             <input
-              placeholder="Your email..."
+              placeholder={t("banner.mail")}
               type="email"
               name="email"
               className="banner-tip-input text-center py-3 opacity-90 placeholder:text-slate-500
@@ -53,7 +54,7 @@ const BannerTip = () => {
               }}
             />
             <input
-              value="Yes. I want!"
+              value={t("banner.yes")}
               name="subscribe"
               type="submit"
               className="banner-tip-submit-input xl:absolute sm:mt-3 medium:absolute right-16 px-10 py-3.5 rounded-3xl text-sm

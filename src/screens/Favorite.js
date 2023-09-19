@@ -2,8 +2,10 @@ import { Contact, Header } from "components";
 import LoadingSkeleton from "components/homeComponents/ShopProduct/LoadingSkeleton";
 import ProductItem from "components/homeComponents/ShopProduct/ProductItem";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 import { useLocation } from "react-router";
+import { ToastContainer } from "react-toastify";
 import { getFavoriteByFilter } from "reduxToolkit/favoriteSlice";
 import { setNavBar } from "reduxToolkit/navBarSlice";
 import NavBar from "utils/NavBar";
@@ -12,21 +14,25 @@ const Favorite = () => {
   const location = useLocation();
   const dispatch = useDispatch();
 
-  const [isLoading, setIsLoading] = useState(false);
+  const { i18n, t } = useTranslation();
+
+  const [isLoading, setIsLoading] = useState(true);
   const favoriteRedux = useSelector(
     (state) => state.favoriteReducer.favoriteProducts
   );
   const filter = useSelector((state) => state.favoriteReducer.filterFavorite);
   const navigation = useSelector((state) => state.navbarReducer.keyNavBar);
-  const keyNavigate = location?.pathname?.split("/")[1];
+  const keyNavigate = i18n.language === "en" ? "Favorite" : "Yêu thích";
 
   useEffect(() => {
     dispatch(setNavBar(keyNavigate));
     dispatch(getFavoriteByFilter("normal"));
-  }, []);
+    setIsLoading(false);
+  }, [i18n.language]);
 
   return (
     <div style={{ height: "100vh", backgroundColor: "rgb(245,245,245)" }}>
+      <ToastContainer />
       <Header />
       <div style={{ height: "65px", width: "100%" }}></div>
       <div className="w-full px-[10%] mx-auto pb-8 pt-3 bg-white flex flex-col items-start justify-center">
@@ -35,7 +41,9 @@ const Favorite = () => {
             <NavBar navigation={navigation} />
           </div>
         )}
-        <p className="text-lg font-semibold py-2 w-full">{`Saved Products (${favoriteRedux?.length})`}</p>
+        <p className="text-lg font-semibold py-2 w-full">{`${
+          i18n.language === "en" ? "Saved Products" : "Tổng số sản phẩm"
+        } (${favoriteRedux?.length})`}</p>
         <div className="row row-small-Gutters" style={{ width: "100%" }}>
           <div className="products col l-12 m-grid-12 c-12">
             <div
@@ -51,7 +59,7 @@ const Favorite = () => {
                   class="content-filterControl__sort text-md"
                   style={{ margin: "0 20px", color: "#333" }}
                 >
-                  Sort by
+                  {i18n.language === "en" ? "Sort by" : "Sắp xếp bởi"}
                 </span>
                 <div
                   class="text-md flex items-center justify-start gap-12 cursor-pointer"
@@ -63,7 +71,9 @@ const Favorite = () => {
                   onClick={() => dispatch(getFavoriteByFilter("normal"))}
                 >
                   <span className="block px-1.5 py-1.5 text-center">
-                    Latest favorite products
+                    {i18n.language === "en"
+                      ? "Latest favorite products"
+                      : "Mới nhất"}
                   </span>
                 </div>
                 <div
@@ -76,7 +86,7 @@ const Favorite = () => {
                   onClick={() => dispatch(getFavoriteByFilter("desc"))}
                 >
                   <span className="block px-1.5 py-1.5 text-center">
-                    From max to min
+                    {t("sort.desc")}
                   </span>
                 </div>
                 <div
@@ -89,7 +99,7 @@ const Favorite = () => {
                   onClick={() => dispatch(getFavoriteByFilter("asc"))}
                 >
                   <span className="block px-1.5 py-1.5 text-center">
-                    From min to max
+                    {t("sort.asc")}
                   </span>
                 </div>
                 <div
@@ -102,7 +112,9 @@ const Favorite = () => {
                   onClick={() => dispatch(getFavoriteByFilter("rating"))}
                 >
                   <span className="block px-1.5 py-1.5 text-center">
-                    Highest rate of rating
+                    {i18n.language === "en"
+                      ? "Highest rate of rating"
+                      : "Bình luận cao nhất"}
                   </span>
                 </div>
               </div>

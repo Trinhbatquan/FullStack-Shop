@@ -19,10 +19,14 @@ import {
 import { AnimatePresence } from "framer-motion";
 import ProductItem from "./ProductItem";
 import LoadingSkeleton from "./LoadingSkeleton";
+import lozad from "lozad";
+import { useTranslation } from "react-i18next";
 
 const ShopProduct = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPrice, setShowPrice] = useState(false);
+
+  const { t } = useTranslation();
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -133,7 +137,7 @@ const ShopProduct = () => {
               }}
             >
               <FaBars className="text-xl" />
-              Category
+              {t("category.name")}
             </div>
             <ul
               className="category-list flex flex-col items-start justify-center py-2"
@@ -157,7 +161,7 @@ const ShopProduct = () => {
                   className={`${!type ? "text-red-600" : "text-gray-400"}
                 `}
                 >
-                  Common
+                  {t("category.common")}
                 </span>
                 {!type && (
                   <div
@@ -192,7 +196,7 @@ const ShopProduct = () => {
                     type && type === "shirt" ? "text-red-600" : "text-gray-400"
                   }`}
                 >
-                  T-Shirt
+                  {t("category.shirt")}
                 </span>
                 {type && type === "shirt" && (
                   <div
@@ -228,7 +232,7 @@ const ShopProduct = () => {
                     type && type === "pant" ? "text-red-600" : "text-gray-400"
                   }`}
                 >
-                  Pants
+                  {t("category.pant")}
                 </span>
                 {type && type === "pant" && (
                   <div
@@ -266,7 +270,7 @@ const ShopProduct = () => {
                       : "text-gray-400"
                   }`}
                 >
-                  Jewelry
+                  {t("category.jewelry")}
                 </span>
                 {type && type === "jewelry" && (
                   <div
@@ -302,7 +306,7 @@ const ShopProduct = () => {
                     type && type === "clock" ? "text-red-600" : "text-gray-400"
                   }`}
                 >
-                  Watch
+                  {t("category.watch")}
                 </span>
                 {type && type === "clock" && (
                   <div
@@ -340,7 +344,7 @@ const ShopProduct = () => {
                       : "text-gray-400"
                   }`}
                 >
-                  Glasses
+                  {t("category.glass")}
                 </span>
                 {type && type === "glasses" && (
                   <div
@@ -376,7 +380,7 @@ const ShopProduct = () => {
                     type && type === "shoe" ? "text-red-600" : "text-gray-400"
                   }`}
                 >
-                  Shoe
+                  {t("category.shoe")}
                 </span>
                 {type && type === "shoe" && (
                   <div
@@ -412,7 +416,7 @@ const ShopProduct = () => {
                 class="content-filterControl__sort text-md"
                 style={{ margin: "0 20px", color: "#333" }}
               >
-                Sort by
+                {t("sort.by")}
               </span>
               <NavLink
                 to={
@@ -432,7 +436,7 @@ const ShopProduct = () => {
                 }
               >
                 <span className="w-28 block px-1.5 py-1.5 text-center">
-                  Normal
+                  {t("sort.normal")}
                 </span>
               </NavLink>
               <NavLink
@@ -453,7 +457,7 @@ const ShopProduct = () => {
                 }
               >
                 <span className="w-28 block px-1.5 py-1.5 text-center">
-                  Newest
+                  {t("sort.newest")}
                 </span>
               </NavLink>
               <NavLink
@@ -474,7 +478,7 @@ const ShopProduct = () => {
                 }
               >
                 <span className="w-28 block px-1.5 py-1.5 text-center">
-                  Rating
+                  {t("sort.rating")}
                 </span>
               </NavLink>
             </div>
@@ -490,13 +494,13 @@ const ShopProduct = () => {
                 onClick={() => handleShowPrice()}
               >
                 <span class="text-md">
-                  {sort
-                    ? sort === "desc"
-                      ? "From max to min"
-                      : sort === "asc"
-                      ? "From min to max"
-                      : "Price"
-                    : "Price"}
+                  {!sort
+                    ? t("sort.price")
+                    : sort === "desc"
+                    ? t("sort.desc")
+                    : sort === "asc"
+                    ? t("sort.asc")
+                    : t("sort.price")}
                 </span>
                 {showPrice ? (
                   <IoIosArrowUp className="text-md" />
@@ -533,7 +537,7 @@ const ShopProduct = () => {
                             : { color: "#333", backgroundColor: "#fff" }
                         }
                       >
-                        <span>From max to min</span>
+                        <span>{t("sort.desc")}</span>
                       </NavLink>
                       <hr />
                       <NavLink
@@ -556,7 +560,7 @@ const ShopProduct = () => {
                             : { color: "#333", backgroundColor: "#fff" }
                         }
                       >
-                        <span>From min to max</span>
+                        <span>{t("sort.asc")}</span>
                       </NavLink>
                     </motion.ul>
                   )}
@@ -597,7 +601,7 @@ const ShopProduct = () => {
                   );
                 })}
               </div>
-              <div className="row row-small_Gutters ml-8">
+              <div className="row row-small_Gutters ml-8 items-center justify-start pl-2">
                 <Pagination
                   numberOfPage={numberOfPage?.page}
                   pages={pages}

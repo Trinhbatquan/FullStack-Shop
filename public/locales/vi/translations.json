@@ -12,6 +12,51 @@
     "logIn": "Đăng ký",
     "account": "Tài khoản",
     "logOut": "Đăng xuất"
+},
+
+"rule": {
+    "var": "Nhiều kiểu dáng.",
+    "ref": "Trả lại gấp 10 lần nếu hàng giả.",
+    "fre": "Vận chuyển miễn phí.",
+    "fasts": "Vận chuyển nhanh, gói hàng cẩn thận.",
+    "cha": "Đổi trả trong vòng 7 ngày.",
+    "one": "Một đổi một trong 7 ngày với những sản phầm lỗi.",
+    "lon": "Bảo hành dài hạn.",
+    "fasta": "Quy trình nhanh và tin cậy.",
+    "ins": "Hỗ trợ trả góp nếu mua online.",
+    "inst": "Trả góp lên đến 50% với lãi suất 0%."
+},
+
+"category": {
+    "name": "Danh mục",
+    "common": "Chung",
+    "shirt": "Áo sơ mi",
+    "pant": "Quần",
+    "jewelry": "Trang sức",
+    "watch": "Đồng hồ",
+    "glass": "Kính mắt",
+    "shoe": "Giày"
+},
+
+"sort": {
+    "by": "Sắp xếp theo",
+    "normal": "Chung",
+    "newest": "Mới nhất",
+    "rating": "Đánh giá",
+    "price": "Giá",
+    "asc": "Từ thấp đến cao",
+    "desc": "Từ cao đến thấp"
+},
+
+"banner": {
+    "tip": "Bạn có cần thêm lời khuyên?",
+    "sign": "Đăng ký miễn phí và sẽ có những lời khuyên đến email của bạn.",
+    "mail": "Email của bạn",
+    "yes": "Có. Tôi muốn!"
+},
+"contact": {
+    "call": "Gọi chúng tôi 24x7",
+    "position": "Vị trí"
 }
 
 

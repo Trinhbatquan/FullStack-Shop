@@ -14,6 +14,13 @@ const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
+    updateAllCart: (state, action) => {
+      localStorage.setItem("cart", JSON.stringify(action.payload));
+      return {
+        ...current(state),
+        carts: action.payload,
+      };
+    },
     addCart: (state, action) => {
       const newCart = action.payload;
       const existCart = state.carts.filter(
@@ -84,5 +91,6 @@ export const {
   addDeliveryAddress,
   deleteAllCarts,
   deleteManyCart,
+  updateAllCart,
 } = actions;
 export default reducer;

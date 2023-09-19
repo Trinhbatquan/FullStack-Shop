@@ -23,6 +23,7 @@ import axios from "axios";
 
 import { PayPalButton } from "react-paypal-button-v2";
 import { toast } from "react-toastify";
+import i18n from "i18n";
 
 const PlaceOrderScreen = () => {
   const location = useLocation();
@@ -117,6 +118,13 @@ const PlaceOrderScreen = () => {
           orderById(id.id).then((res) => {
             if (res?.code === 0) {
               dispatch(getOrderById(res?.order));
+              toast.success(
+                `${
+                  i18n.language === "en"
+                    ? "Order Successfully. Item is delivering."
+                    : "Đặt hàng thành công. Đơn hành đang được chuyển đến bạn."
+                }`
+              );
             }
           });
         } else {
@@ -332,7 +340,7 @@ ${
                     </button>
                     <button
                       className={`cursor-text
-     flex items-center justify-center gap-0.5 py-2 px-3 bg-white border border-spacing-1 border-gray-200
+     flex items-center justify-center gap-0.5 py-2 px-3 bg-white
 ${
   isPaid
     ? "border border-spacing-1 border-backColor"

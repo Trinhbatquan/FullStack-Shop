@@ -32,7 +32,7 @@ import { CiSearch } from "react-icons/ci";
 import { getAllNotification, getFavoriteByUser } from "api";
 import { getAllFavorites } from "reduxToolkit/favoriteSlice";
 import { saveTotalNotification } from "reduxToolkit/notificationSlice";
-import { setValueSearch } from "reduxToolkit/searchProductSlice";
+import { setValueSearchRedux } from "reduxToolkit/searchProductSlice";
 
 const Header = () => {
   const cartProduct = useSelector((state) => state.cartSlice.carts);
@@ -110,7 +110,7 @@ const Header = () => {
   };
 
   const handleSearch = (e) => {
-    dispatch(setValueSearch(e.target.value.toLowerCase()));
+    dispatch(setValueSearchRedux(e.target.value.toLowerCase()));
     navigate(`/search?type=${e.target.value}`);
   };
 

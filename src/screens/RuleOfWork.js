@@ -1,6 +1,8 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const RuleOfWork = () => {
+  const { t } = useTranslation();
   return (
     <div
       className="w-c-1 flex my-5 items-center justify-between overflow-x-auto pb-4 mx-auto"
@@ -47,10 +49,10 @@ const RuleOfWork = () => {
           }}
         >
           <h4 className="font-semibold" style={{ fontSize: "13px" }}>
-            Various models.
+            {t("rule.var")}
           </h4>
           <p className="opacity-50" style={{ fontSize: "12px" }}>
-            Refund 10 times if found fake.
+            {t("rule.ref")}
           </p>
         </div>
       </div>
@@ -95,10 +97,10 @@ const RuleOfWork = () => {
           }}
         >
           <h4 className="font-semibold" style={{ fontSize: "13px" }}>
-            Free Transports.
+            {t("rule.fre")}
           </h4>
           <p className="opacity-50" style={{ fontSize: "12px" }}>
-            Fast Shipping, careful packing.
+            {t("rule.fasts")}
           </p>
         </div>
       </div>
@@ -143,10 +145,10 @@ const RuleOfWork = () => {
           }}
         >
           <h4 className="font-semibold" style={{ fontSize: "13px" }}>
-            Change item within 7 days.
+            {t("rule.cha")}
           </h4>
           <p className="opacity-50" style={{ fontSize: "12px" }}>
-            One to one exchange within 7 days for defective products.
+            {t("rule.one")}
           </p>
         </div>
       </div>
@@ -191,10 +193,10 @@ const RuleOfWork = () => {
           }}
         >
           <h4 className="font-semibold" style={{ fontSize: "13px" }}>
-            Long term warranty.
+            {t("rule.lon")}
           </h4>
           <p className="opacity-50" style={{ fontSize: "12px" }}>
-            Fast and reliable procedure.
+            {t("rule.fasta")}
           </p>
         </div>
       </div>
@@ -238,10 +240,10 @@ const RuleOfWork = () => {
           }}
         >
           <h4 className="font-semibold" style={{ fontSize: "13px" }}>
-            Installment if buy offline.
+            {t("rule.ins")}
           </h4>
           <p className="opacity-50" style={{ fontSize: "12px" }}>
-            Installment up to 50% with 0% rate.
+            {t("rule.inst")}
           </p>
         </div>
       </div>
