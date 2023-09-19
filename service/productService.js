@@ -2,7 +2,7 @@ const Product = require("../Model/ProductModel");
 
 const getProductNormal = async () => {
   try {
-    console.log(2);
+    // console.log(2);
     const pageSize = 10;
     const page = 1;
     const count = await Product.countDocuments();
@@ -241,39 +241,39 @@ const getProductService = async (page, type, sort) => {
     try {
       let data;
       if (+page !== 0 && type && sort) {
-        console.log(3);
+        // console.log(3);
 
         data = await getProductByFull(page, type, sort);
       } else if (+page === 0 && !type && !sort) {
-        console.log(4);
+        // console.log(4);
         data = await getProductNormal();
-        console.log(data);
+        // console.log(data);
       } else if (+page !== 0 && !type && !sort) {
-        console.log(5);
+        // console.log(5);
 
         data = await getProductByPage(page);
       } else if (type && +page === 0 && !sort) {
-        console.log(6);
+        // console.log(6);
 
         data = await getProductByType(type);
       } else if (sort && +page === 0 && !type) {
-        console.log(7);
+        // console.log(7);
 
         data = await getProductBySort(sort);
       } else if (+page !== 0 && type && !sort) {
-        console.log(8);
+        // console.log(8);
 
         data = await getProductByPageAndType(page, type);
       } else if (+page !== 0 && sort && !type) {
-        console.log(9);
+        // console.log(9);
 
         data = await getProductByPageAndSort(page, sort);
       } else if (sort && type && +page === 0) {
-        console.log(10);
+        // console.log(10);
 
         data = await getProductByTypeAndSort(type, sort);
       }
-      console.log(data);
+      // console.log(data);
       resolve({
         code: 0,
         result: data,
@@ -304,7 +304,7 @@ const getProductBySearchService = (data) => {
       if (position.length === 0 && transport.length === 0) {
         result = await Product.find({ $or: type });
       } else if (position.length === 0 && transport.length > 0) {
-        console.log("trans");
+        // console.log("trans");
         result = await Product.find({
           $and: [{ $or: type }, { $or: transport }],
         });
