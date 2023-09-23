@@ -6,6 +6,8 @@ This is a personal project that I spent over three months finishing it. This pro
 
 Insert gif or link to demo
 
+Use Account: (Email: hoan73550@gmail.com  --- Pass: Bodoicuho@3) to visit my website
+
 ## Features
 
 - Login, register, secured by token.
