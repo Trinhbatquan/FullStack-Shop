@@ -9,7 +9,7 @@
     "english": "Tiếng anh",
     "vietnamese": "Tiếng Việt",
     "signUp": "Đăng ký",
-    "logIn": "Đăng ký",
+    "logIn": "Đăng nhập",
     "account": "Tài khoản",
     "logOut": "Đăng xuất"
 },
@@ -19,11 +19,11 @@
     "ref": "Trả lại gấp 10 lần nếu hàng giả.",
     "fre": "Vận chuyển miễn phí.",
     "fasts": "Vận chuyển nhanh, gói hàng cẩn thận.",
-    "cha": "Đổi trả trong vòng 7 ngày.",
-    "one": "Một đổi một trong 7 ngày với những sản phầm lỗi.",
+    "cha": "Đổi trong 7 ngày.",
+    "one": "Một đổi một trong 7 ngày với sản phầm lỗi.",
     "lon": "Bảo hành dài hạn.",
     "fasta": "Quy trình nhanh và tin cậy.",
-    "ins": "Hỗ trợ trả góp nếu mua online.",
+    "ins": "Hỗ trợ trả góp.",
     "inst": "Trả góp lên đến 50% với lãi suất 0%."
 },
 

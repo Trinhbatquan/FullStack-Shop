@@ -10,13 +10,13 @@ const NavBar = ({ navigation }) => {
     navigate("/");
   };
   return (
-    <div className="flex items-center justify-start gap-2">
+    <div className="flex items-center justify-start gap-2 sm:gap-1">
       <AiFillHome
         onClick={returnHome}
-        className="text-xl text-blue-400 hover:text-blue-600 cursor-pointer transition-all duration-300"
+        className="text-xl sm:text-sm text-blue-400 hover:text-blue-600 cursor-pointer transition-all duration-300"
       />
-      <MdOutlineNavigateNext className="text-lg text-blue-300" />
-      <span className="text-lg text-blue-400">{`${
+      <MdOutlineNavigateNext className="text-lg sm:text-md text-blue-300" />
+      <span className="text-lg sm:text-sm text-blue-400">{`${
         navigation.slice(0, 1).toUpperCase() +
         navigation.slice(1, navigation.length)
       }`}</span>

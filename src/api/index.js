@@ -135,7 +135,7 @@ export const profileUser = async () => {
         Authorization: `Bearer ${token}`,
       },
     });
-    if (user && user.data.name) {
+    if (user && user.data) {
       return user.data;
     } else {
       return null;
@@ -147,7 +147,6 @@ export const profileUser = async () => {
 
 export const updateProfileUser = async (name, email, password) => {
   const token = JSON.parse(localStorage.getItem("userShop")).token;
-  console.log(token);
   try {
     const user = await axios.put(
       `${baseUrl}api/users/updateProfile`,
@@ -162,7 +161,7 @@ export const updateProfileUser = async (name, email, password) => {
         },
       }
     );
-    if (user && user.data.name) {
+    if (user && user.data) {
       return user.data;
     } else {
       return null;
@@ -250,7 +249,7 @@ export const ordersByUser = async () => {
         Authorization: `Bearer ${token}`,
       },
     });
-    if (ordersByUser && !ordersByUser.data.mess) {
+    if (ordersByUser && ordersByUser.data) {
       return ordersByUser.data;
     } else {
       return null;

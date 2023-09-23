@@ -43,32 +43,39 @@ const cartSlice = createSlice({
       localStorage.setItem("cart", JSON.stringify(state.carts));
     },
     deleteCart: (state, action) => {
-      state.carts.splice(action.payload, 1);
-      localStorage.setItem("cart", JSON.stringify(state.carts));
-    },
-    deleteManyCart: (state, action) => {
-      let carts = [...current(state).carts];
-      let cartDelete = action.payload;
-      console.log(carts);
-      console.log(cartDelete);
-      for (let i = 0; i < cartDelete.length; i++) {
-        // for (let j = 0; j < carts.length; i++) {
-        //   if (carts[j].product === cartDelete[i]) {
-        //     carts.splice(j, 1);
-        //     break;
-        //   }
-        // }
-        carts = carts.filter((item) => {
-          return item.product !== cartDelete[i];
-        });
-      }
-      // console.log(carts);
+      const carts = [...current(state).carts];
+      // console.log(carts)
+      const cartsDelete = action.payload;
+      cartsDelete.forEach((item) => {
+        for (let i = 0; i < carts.length; i++) {
+          if (item?.product === carts[i]?.product) {
+            carts.splice(i, 1);
+            break;
+          }
+        }
+      });
       localStorage.setItem("cart", JSON.stringify(carts));
       return {
         ...current(state),
         carts,
       };
     },
+    // deleteManyCart: (state, action) => {
+    //   let carts = [...current(state).carts];
+    //   let cartDelete = action.payload;
+    //   console.log(carts);
+    //   console.log(cartDelete);
+    //   for (let i = 0; i < cartDelete.length; i++) {
+    //     carts = carts.filter((item) => {
+    //       return item.product !== cartDelete[i];
+    //     });
+    //   }
+    //   localStorage.setItem("cart", JSON.stringify(carts));
+    //   return {
+    //     ...current(state),
+    //     carts,
+    //   };
+    // },
     addDeliveryAddress: (state, action) => {
       state.deliveryAddress = action.payload;
       localStorage.setItem(
@@ -77,8 +84,11 @@ const cartSlice = createSlice({
       );
     },
     deleteAllCarts: (state, action) => {
-      state.carts = action.payload;
-      localStorage.setItem("cart", JSON.stringify(state.carts));
+      localStorage.setItem("cart", JSON.stringify([]));
+      return {
+        ...current(state),
+        carts: [],
+      };
     },
   },
 });
@@ -90,7 +100,6 @@ export const {
   deleteCart,
   addDeliveryAddress,
   deleteAllCarts,
-  deleteManyCart,
   updateAllCart,
 } = actions;
 export default reducer;

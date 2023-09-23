@@ -12,6 +12,7 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { FaBars } from "react-icons/fa";
 import { AiOutlineCheck } from "react-icons/ai";
+import { BsArrowDown, BsArrowUp } from "react-icons/bs";
 import {
   getProductsByAll,
   getProductsBySearch,
@@ -22,11 +23,13 @@ import LoadingSkeleton from "./LoadingSkeleton";
 import lozad from "lozad";
 import { useTranslation } from "react-i18next";
 
+import "./ShopProduct.css";
+
 const ShopProduct = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPrice, setShowPrice] = useState(false);
 
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -116,9 +119,9 @@ const ShopProduct = () => {
   };
 
   return (
-    <div className="mx-auto" style={{ minWidth: "90%", width: "90%" }}>
+    <div className="mx-auto w-[90%] min-w-[90%] sm:w-full">
       <div className="row row-small-Gutters">
-        <div className="col l-2 m-grid-2 c-0">
+        <div className="col l-2 m-grid-0  c-0">
           <div
             className="category bg-white"
             style={{
@@ -153,7 +156,7 @@ const ShopProduct = () => {
                 style={{
                   width: "100%",
                   fontWeight: "400",
-                  padding: "6px 20px 6px 28px",
+                  padding: "6px 20px 6px 20px",
                   position: "relative",
                 }}
               >
@@ -170,7 +173,7 @@ const ShopProduct = () => {
                       borderColor:
                         "transparent transparent transparent rgb(247, 70, 46)",
                       position: "absolute",
-                      left: "16px",
+                      left: "12px",
                       top: "32%",
                     }}
                   ></div>
@@ -186,7 +189,7 @@ const ShopProduct = () => {
                 style={{
                   width: "100%",
                   fontWeight: "400",
-                  padding: "6px 20px 6px 28px",
+                  padding: "6px 20px 6px 20px",
                   position: "relative",
                   right: 0,
                 }}
@@ -205,7 +208,7 @@ const ShopProduct = () => {
                       borderColor:
                         "transparent transparent transparent rgb(247, 70, 46)",
                       position: "absolute",
-                      left: "16px",
+                      left: "12px",
                       top: "32%",
                       // transform: "translateY(50%)",
                     }}
@@ -222,7 +225,7 @@ const ShopProduct = () => {
                 style={{
                   width: "100%",
                   fontWeight: "400",
-                  padding: "6px 20px 6px 28px",
+                  padding: "6px 20px 6px 20px",
                   position: "relative",
                   right: 0,
                 }}
@@ -241,7 +244,7 @@ const ShopProduct = () => {
                       borderColor:
                         "transparent transparent transparent rgb(247, 70, 46)",
                       position: "absolute",
-                      left: "16px",
+                      left: "12px",
                       top: "32%",
                       // transform: "translateY(50%)",
                     }}
@@ -258,7 +261,7 @@ const ShopProduct = () => {
                 style={{
                   width: "100%",
                   fontWeight: "400",
-                  padding: "6px 20px 6px 28px",
+                  padding: "6px 20px 6px 20px",
                   position: "relative",
                   right: 0,
                 }}
@@ -279,7 +282,7 @@ const ShopProduct = () => {
                       borderColor:
                         "transparent transparent transparent rgb(247, 70, 46)",
                       position: "absolute",
-                      left: "16px",
+                      left: "12px",
                       top: "32%",
                       // transform: "translateY(50%)",
                     }}
@@ -296,7 +299,7 @@ const ShopProduct = () => {
                 style={{
                   width: "100%",
                   fontWeight: "400",
-                  padding: "6px 20px 6px 28px",
+                  padding: "6px 20px 6px 20px",
                   position: "relative",
                   right: 0,
                 }}
@@ -315,7 +318,7 @@ const ShopProduct = () => {
                       borderColor:
                         "transparent transparent transparent rgb(247, 70, 46)",
                       position: "absolute",
-                      left: "16px",
+                      left: "12px",
                       top: "32%",
                       // transform: "translateY(50%)",
                     }}
@@ -332,7 +335,7 @@ const ShopProduct = () => {
                 style={{
                   width: "100%",
                   fontWeight: "400",
-                  padding: "6px 20px 6px 28px",
+                  padding: "6px 20px 6px 20px",
                   position: "relative",
                   right: 0,
                 }}
@@ -353,7 +356,7 @@ const ShopProduct = () => {
                       borderColor:
                         "transparent transparent transparent rgb(247, 70, 46)",
                       position: "absolute",
-                      left: "16px",
+                      left: "12px",
                       top: "32%",
                       // transform: "translateY(50%)",
                     }}
@@ -370,7 +373,7 @@ const ShopProduct = () => {
                 style={{
                   width: "100%",
                   fontWeight: "400",
-                  padding: "6px 20px 6px 28px",
+                  padding: "6px 20px 6px 20px",
                   position: "relative",
                   right: 0,
                 }}
@@ -389,7 +392,7 @@ const ShopProduct = () => {
                       borderColor:
                         "transparent transparent transparent rgb(247, 70, 46)",
                       position: "absolute",
-                      left: "16px",
+                      left: "12px",
                       top: "32%",
                       // transform: "translateY(50%)",
                     }}
@@ -400,20 +403,247 @@ const ShopProduct = () => {
           </div>
         </div>
         <div
-          className="products col l-10 m-grid-10 c-12"
+          className="products col l-10  m-grid-12 c-12 sm:w-full"
           // style={{ minWidth: "90%", width: "90%" }}
         >
+          <ul
+            class="xl:hidden lg:hidden list-none sm:flex sm:px-1 md:flex py-2 items-center overflow-x-hidden w-full"
+            style={{ overflowX: "scroll" }}
+          >
+            <li class="category-mobile-tablet__item mr-[10px]">
+              <NavLink
+                className="sm:text-sm text-md text-white font-semibold block max-h-[36px] text-center"
+                to={
+                  queryParams[0] === "?"
+                    ? `?page=${page}&sort=${sort}&type=`
+                    : "/?type="
+                }
+                style={{
+                  fontWeight: "400",
+                  padding: "6px 20px 6px 20px",
+                  position: "relative",
+                  backgroundColor: "#87AFD8",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: "4px",
+                }}
+              >
+                <span className="block w-full">{t("category.common")}</span>
+                {!type && (
+                  <div
+                    style={{
+                      border: "7px solid",
+                      borderColor: "transparent transparent transparent #fff",
+                      position: "absolute",
+                      left: "10px",
+                      top: "32%",
+                    }}
+                  ></div>
+                )}
+              </NavLink>
+            </li>
+
+            <li class="category-mobile-tablet__item mr-[10px]">
+              <NavLink
+                className="sm:text-sm text-md text-white font-semibold min-w-[120px] block text-center"
+                to={
+                  queryParams[0] === "?"
+                    ? `?page=${page}&sort=${sort}&type=shirt`
+                    : "/?type=shirt"
+                }
+                style={{
+                  fontWeight: "400",
+                  padding: "6px 20px 6px 20px",
+                  position: "relative",
+                  backgroundColor: "#76C9BD",
+                  borderRadius: "4px",
+                }}
+              >
+                <span className="block w-full">{t("category.shirt")}</span>
+                {type && type === "shirt" && (
+                  <div
+                    style={{
+                      border: "7px solid",
+                      borderColor: "transparent transparent transparent #fff",
+                      position: "absolute",
+                      left: "16px",
+                      top: "32%",
+                    }}
+                  ></div>
+                )}
+              </NavLink>
+            </li>
+
+            <li class="category-mobile-tablet__item mr-[10px]">
+              <NavLink
+                className="sm:text-sm text-md text-white font-semibold block text-center"
+                to={
+                  queryParams[0] === "?"
+                    ? `?page=${page}&sort=${sort}&type=pant`
+                    : "/?type=pant"
+                }
+                style={{
+                  fontWeight: "400",
+                  padding: "6px 20px 6px 20px",
+                  position: "relative",
+                  backgroundColor: "#88CF81",
+                  borderRadius: "4px",
+                }}
+              >
+                <span className="w-full block">{t("category.pant")}</span>
+                {type && type === "pant" && (
+                  <div
+                    style={{
+                      border: "7px solid",
+                      borderColor: "transparent transparent transparent #fff",
+                      position: "absolute",
+                      left: "10px",
+                      top: "32%",
+                    }}
+                  ></div>
+                )}
+              </NavLink>
+            </li>
+
+            <li class="category-mobile-tablet__item mr-[10px]">
+              <NavLink
+                className="sm:text-sm text-md text-white font-semibold block text-center min-w-[120px]"
+                to={
+                  queryParams[0] === "?"
+                    ? `?page=${page}&sort=${sort}&type=jewelry`
+                    : "/?type=jewelry"
+                }
+                style={{
+                  maxHeight: "36px",
+                  fontWeight: "400",
+                  padding: "6px 20px 6px 20px",
+                  position: "relative",
+                  backgroundColor: "#87AFD8",
+                  borderRadius: "4px",
+                }}
+              >
+                <span className="block w-full">{t("category.jewelry")}</span>
+                {type && type === "jewelry" && (
+                  <div
+                    style={{
+                      border: "7px solid",
+                      borderColor: "transparent transparent transparent #fff",
+                      position: "absolute",
+                      left: "16px",
+                      top: "32%",
+                    }}
+                  ></div>
+                )}
+              </NavLink>
+            </li>
+
+            <li class="category-mobile-tablet__item mr-[10px]">
+              <NavLink
+                className="sm:text-sm text-md text-white font-semibold block min-w-[120px] max-h-[36px] text-center"
+                to={
+                  queryParams[0] === "?"
+                    ? `?page=${page}&sort=${sort}&type=clock`
+                    : "/?type=clock"
+                }
+                style={{
+                  fontWeight: "400",
+                  padding: "6px 20px 6px 20px",
+                  position: "relative",
+                  backgroundColor: "#76C9BD",
+                  borderRadius: "4px",
+                }}
+              >
+                <span className="w-full block">{t("category.watch")}</span>
+                {type && type === "clock" && (
+                  <div
+                    style={{
+                      border: "7px solid",
+                      borderColor: "transparent transparent transparent #fff",
+                      position: "absolute",
+                      left: "16px",
+                      top: "32%",
+                    }}
+                  ></div>
+                )}
+              </NavLink>
+            </li>
+
+            <li class="category-mobile-tablet__item mr-[10px]">
+              <NavLink
+                className="sm:text-sm text-md text-white font-semibold block min-w-[120px] mx-h-[36px] text-center"
+                to={
+                  queryParams[0] === "?"
+                    ? `?page=${page}&sort=${sort}&type=glasses`
+                    : "/?type=glasses"
+                }
+                style={{
+                  fontWeight: "400",
+                  padding: "6px 20px 6px 20px",
+                  position: "relative",
+                  backgroundColor: "#88CF81",
+                  borderRadius: "4px",
+                }}
+              >
+                <span className="block w-full">{t("category.glass")}</span>
+                {type && type === "glasses" && (
+                  <div
+                    style={{
+                      border: "7px solid",
+                      borderColor: "transparent transparent transparent #fff",
+                      position: "absolute",
+                      left: "16px",
+                      top: "32%",
+                    }}
+                  ></div>
+                )}
+              </NavLink>
+            </li>
+
+            <li class="category-mobile-tablet__item mr-[10px]">
+              <NavLink
+                className="sm:text-sm text-md text-white font-semibold text-center block max-h-[36px]"
+                to={
+                  queryParams[0] === "?"
+                    ? `?page=${page}&sort=${sort}&type=shoe`
+                    : "/?type=shoe"
+                }
+                style={{
+                  fontWeight: "400",
+                  padding: "6px 20px 6px 20px",
+                  position: "relative",
+                  backgroundColor: "#87AFD8",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: "4px",
+                }}
+              >
+                <span className="w-full block">{t("category.shoe")}</span>
+                {type && type === "shoe" && (
+                  <div
+                    style={{
+                      border: "7px solid",
+                      borderColor: "transparent transparent transparent #fff",
+                      position: "absolute",
+                      left: "10px",
+                      top: "32%",
+                    }}
+                  ></div>
+                )}
+              </NavLink>
+            </li>
+          </ul>
           <div
-            class="flex items-center justify-between mb-3 "
+            class="flex h-[60px] sm:h-[50px] items-center justify-between sm:justify-start sm:gap-2 sm:px-1 mb-3 w-full"
             style={{
-              height: "60px",
               backgroundColor: "rgba(0,0,0,0.08)",
               borderRadius: "2px",
             }}
           >
-            <div className="flex items-center gap-6 justify-start w-2/3 h-full">
+            <div className="flex items-center gap-6 sm:gap-[10px] justify-start w-2/3 h-full md:ml-3 sm:w-full">
               <span
-                class="content-filterControl__sort text-md"
+                class="content-filterControl__sort text-md md:hidden sm:hidden"
                 style={{ margin: "0 20px", color: "#333" }}
               >
                 {t("sort.by")}
@@ -424,7 +654,7 @@ const ShopProduct = () => {
                     ? `?page=${page}&type=${type}&sort=`
                     : "/?sort="
                 }
-                class="text-md block"
+                class="text-md sm:text-sm block"
                 // style={({ isActive }) => ({
                 //   color: isActive ? "#fff" : "#333",
                 //   background: isActive ? "rgb(247, 70, 46)" : "#fff",
@@ -435,8 +665,8 @@ const ShopProduct = () => {
                     : { color: "#333", backgroundColor: "#fff" }
                 }
               >
-                <span className="w-28 block px-1.5 py-1.5 text-center">
-                  {t("sort.normal")}
+                <span className="text-md sm:text-sm w-28 sm:w-20 block px-1.5 py-1.5 text-center">
+                  {i18n.language === "en" ? "Selling" : "Bán chạy"}
                 </span>
               </NavLink>
               <NavLink
@@ -445,7 +675,7 @@ const ShopProduct = () => {
                     ? `?page=${page}&type=${type}&sort=newest`
                     : "/?sort=newest"
                 }
-                class="text-md block"
+                class="text-md sm:text-sm block"
                 // style={({ isActive }) => ({
                 //   color: isActive ? "#fff" : "#333",
                 //   background: isActive ? "rgb(247, 70, 46)" : "#fff",
@@ -456,7 +686,7 @@ const ShopProduct = () => {
                     : { color: "#333", backgroundColor: "#fff" }
                 }
               >
-                <span className="w-28 block px-1.5 py-1.5 text-center">
+                <span className="text-md sm:text-sm w-28 sm:w-20 block px-1.5 py-1.5 text-center">
                   {t("sort.newest")}
                 </span>
               </NavLink>
@@ -466,7 +696,7 @@ const ShopProduct = () => {
                     ? `?page=${page}&type=${type}&sort=rating`
                     : "/?sort=rating"
                 }
-                class="text-md block"
+                class="text-md sm:text-sm block"
                 // style={({ isActive }) => ({
                 //   color: isActive ? "#fff" : "#333",
                 //   background: isActive ? "rgb(247, 70, 46)" : "#fff",
@@ -477,12 +707,48 @@ const ShopProduct = () => {
                     : { color: "#333", backgroundColor: "#fff" }
                 }
               >
-                <span className="w-28 block px-1.5 py-1.5 text-center">
+                <span className="text-md sm:text-sm w-28 sm:w-20 block px-1.5 py-1.5 text-center">
                   {t("sort.rating")}
                 </span>
               </NavLink>
+              <div
+                className="xl:hidden lg:hidden md:hidden"
+                style={
+                  sort && (sort === "desc" || sort === "asc")
+                    ? { color: "#fff", backgroundColor: "rgb(247, 70, 46)" }
+                    : { color: "#333", backgroundColor: "#fff" }
+                }
+              >
+                <NavLink
+                  to={
+                    queryParams[0] === "?"
+                      ? sort === "desc"
+                        ? `?page=${page}&type=${type}&sort=asc`
+                        : `?page=${page}&type=${type}&sort=desc`
+                      : "/?sort=asc"
+                  }
+                  class="text-md sm:text-sm "
+                >
+                  <span className="text-md sm:text-sm w-28 sm:w-20 block px-1.5 py-1.5 text-center sm:flex sm:items-center sm:justify-center sm:gap-1">
+                    {t("sort.price")}
+                    {(sort === "desc" || sort === "asc") && (
+                      <>
+                        {sort === "desc" ? (
+                          <span>
+                            <BsArrowDown className="text-lg" />
+                          </span>
+                        ) : (
+                          <span>
+                            <BsArrowUp className="text-lg" />
+                          </span>
+                        )}
+                      </>
+                    )}
+                  </span>
+                </NavLink>
+              </div>
             </div>
-            <div class="w-c-1/3">
+            <div class="w-c-1/3 sm:hidden">
               <div
                 className=" cursor-pointer flex items-center justify-between w-52 px-1.5 py-1.5 rounded-sm relative"
                 // style={{ backgroundColor: "#fff", color: "#000" }}
@@ -493,7 +759,7 @@ const ShopProduct = () => {
                 }
                 onClick={() => handleShowPrice()}
               >
-                <span class="text-md">
+                <span class="text-md sm:text-sm">
                   {!sort
                     ? t("sort.price")
                     : sort === "desc"
@@ -503,7 +769,7 @@ const ShopProduct = () => {
                     : t("sort.price")}
                 </span>
                 {showPrice ? (
-                  <IoIosArrowUp className="text-md" />
+                  <IoIosArrowUp className="text-md sm:text-sm" />
                 ) : (
                   <IoIosArrowDown className="text-md" />
                 )}
@@ -521,7 +787,7 @@ const ShopProduct = () => {
                         to={
                           queryParams[0] === "?"
                             ? `?page=${page}&type=${type}&sort=desc`
-                            : "/?sort=newest"
+                            : "/?sort=desc"
                         }
                         className="w-full px-1.5 py-2.5"
                         // style={({ isActive }) => ({
@@ -544,7 +810,7 @@ const ShopProduct = () => {
                         to={
                           queryParams[0] === "?"
                             ? `?page=${page}&type=${type}&sort=asc`
-                            : "/?sort=newest"
+                            : "/?sort=asc"
                         }
                         className="w-full px-1.5 py-2.5"
                         // style={({ isActive }) => ({

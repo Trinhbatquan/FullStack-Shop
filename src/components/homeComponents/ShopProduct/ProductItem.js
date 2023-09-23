@@ -99,7 +99,7 @@ const ProductItem = ({ product, favorite, type }) => {
           }}
         ></img>
         <p
-          className="mt-2 text-md"
+          className="mt-2 text-md sm:text-sm"
           style={{
             color: "#333",
             fontWeight: "400",
@@ -116,26 +116,29 @@ const ProductItem = ({ product, favorite, type }) => {
         </p>
 
         <div className="flex items-center justify-between mx-1 my-1.5">
-          <span className="text-red-700 flex items-center justify-center text-lg">
+          <span className="text-red-700 flex items-center justify-center text-lg sm:text-md">
             <span className="relative -top-1">$</span>
             {product?.price}
           </span>
         </div>
         <div className="flex items-center justify-start ml-2 gap-1 mb-1.5">
           <Rating value={product?.rating} />
-          <span className="text-sm opacity-70" style={{ color: "#333" }}>
+          <span
+            className="text-sm sm:text-xs opacity-70"
+            style={{ color: "#333" }}
+          >
             {`Sold ${product?.sold}`}
           </span>
         </div>
         <div className="flex items-center justify-between ml-2 gap-1">
           <span
-            className="text-sm opacity-70 text-black"
+            className="text-sm sm:text-xs opacity-70 text-black"
             style={{ color: "#333" }}
           >
             {product?.position}
           </span>
           <span
-            className="text-sm opacity-70 text-black mr-2"
+            className="text-sm sm:text-xs opacity-70 text-black mr-2"
             style={{ color: "#333" }}
           >
             {`Review ${product?.numReviews}`}
@@ -148,7 +151,7 @@ const ProductItem = ({ product, favorite, type }) => {
                 onClick={() => handleBuyNow(product)}
                 className="w-full flex items-center justify-center transition-all duration-300 border text-blue-600 border-blue-600 rounded-md hover:text-white hover:bg-blue-600"
               >
-                <span className="py-2 px-1 mx-auto text-md ">
+                <span className="py-2 px-1 mx-auto text-md sm:text-sm">
                   {i18n.language === "en" ? "Buy now" : "Mua ngay"}
                 </span>
               </div>
@@ -159,8 +162,8 @@ const ProductItem = ({ product, favorite, type }) => {
                 onClick={handleRemoveFavoriteProduct}
               >
                 <div className="py-2 px-1 mx-auto flex items-center justify-center ">
-                  <RiDeleteBin6Line className="text-xl" />
-                  <span className="text-md ">
+                  <RiDeleteBin6Line className="text-xl sm:text-lg" />
+                  <span className="text-md sm:text-sm">
                     {i18n.language === "en" ? "Remove now" : "Xoá ngay"}
                   </span>
                 </div>

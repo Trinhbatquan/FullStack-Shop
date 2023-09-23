@@ -35,19 +35,19 @@ const Favorite = () => {
       <ToastContainer />
       <Header />
       <div style={{ height: "65px", width: "100%" }}></div>
-      <div className="w-full px-[10%] mx-auto pb-8 pt-3 bg-white flex flex-col items-start justify-center">
+      <div className="w-full px-[10%] md:px-[4%] sm:px-[1%] mx-auto pb-8 pt-3 bg-white flex flex-col items-start justify-center">
         {navigation && (
-          <div className="w-full mx-auto mb-3">
+          <div className="w-full mx-auto mb-3 sm:hidden">
             <NavBar navigation={navigation} />
           </div>
         )}
-        <p className="text-lg font-semibold py-2 w-full">{`${
+        <p className="text-lg sm:text-md font-semibold py-2 w-full">{`${
           i18n.language === "en" ? "Saved Products" : "Tổng số sản phẩm"
         } (${favoriteRedux?.length})`}</p>
         <div className="row row-small-Gutters" style={{ width: "100%" }}>
           <div className="products col l-12 m-grid-12 c-12">
             <div
-              class="flex items-center justify-between mb-3 "
+              class="sm:hidden flex items-center justify-between mb-3 "
               style={{
                 height: "60px",
                 backgroundColor: "rgba(0,0,0,0.08)",
@@ -56,13 +56,13 @@ const Favorite = () => {
             >
               <div className="flex items-center gap-6 justify-start w-full h-full">
                 <span
-                  class="content-filterControl__sort text-md"
+                  class="content-filterControl__sort text-md md:hidden sm:hidden lg:hidden"
                   style={{ margin: "0 20px", color: "#333" }}
                 >
                   {i18n.language === "en" ? "Sort by" : "Sắp xếp bởi"}
                 </span>
                 <div
-                  class="text-md flex items-center justify-start gap-12 cursor-pointer"
+                  class="text-md flex items-center justify-start gap-12 md:gap-4 cursor-pointer md:ml-1"
                   style={
                     filter === "normal"
                       ? { color: "#fff", backgroundColor: "rgb(247, 70, 46)" }

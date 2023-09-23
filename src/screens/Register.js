@@ -9,6 +9,7 @@ import Loading from "./../components/loadingToast/Loading";
 
 import { AiFillEyeInvisible } from "react-icons/ai";
 import { AiFillEye } from "react-icons/ai";
+import { useTranslation } from "react-i18next";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -17,6 +18,7 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [appearPw, setAppearPw] = useState(false);
+  const { i18n } = useTranslation();
 
   const [messageRegister, setMessageRegister] = useState("");
   const [color, setColor] = useState(false);
@@ -39,21 +41,43 @@ const Register = () => {
     let regexPassword =
       /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,15}$/;
     if (!name || !email || !password || !confirmPassword) {
-      setMessageRegister("Please enter all field.");
+      setMessageRegister(
+        `${
+          i18n.language === "en"
+            ? "Please enter all fields."
+            : "Vui lòng nhập tất cả các trường."
+        }`
+      );
       return false;
     }
     if (!regexEmail.test(email)) {
-      setMessageRegister("Please enter correct form of email.");
+      setMessageRegister(
+        `${
+          i18n.language === "en"
+            ? "Please enter correct email format."
+            : "Vui lòng nhập đúng định dạng email."
+        }`
+      );
       return false;
     }
     if (!regexPassword.test(password) || !regexPassword.test(confirmPassword)) {
       setMessageRegister(
-        "Password must have the least 8 characters, 1 number and 1 a special character."
+        `${
+          i18n.language === "en"
+            ? "Password must have the least 8 characters, 1 number and 1 a special character."
+            : "Mật khẩu có ít nhất 8 kí tự, một số và 1 kí tự đặc biệt."
+        }`
       );
       return false;
     }
     if (password.trim() !== confirmPassword.trim()) {
-      setMessageRegister("Password not match. Please try again.");
+      setMessageRegister(
+        `${
+          i18n.language === "en"
+            ? "Password not match. Plese try again."
+            : "Mật khẩu không khớp. Vui lòng thử lại."
+        }`
+      );
       return false;
     }
     return true;
@@ -220,7 +244,7 @@ const Register = () => {
               className="py-4 px-4 mb-6 mt-1 cursor-pointer text-headingColor text-lg 
                     font-semibold opacity-80 hover:opacity-100
                     mx-auto"
-              value="Register"
+              value={`${i18n.language === "en" ? "Register" : "Đăng ký"}`}
               style={{
                 maxWidth: "90%",
                 width: "90%",
@@ -230,9 +254,13 @@ const Register = () => {
           </form>
 
           <p className="text-sm text-headingColor opacity-80 cursor-pointer mx-auto text-center">
-            I have Account{" "}
+            <span>
+              {i18n.language === "en" ? "I have Account" : "Bạn có tài khoản"}
+            </span>
             <NavLink to="/login?redirect=/">
-              <span className="text-blue-700 text-lg">Login</span>
+              <span className="text-blue-700 text-lg">
+                {i18n.language === "en" ? "Login" : "Đăng nhập"}
+              </span>
             </NavLink>
           </p>
         </div>

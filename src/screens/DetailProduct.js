@@ -15,6 +15,7 @@ import { getProductsById } from "reduxToolkit/productSlice";
 import { useNavigate } from "react-router";
 import { NavLink } from "react-router-dom";
 import moment from "moment";
+import "moment/locale/vi";
 import { ToastContainer, toast } from "react-toastify";
 
 import { BsMessenger, BsFacebook, BsCartCheck } from "react-icons/bs";
@@ -26,9 +27,10 @@ import { setNavBar } from "reduxToolkit/navBarSlice";
 import NavBar from "utils/NavBar";
 import { getAllFavorites } from "reduxToolkit/favoriteSlice";
 import { updateAllCart } from "reduxToolkit/cartSlice";
+import { useTranslation } from "react-i18next";
 
 const DetailProduct = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [qty, setQty] = useState(1);
   const [rating, setRating] = useState(0);
   const [countFavorite, setCountFavorite] = useState(0);
@@ -44,10 +46,11 @@ const DetailProduct = () => {
     (state) => state.favoriteReducer.favoriteProducts
   );
   const id = useParams();
+  const { i18n } = useTranslation();
   // console.log(id);
   // console.log(navigation);
   const location = useLocation();
-  const keyNavigate = location?.pathname?.split("/")[1];
+  const keyNavigate = i18n.language === "en" ? "Products" : "Sản phẩm";
   // console.log("key" + JSON.stringify(keyNavigate));
   let parametersKey = [],
     parametersValue = [];
@@ -83,11 +86,13 @@ const DetailProduct = () => {
   useEffect(() => {
     getProductById(id.id).then((data) => {
       dispatch(getProductsById(data));
-      setIsLoading(true);
+      setIsLoading(false);
     });
     countOfFavorite();
-    dispatch(setNavBar(keyNavigate));
   }, []);
+  useEffect(() => {
+    dispatch(setNavBar(keyNavigate));
+  }, [i18n.language]);
 
   const handleCartProduct = () => {
     navigate(`/cart/${id.id}?qty=${qty}`);
@@ -124,23 +129,46 @@ const DetailProduct = () => {
           getProductById(id.id).then((data) => {
             dispatch(getProductsById(data));
           });
-          toast.success("Add review successfully!!!", {
-            autoClose: 2000,
-          });
+          toast.success(
+            `${
+              i18n.language === "en"
+                ? "Add review successfully!"
+                : "Thêm đánh giá thành công"
+            }`,
+            {
+              autoClose: 2000,
+            }
+          );
           setComment("");
           setRating(0);
         } else {
-          toast.error("You have already reviewed. Thanks", {
-            autoClose: 2000,
-          });
+          toast.error(
+            `${
+              i18n.language === "en"
+                ? "You just reviewed one time. Thanks!"
+                : "Bạn chỉ được đánh giá một lần. Cảm ơn."
+            }`,
+            {
+              autoClose: 2000,
+            }
+          );
           setComment("");
           setRating(0);
         }
       });
     } else {
-      toast.warning("You need enter all field", {
-        autoClose: 2000,
-      });
+      toast.error(
+        `${
+          i18n.language === "en"
+            ? "Please enter all field!"
+            : "Vui lòng nhập đủ các trường!"
+        }`,
+        {
+          autoClose: 3000,
+          position: "bottom-right",
+          theme: "colored",
+        }
+      );
     }
   };
 
@@ -176,30 +204,30 @@ const DetailProduct = () => {
   };
 
   return (
-    <div className="w-full " style={{ backgroundColor: "#f5f5f5" }}>
+    <div style={{ backgroundColor: "#f5f5f5", width: "100%" }}>
       <Header />
       <div style={{ height: "65px", width: "100%" }}></div>
 
-      {isLoading ? (
+      {!isLoading ? (
         <div className=" w-full flex flex-col py-6">
           <ToastContainer />
           {navigation && (
-            <div className="w-4/5 mx-auto">
+            <div className="sm:hidden w-4/5 md:w-[90%] mx-auto">
               <NavBar navigation={navigation} />
             </div>
           )}
           <div
-            className="flex items-center justify-center gap-1
+            className="flex items-center md:items-start justify-center gap-1
             mx-auto mt-4 mb-6
             sm:flex-col sm:items-center sm:justify-between sm:gap-6
-            w-4/5 sm:w-c-1"
+            w-4/5 md:w-[90%] sm:w-[98%]"
             style={{
               backgroundColor: "#fff",
               borderRadius: "3px",
               boxShadow: "0 1px 1px 0 rgba(0,0,0,.05)",
             }}
           >
-            <div className="w-2/5 md:w-1/3 sm:w-3/4 p-4 flex flex-col item-center justify-center gap-6">
+            <div className="w-2/5 md:w-1/2 sm:w-c-1 p-4 flex flex-col item-center justify-center gap-6 md:justify-start">
               <div
                 // className="cursor-pointer hover:scale-95"
                 style={{
@@ -214,7 +242,9 @@ const DetailProduct = () => {
                   className="text-md flex items-center justify-center gap-2 flex-1"
                   style={{ borderRight: "1px solid rgb(227, 213, 213)" }}
                 >
-                  Share:{" "}
+                  <span className="">
+                    {i18n.language === "en" ? "Share:" : "Chia sẻ:"}
+                  </span>
                   <BsFacebook className="text-2xl text-blue-700 cursor-pointer" />{" "}
                   <BsMessenger className="text-2xl text-blue-700 cursor-pointer" />
                 </div>
@@ -232,19 +262,21 @@ const DetailProduct = () => {
                       onClick={handleFavoriteRemove}
                     />
                   )}
-                  {`Favorite (${countFavorite}.0)`}
+                  {`${
+                    i18n.language === "en" ? "Favorite" : "Yêu thích"
+                  } (${countFavorite}.0)`}
                 </div>
               </div>
             </div>
 
-            <div className="py-6  w-c-55 md:w-1/2 mx-auto sm:w-full sm:flex-col sm:items-center sm:justify-center sm:mx-auto">
-              <p className="font-semibold text-xl text-headingColor mb-4">
+            <div className="py-6 md:py-3  w-c-55 md:w-1/2 mx-auto sm:w-[98%] sm:flex-col sm:items-center sm:justify-center sm:mx-auto sm:py-2">
+              <p className="font-semibold xl:text-xl lg:text-xl text-md text-headingColor mb-4 sm:text-center">
                 {product?.name}
               </p>
-              <div className="flex items-center mb-4 text-md justify-start gap-6">
+              <div className="flex items-center mb-4 text-md justify-start gap-6 md:flex-col md:gap-2 md:justify-start md:items-start sm:flex-col sm:gap-2 sm:justify-start sm:items-center">
                 <div
-                  className="w-1/5 flex items-center justify-start gap-2"
-                  style={{ borderRight: "1px solid rgb(227, 213, 213)" }}
+                  className="w-1/5 flex items-center justify-start gap-2 sm:justify-center"
+                  // style={{ borderRight: "1px solid rgb(227, 213, 213)" }}
                 >
                   <span
                     className="text-md"
@@ -260,7 +292,7 @@ const DetailProduct = () => {
                 </div>
                 <div
                   className="w-1/5"
-                  style={{ borderRight: "1px solid rgb(227, 213, 213)" }}
+                  // style={{ borderRight: "1px solid rgb(227, 213, 213)" }}
                 >
                   <span className="mr-1 text-md text-headingColor" style={{}}>
                     {product?.numReviews}
@@ -269,7 +301,7 @@ const DetailProduct = () => {
                     className="text-md text-headingColor opacity-60"
                     style={{}}
                   >
-                    Ratings
+                    {i18n.language === "en" ? "Ratings" : "Đánh giá"}
                   </span>
                 </div>
                 <div
@@ -283,13 +315,13 @@ const DetailProduct = () => {
                     className="text-md text-headingColor opacity-60"
                     style={{}}
                   >
-                    Sold
+                    {i18n.language === "en" ? "Sold" : "Đã bán"}
                   </span>
                 </div>
               </div>
 
-              <div className="flex flex-col mt-4 mb-6 w-4/5 md:w-full sm:w-full">
-                <div className="flex items-center py-2 px-4 justify-start">
+              <div className="flex flex-col mt-4 mb-6 w-4/5 md:w-full sm:w-full sm:text-center">
+                <div className="flex items-center py-2 px-4 justify-start sm:justify-center">
                   <span className="text-red-600  text-lg relative -top-2 pr-1">
                     $
                   </span>
@@ -312,9 +344,9 @@ const DetailProduct = () => {
                     {`${product?.discount}% Off`}
                   </div>
                 </div>
-                <div className="flex items-center py-2 px-4 justify-start gap-8">
+                <div className="flex items-center py-2 px-4 justify-start gap-8 sm:justify-center">
                   <span className=" text-md" style={{ color: "#757575" }}>
-                    Status
+                    {i18n.language === "en" ? "Status" : "Trạng thái"}
                   </span>
                   <span
                     className=" text-md"
@@ -326,12 +358,18 @@ const DetailProduct = () => {
                       color: "#ee4d2d",
                     }}
                   >
-                    {product?.countInStock ? "In Stock" : "Unavailable"}
+                    {product?.countInStock
+                      ? i18n.language === "en"
+                        ? "In Stock"
+                        : "Còn hàng"
+                      : i18n.language === "en"
+                      ? "Unavailable"
+                      : "Không có sẵn"}
                   </span>
                 </div>
-                <div className="flex items-center py-2 px-4 justify-start gap-8">
+                <div className="flex items-center py-2 px-4 justify-start gap-8 sm:justify-center">
                   <span className=" text-md" style={{ color: "#757575" }}>
-                    Add-on
+                    {i18n.language === "en" ? "Add-on" : "Bổ sung"}
                   </span>
                   <span
                     className=" text-md"
@@ -343,12 +381,14 @@ const DetailProduct = () => {
                       color: "#ee4d2d",
                     }}
                   >
-                    Add-on Deal
+                    {i18n.language === "en"
+                      ? "Add-on Deal"
+                      : "Thoả thuận bổ sung"}
                   </span>
                 </div>
-                <div className="flex items-center py-2 px-4 justify-start gap-8">
+                <div className="flex items-center py-2 px-4 justify-start gap-8 sm:justify-center">
                   <span className=" text-md" style={{ color: "#757575" }}>
-                    Shipping
+                    {i18n.language === "en" ? "Shipping" : "Vận chuyển"}
                   </span>
                   <span className="flex items-center justify-center gap-1 text-md">
                     <FaShippingFast className="text-xl text-red-700" />
@@ -370,63 +410,69 @@ const DetailProduct = () => {
                 </div>
 
                 {product?.countInStock ? (
-                  <div className="flex items-center py-2 px-4 justify-start gap-8">
-                    <span className="text-md" style={{ color: "#757575" }}>
-                      Quantity
-                    </span>
-                    <div className="flex items-center justify-center">
-                      <button
-                        className="text-lg flex items-center justify-center"
-                        style={{
-                          border: "1px solid rgba(0,0,0,.09)",
-                          borderTopLeftRadius: "2px",
-                          borderBottomLeftRadius: "2px",
-                          backgroundColor: "transparent",
-                          color: "rgba(0,0,0,.8)",
-                          width: "40px",
-                          height: "36px",
-                        }}
-                        onClick={() =>
-                          qty > 1 ? setQty(qty - 1) : setQty(qty)
-                        }
-                      >
-                        <GrFormSubtract className="text-lg" />
-                      </button>
-                      <input
-                        value={qty}
-                        className="text-center"
-                        style={{
-                          width: "50px",
-                          height: "36px",
-                          border: "1px solid rgba(0,0,0,.09)",
-                        }}
-                      />
-                      <button
-                        className="text-lg flex items-center justify-center"
-                        style={{
-                          border: "1px solid rgba(0,0,0,.09)",
-                          borderTopRightRadius: "2px",
-                          borderBottomRightRadius: "2px",
-                          backgroundColor: "transparent",
-                          color: "rgba(0,0,0,.8)",
-                          width: "40px",
-                          height: "36px",
-                        }}
-                        onClick={() =>
-                          qty < product?.countInStock
-                            ? setQty(qty + 1)
-                            : setQty(qty)
-                        }
-                      >
-                        <GrAdd className="text-md" />
-                      </button>
+                  <div className="flex items-center py-2 px-4 justify-start gap-8 md:flex-col md:gap-3 md:items-start sm:flex-col sm:gap-3 sm:items-center">
+                    <div className="flex items-center justify-start gap-8">
+                      <span className="text-md" style={{ color: "#757575" }}>
+                        {i18n.language === "en" ? "Quantity" : "Số lượng"}
+                      </span>
+                      <div className="flex items-center justify-center">
+                        <button
+                          className="text-lg flex items-center justify-center"
+                          style={{
+                            border: "1px solid rgba(0,0,0,.09)",
+                            borderTopLeftRadius: "2px",
+                            borderBottomLeftRadius: "2px",
+                            backgroundColor: "transparent",
+                            color: "rgba(0,0,0,.8)",
+                            width: "40px",
+                            height: "36px",
+                          }}
+                          onClick={() =>
+                            qty > 1 ? setQty(qty - 1) : setQty(qty)
+                          }
+                        >
+                          <GrFormSubtract className="text-lg" />
+                        </button>
+                        <input
+                          value={qty}
+                          className="text-center"
+                          style={{
+                            width: "50px",
+                            height: "36px",
+                            border: "1px solid rgba(0,0,0,.09)",
+                          }}
+                        />
+                        <button
+                          className="text-lg flex items-center justify-center"
+                          style={{
+                            border: "1px solid rgba(0,0,0,.09)",
+                            borderTopRightRadius: "2px",
+                            borderBottomRightRadius: "2px",
+                            backgroundColor: "transparent",
+                            color: "rgba(0,0,0,.8)",
+                            width: "40px",
+                            height: "36px",
+                          }}
+                          onClick={() =>
+                            qty < product?.countInStock
+                              ? setQty(qty + 1)
+                              : setQty(qty)
+                          }
+                        >
+                          <GrAdd className="text-md" />
+                        </button>
+                      </div>
                     </div>
                     <span
                       className="text-md"
                       style={{
                         color: "#757575",
                       }}
-                    >{`${product?.countInStock} pieces available`}</span>
+                    >{`${product?.countInStock} ${
+                      i18n.language === "en"
+                        ? "pieces available"
+                        : "sản phẩm có sẵn"
+                    }`}</span>
                   </div>
                 ) : null}
 
@@ -454,11 +500,11 @@ const DetailProduct = () => {
                 </div> */}
               </div>
 
-              <div className="flex items-center justify-start gap-10 pb-6">
+              <div className="flex items-center justify-start gap-10 pb-6 sm:flex-col sm:justify-start sm:gap-4">
                 <button
                   type="button"
-                  className="w-1/3 sm:w-full rounded-md text-red-600 sm:mx-auto
-                  p-3 text-lg opacity-70 hover:opacity-100 flex items-center justify-center gap-3"
+                  className="w-fit sm:w-full rounded-md text-red-600 sm:mx-auto
+                  p-3 text-lg md:text-md sm:text-md opacity-70 hover:opacity-100 flex items-center justify-center gap-3"
                   style={{
                     border: "1px solid red",
                     backgroundColor: "rgba(255,197,178,.181)",
@@ -466,20 +512,27 @@ const DetailProduct = () => {
                   onClick={handleCartProduct}
                 >
                   <BsCartCheck className="text-red-600 text-2xl" />{" "}
-                  <span className="text-md">Add To Cart</span>
+                  <span className="text-md sm:text-md">
+                    {i18n.language === "en"
+                      ? "Add To Cart"
+                      : "Thêm vào giỏ hàng"}
+                  </span>
                 </button>
                 <button
                   type="button"
                   className="w-1/3 sm:w-full bg-red-600 rounded-md text-white sm:mx-auto p-3 text-lg opacity-70 hover:opacity-100"
                   onClick={() => handleBuyNow(product)}
                 >
-                  Buy Now
+                  {i18n.language === "en" ? "Buy now" : "Mua ngay"}
                 </button>
               </div>
               <hr />
               <span className="text-md text-red-700 flex items-center justify-start gap-2 mt-3">
-                <TbTargetArrow className="text-xl text-red-700" />
-                Get the items you ordered or get your money back.
+                <TbTargetArrow className="text-xl md:text-lg text-red-700" />
+
+                {i18n.language === "en"
+                  ? "Get the items you ordered or get your money back."
+                  : "Nhận các mặt hàng bạn đã đặt hàng hoặc lấy lại tiền của bạn."}
               </span>
             </div>
           </div>
@@ -487,15 +540,19 @@ const DetailProduct = () => {
           <div
             className="ml-[10%] flex py-4 px-6 flex-col items-start justify-start gap-1
             mt-1 mb-6
-            sm:flex-col sm:items-center sm:justify-between sm:gap-6
-            w-2/5 sm:w-c-1"
+            sm:flex-col sm:items-center sm:justify-start sm:gap-6
+            w-2/5 md:w-[90%] md:mx-auto sm:w-[98%] sm:mx-auto"
             style={{
               backgroundColor: "#fff",
               borderRadius: "3px",
               boxShadow: "0 1px 1px 0 rgba(0,0,0,.05)",
             }}
           >
-            <p className="text-lg font-semibold text-headingColor py-2">{`Product Specifications of ${product?.name}`}</p>
+            <p className="xl:text-lg lg:text-lg text-md sm:text-center font-semibold text-headingColor py-2">{`${
+              i18n.language === "en"
+                ? "Product Specifications of"
+                : "Thông số sản phẩm của"
+            } ${product?.name}`}</p>
             <div className="w-full flex flex-col items-start justify-center gap-1">
               {parametersKey.length > 0 &&
                 parametersKey.map((spec, index) => {
@@ -506,8 +563,10 @@ const DetailProduct = () => {
                         (index + 1) % 2 === 0 ? "bg-white" : "bg-gray-200"
                       }`}
                     >
-                      <p className="p-2 flex-1 text-md text-red-700">{spec}</p>
-                      <span className="p-2  text-md text-blue-700 block">
+                      <p className="p-2 flex-1 text-md sm:text-sm text-red-700">
+                        {spec}
+                      </p>
+                      <span className="p-2  text-md sm:text-sm text-blue-700 block">
                         {parametersValue[index]}
                       </span>
                     </div>
@@ -517,27 +576,34 @@ const DetailProduct = () => {
           </div>
 
           <div
-            className="flex py-4 items-center justify-center gap-1
+            className="flex py-4 items-center justify-center gap-5
             mx-auto mt-1 mb-6
             sm:flex-col sm:items-center sm:justify-between sm:gap-6
-            w-4/5 sm:w-c-1"
+            w-4/5 sm:w-[98%] sm:mx-auto"
             style={{
               backgroundColor: "#fff",
               borderRadius: "3px",
               boxShadow: "0 1px 1px 0 rgba(0,0,0,.05)",
             }}
           >
-            <div className="flex flex-col w-2/5 sm:w-c-1">
-              <span className="text-lg text-headingColor font-semibold mb-4">
-                REVIEWS
+            <div className="flex flex-col w-2/5 sm:w-full sm:px-2">
+              <span className="xl:text-lg lg:text-lg text-md text-headingColor font-semibold mb-4 sm:text-center">
+                {i18n.language === "en" ? "REVIEWS" : "ĐÁNH GIÁ"}
               </span>
 
               {product.reviews.length === 0 ? (
-                <input
+                <button
                   type="text"
-                  className="w-2/5 sm:w-c-1 bg-gray-200 text-black p-4 opacity-80 mt-2"
-                  value="No reviews"
-                />
+                  className="w-fit flex items-center justify-start sm:w-full bg-gray-200 text-black p-4 opacity-80 mt-2"
+                >
+                  {`
+                ${
+                  i18n.language === "en"
+                    ? "No reviews."
+                    : "Không có đánh giá nào."
+                }
+                  `}
+                </button>
               ) : (
                 product.reviews.map((review, index) => {
                   return (
@@ -548,9 +614,15 @@ const DetailProduct = () => {
                       >
                         <p className="text-md text-black ">{review?.name}</p>
                         <Rating value={review?.rating} className="float-left" />
-                        <p className="text-md text-black">{`${moment(
-                          review?.createdAt
-                        ).calendar()}`}</p>
+                        <p className="text-md text-black">{`${
+                          i18n.language === "en"
+                            ? moment(review?.createdAt)
+                                .locale("en")
+                                .format("dddd - DD/MM/YYYY")
+                            : moment(review?.createdAt).format(
+                                "dddd - DD/MM/YYYY"
+                              )
+                        }`}</p>
                         <input
                           type="text"
                           className="bg-primary text-black w-full px-2 py-4 opacity-80 mt-2"
@@ -564,19 +636,21 @@ const DetailProduct = () => {
               )}
             </div>
 
-            <div className="flex flex-col mt-4 w-c-55 sm:w-c-1">
+            <div className="flex flex-col mt-4 w-c-55 sm:w-[98%]">
               <form className="flex flex-col" onSubmit={handleSubmit}>
-                <span className="text-lg font-semibold text-headingColor mb-4">
-                  WRITE A CUSTOMER REVIEW
+                <span className="xl:text-lg lg:text-lg text-md font-semibold text-headingColor mb-4 sm:text-center">
+                  {i18n.language === "en"
+                    ? "WRITE A CUSTOMER REVIEW"
+                    : "VIẾT MỘT ĐÁNH GIÁ SẢN PHẨM"}
                 </span>
 
                 {user?.name ? (
                   <>
                     <label
-                      className="text-md text-black mb-2 font-semibold"
+                      className="text-md text-black mb-2 font-semibold sm:px-2"
                       htmlFor="ratings"
                     >
-                      Rating
+                      {i18n.language === "en" ? "Rating" : "Đánh giá"}
                     </label>
                     <select
                       className="px-3 py-4 "
@@ -586,7 +660,7 @@ const DetailProduct = () => {
                       onChange={(e) => setRating(e.target.value)}
                     >
                       <option className="text-md text-black" value="">
-                        Select...
+                        {i18n.language === "en" ? "Select..." : "Chọn..."}
                       </option>
                       <option className="text-md text-black" value="1">
                         1-Bad
@@ -604,7 +678,9 @@ const DetailProduct = () => {
                         5-Excellent
                       </option>
                     </select>
-                    <p className="font-semibold text-md mt-4">Comment</p>
+                    <p className="font-semibold text-md mt-4">
+                      {i18n.language === "en" ? "Comment" : "Bình luận"}
+                    </p>
                     <textarea
                       value={comment ? comment : ""}
                       className="border border-gray-300 mt-2 mb-8 focus:outline-blue-400 px-2"
@@ -617,7 +693,7 @@ const DetailProduct = () => {
                       className="w-full bg-green-400 hover:bg-gray-500 text-white px-2 py-3 "
                       onClick={handleAddReview}
                     >
-                      Submit
+                      {i18n.language === "en" ? "Confirm" : "Xác nhận"}
                     </button>
                   </>
                 ) : (
@@ -626,15 +702,17 @@ const DetailProduct = () => {
                       className="outline-none border border-gray-200 w-full backdrop-blur-sm shadow-sm 
                     rounded-sm flex items-center justify-start px-4 py-4 bg-slate-200 text-red-600 cursor-text text-md"
                     >
-                      Please
+                      {i18n.language === "en" ? "Please" : "Vui lòng"}
                       <NavLink
                         to={`/login?redirect=/product?id=${product?._id}`}
                       >
                         <span className="font-semibold text-black cursor-pointer mx-1">
-                          Login
+                          {i18n.language === "en" ? "Login" : "Đăng nhập"}
                         </span>
                       </NavLink>
-                      to write a review
+                      {i18n.language === "en"
+                        ? "to write a review"
+                        : "để viết một đánh giá sản phẩm này"}
                     </button>
                   </>
                 )}

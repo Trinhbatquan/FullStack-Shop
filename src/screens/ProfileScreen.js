@@ -11,6 +11,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { loginUserShop, profileUserShop } from "reduxToolkit/userSlice";
 import moment from "moment";
 import { ToastContainer, toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 const ProfileScreen = () => {
   const [name, setName] = useState("");
@@ -18,50 +19,106 @@ const ProfileScreen = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const { i18n } = useTranslation();
+
   const [focusButton, setFocusButton] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
-  const currentUser = useSelector((state) => state.userSlice.profileUser);
+  const currentUser = useSelector((state) => state.userSlice.user);
   const orders = useSelector((state) => state.orderSlice.ordersByUser);
 
+  console.log(currentUser, orders);
+
   useEffect(() => {
-    setIsLoading(true);
-    setTimeout(() => {
-      profileUser().then((user) => {
-        if (user) {
-          dispatch(profileUserShop(user));
-          setIsLoading(false);
-          setName(user?.name);
-          setEmail(user?.email);
-          setPassword("");
-          setConfirmPassword("");
-        }
-      });
-      ordersByUser().then((orders) => {
-        dispatch(getOrdersByUser(orders));
-      });
-      setIsLoading(false);
-    }, 500);
+    profileUser().then((res) => {
+      if (res.code === 0) {
+        dispatch(profileUserShop(res.profile));
+        setName(res.profile?.name);
+        setEmail(res.profile?.email);
+        setPassword("");
+        setConfirmPassword("");
+        ordersByUser().then((data) => {
+          if (data.code === 0) {
+            dispatch(getOrdersByUser(data?.orderData));
+            setIsLoading(false);
+          }
+        });
+      } else {
+        setIsLoading(false);
+      }
+    });
   }, []);
 
   const handleUpdateProfile = (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      toast.error("Password do not match!", {
-        autoClose: 2000,
-      });
-    } else {
-      setIsLoading(true);
-      console.log({ name, email, password });
-      updateProfileUser(name, email, password).then((user) => {
-        localStorage.setItem("userShop", JSON.stringify(user));
-        dispatch(profileUserShop(user));
-        dispatch(loginUserShop(user));
-        setIsLoading(false);
-        toast.success("Update User Successfully!", {
+    if (!password || !confirmPassword) {
+      toast.error(
+        `${
+          i18n.language === "en"
+            ? "Please enter all field."
+            : "Vui lòng nhập tất cả các trường."
+        }`,
+        {
           autoClose: 3000,
-        });
+          position: "bottom-right",
+          theme: "colored",
+        }
+      );
+      return;
+    }
+    if (password !== confirmPassword) {
+      toast.error(
+        `${
+          i18n.language === "en"
+            ? "Password do not match. Please try again"
+            : "Mật khẩu không khớp. Vui lòng nhập lại."
+        }`,
+        {
+          autoClose: 3000,
+          position: "bottom-right",
+          theme: "colored",
+        }
+      );
+      return;
+    } else {
+      setLoading(true);
+      updateProfileUser(name, email, password).then((res) => {
+        if (res.code === 0) {
+          localStorage.setItem("userShop", JSON.stringify(res.user));
+          dispatch(profileUserShop(res.user));
+          dispatch(loginUserShop(res.user));
+          setPassword("");
+          setConfirmPassword("");
+          setLoading(false);
+          toast.success(
+            `${
+              i18n.language === "en"
+                ? "Update password successfully!"
+                : "Cập nhật mật khẩu thành công!"
+            }`,
+            {
+              autoClose: 3000,
+              position: "bottom-right",
+              theme: "colored",
+            }
+          );
+        } else {
+          setLoading(false);
+          toast.error(
+            `${
+              i18n.language === "en"
+                ? "Error.Please contact admin!"
+                : "Có lỗi. Vui lòng liên hệ quản trị viên!"
+            }`,
+            {
+              autoClose: 3000,
+              position: "bottom-right",
+              theme: "colored",
+            }
+          );
+        }
       });
     }
   };
@@ -69,17 +126,15 @@ const ProfileScreen = () => {
   return (
     <>
       <Header />
+      <div style={{ height: "65px", width: "100%" }}></div>
       <div
-        className="mx-auto mt-8 flex items-center justify-between sm:flex-col
-        sm:justify-center gap-10"
-        style={{
-          minWidth: "90%",
-          width: "90%",
-        }}
+        className="w-[90%] sm:w-[94%] mx-auto mt-8 flex items-center justify-between sm:flex-col
+        sm:justify-center gap-10 md:flex-col
+        md:justify-center pb-6"
       >
         <ToastContainer />
         <div
-          className="w-2/5 sm:w-full flex flex-col relative bg-white p-3 shadow-xl backdrop-blur-lg border border-gray-200"
+          className="w-2/5 sm:w-full md:w-full flex flex-col relative bg-white p-3 shadow-xl backdrop-blur-lg border border-gray-200"
           style={{
             minHeight: "450px",
             height: "450px",
@@ -95,8 +150,8 @@ const ProfileScreen = () => {
             }}
           ></div>
           <div
-            className="p-8 sm:p-6 rounded-full absolute left-8 top-20 sm:top-28 bg-primary border border-gray-200
-          shadow-md backdrop-blur-md medium:backdrop-blur-none sm:backdrop-blur-none"
+            className="p-8 sm:p-6 md:p-6 rounded-full absolute left-8 top-20 sm:top-28 bg-primary border border-gray-200
+          shadow-md medium:backdrop-blur-none sm:backdrop-blur-none"
           >
             <SiGravatar className="text-5xl sm:text-3xl text-backColor" />
           </div>
@@ -106,9 +161,9 @@ const ProfileScreen = () => {
               <p className="font-semibold text-lg text-black">
                 {currentUser?.name}
               </p>
-              <p className="text-headingColor mt-1 opacity-80">{`${moment(
-                currentUser?.createdAt
-              ).format("LL")}`}</p>
+              <p className="text-headingColor mt-1 opacity-80">{`${
+                currentUser ? moment(currentUser?.createdAt).format("LL") : ""
+              }`}</p>
             </div>
           </div>
 
@@ -121,7 +176,7 @@ const ProfileScreen = () => {
             name="setting"
             onClick={() => setFocusButton(true)}
           >
-            Profile Settings
+            {i18n.language === "en" ? "Profile Settings" : "Cập nhật tài khoản"}
           </button>
 
           <button
@@ -133,104 +188,117 @@ const ProfileScreen = () => {
             name="orderList"
             onClick={() => setFocusButton(false)}
           >
-            Order List
+            {i18n.language === "en" ? "Order List" : "Lịch sử đơn hàng"}
+
             <span className="absolute px-2 py-0 rounded-full text-white bg-red-800 right-2 top-4">
               {orders?.length === 0 ? 0 : orders.length}
             </span>
           </button>
         </div>
 
-        <div className="w-c-55 sm:w-full mx-auto">
+        <div className="w-c-55 sm:w-full md:w-full mx-auto">
           {focusButton && (
             <form
-              className="w-full mx-auto medium:pt-6"
+              className="w-full flex flex-col items-start justify-center gap-4"
               onSubmit={handleUpdateProfile}
             >
-              {isLoading && <Loading />}
-              <div
-                className="flex items-center justify-between px-4 py-2 mt-2 mb-6
-                medium:flex-col medium:justify-center medium:gap-6
-                sm:flex-col sm:justify-center sm:gap-6"
-              >
-                <div className="flex flex-col justify-center items-start flex-1 medium:w-full sm:w-full">
-                  <label className="mb-2 text-sm text-headingColor opacity-80">
-                    USERNAME
-                  </label>
-                  <input
-                    type="text"
-                    name="username"
-                    value={name}
-                    className="w-c-85 medium:w-c-1 sm:w-full px-2 py-3 border
-                    border-gray-300 rounded-md bg-slate-100 text-lg font-semibold"
-                    onChange={(e) => setName(e.target.value)}
-                  />
-                </div>
-                <div className="flex flex-col justify-center items-start flex-1 medium:w-full sm:w-full">
-                  <label className="mb-2 text-sm text-headingColor opacity-80">
-                    E-MAIL ADDRESS
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={email}
-                    className="w-c-85 medium:w-c-1 sm:w-full px-2 py-3 border
-                    border-gray-300 rounded-md bg-slate-100 text-lg font-semibold"
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </div>
+              <div className="flex items-center justify-center w-full">
+                <span className="text-lg font-semibold text-gray-900">
+                  {i18n.language === "en"
+                    ? "Update Pasword"
+                    : "Cập nhật mật khẩu"}
+                </span>
               </div>
+              {isLoading && <Loading />}
 
-              <div
-                className="flex items-center justify-between px-4 py-2 mb-6
-              medium:flex-col medium:justify-center medium:gap-6
-              sm:flex-col sm:justify-center sm:gap-6"
-              >
-                <div className="flex flex-col justify-center items-start flex-1 medium:w-full sm:w-full">
-                  <label className="mb-2 text-sm text-headingColor opacity-80">
-                    NEW PASSWORD
+              <div class="grid gap-6 mb-6 grid-cols-2 w-full">
+                <div>
+                  <label
+                    for="first_name"
+                    class="block mb-2 text-sm font-medium text-gray-900 "
+                  >
+                    {i18n.language === "en" ? "Full Name" : "Tên đầy đủ"}
                   </label>
                   <input
-                    type="password"
-                    name="password"
+                    value={name}
+                    type="text"
+                    id="first_name"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                    disabled
+                  />
+                </div>
+                <div>
+                  <label
+                    for="last_name"
+                    class="block mb-2 text-sm font-medium text-gray-900 "
+                  >
+                    Email
+                  </label>
+                  <input
+                    value={email}
+                    type="text"
+                    id="last_name"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                    required
+                    disabled
+                  />
+                </div>
+                <div>
+                  <label
+                    for="company"
+                    class="block mb-2 text-sm font-medium text-gray-900 "
+                  >
+                    {i18n.language === "en" ? "Password" : "Mật khẩu"}
+                  </label>
+                  <input
                     value={password}
-                    className="w-c-85 medium:w-c-1 sm:w-full px-2 py-3 border
-                    border-gray-300 rounded-md bg-slate-100 text-lg font-semibold"
+                    type="text"
+                    id="company"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                    required
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
-                <div className="flex flex-col justify-center items-start flex-1 medium:w-full sm:w-full">
-                  <label className="mb-2 text-sm text-headingColor opacity-80">
-                    CONFIRM PASSWORD
+                <div>
+                  <label
+                    for="phone"
+                    class="block mb-2 text-sm font-medium text-gray-900 "
+                  >
+                    {i18n.language === "en"
+                      ? "Confirm password"
+                      : "Nhập lại mật khẩu"}
                   </label>
                   <input
-                    type="password"
-                    name="confirmPassword"
                     value={confirmPassword}
-                    className="w-c-85 medium:w-c-1 sm:w-full px-2 py-3 border
-                    border-gray-300 rounded-md bg-slate-100 text-lg font-semibold"
+                    type="tel"
+                    id="phone"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                    required
                     onChange={(e) => setConfirmPassword(e.target.value)}
                   />
                 </div>
               </div>
 
-              <div
-                className="flex items-center justify-center  py-2 mb-6
-               medium:mr-3 sm:w-full"
-              >
-                <input
+              <div className="flex items-center justify-center w-full">
+                <button
                   type="submit"
-                  name="submit"
-                  value="UPDATE PROFILE"
-                  className="w-1/2 medium:w-c-85 sm:w-c-1 py-4 px-4 rounded-md cursor-pointer text-headingColor text-lg 
-                        font-semibold opacity-80 hover:opacity-100
-                        mx-auto bg-backColor"
-                />
+                  class="py-2.5 w-full px-5 mr-2 mb-2 text-lg font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200"
+                >
+                  {i18n.language === "en" ? "Confirm" : "Xác nhận"}
+                </button>
               </div>
             </form>
           )}
 
           {focusButton || <Order />}
         </div>
+        {loading && (
+          <div className="fixed z-50 top-0 bottom-0 flex items-center justify-center mx-auto left-0 right-0 w-full max-h-full bg-black bg-opacity-25">
+            <div className="absolute top-[50%] left-[50%]">
+              <Loading />
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

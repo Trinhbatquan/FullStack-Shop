@@ -9,15 +9,15 @@ const Support = () => {
     <div style={{ backgroundColor: "#f5f5f5" }}>
       <Header />
       <div style={{ height: "65px", width: "100%" }}></div>
-      <div className="w-full px-[10%] mx-auto py-8 bg-white flex items-center justify-evenly">
-        <div className="mx-4 p-4 flex flex-col items-center justify-center gap-2">
+      <div className="w-full px-[10%] md:px-[5%] sm:px-[2%] mx-auto py-8 bg-white flex items-center justify-evenly md:flex-col md:items-center sm:flex-col sm:items-center ">
+        <div className="mx-4 p-4 flex flex-col items-center justify-center gap-2 md:flex-row md:justify-start">
           <p className="text-textColor text-lg">
             Thank you for your attention!
           </p>
           <p className="text-textColor text-lg">Have a nice day!!!</p>
         </div>
         <div className=" mx-4 p-4 flex flex-col items-center justify-center gap-2">
-          <span className="text-textColor text-lg">
+          <span className="text-textColor text-lg sm:text-center">
             If you have questions, please contact to me by:
           </span>
           <div className="flex items-center justify-center">

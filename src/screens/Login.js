@@ -46,16 +46,32 @@ const Login = () => {
     let regexPassword =
       /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,15}$/;
     if (!email || !password) {
-      setMessageLogin("Please enter all field.");
+      setMessageLogin(
+        `${
+          i18n.language === "en"
+            ? "Please enter all fields."
+            : "Vui lòng nhập tất cả các trường."
+        }`
+      );
       return false;
     }
     if (!regexEmail.test(email)) {
-      setMessageLogin("Please enter correct form of email.");
+      setMessageLogin(
+        `${
+          i18n.language === "en"
+            ? "Please enter correct email format."
+            : "Vui lòng nhập đúng định dạng email."
+        }`
+      );
       return false;
     }
     if (!regexPassword.test(password)) {
       setMessageLogin(
-        "Password must have the least 8 characters, 1 number and 1 a special character."
+        `${
+          i18n.language === "en"
+            ? "Password must have the least 8 characters, 1 number and 1 a special character."
+            : "Mật khẩu có ít nhất 8 kí tự, một số và 1 kí tự đặc biệt."
+        }`
       );
       return false;
     }
@@ -198,7 +214,7 @@ const Login = () => {
               style={{ maxWidth: "90%", width: "90%" }}
             >
               <p className="w-full text-md my-3 text-headingColor">
-                Forgot Password?
+                {i18n.language === "en" ? "Forgot Password?" : "Quên mật khẩu?"}
               </p>
             </NavLink>
 
@@ -207,7 +223,7 @@ const Login = () => {
               className="py-4 px-4 mb-6 mt-1 cursor-pointer text-headingColor text-lg 
                     font-semibold opacity-80 hover:opacity-100
                     mx-auto"
-              value="LOGIN"
+              value={`${i18n.language === "en" ? "LOGIN" : "Đăng nhập"}`}
               style={{
                 maxWidth: "90%",
                 width: "90%",
@@ -218,7 +234,7 @@ const Login = () => {
 
           <NavLink to="/register?redirect=/">
             <p className="text-lg text-headingColor opacity-80 cursor-pointer mx-auto text-center">
-              Create Account
+              {`${i18n.language === "en" ? "Create Account" : "Đăng ký"}`}
             </p>
           </NavLink>
         </div>

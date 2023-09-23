@@ -23,10 +23,10 @@ const Contact = () => {
               height: "60px",
             }}
           />
-          <p className="font-semibold text-xl mt-3 text-headingColor">
+          <p className="font-semibold text-lg mt-3 text-headingColor">
             {t("contact.call")}
           </p>
-          <p className="text-md mt-1">0796 065 535</p>
+          <p className="text-sm mt-1">0796 065 535</p>
         </div>
         <div className="flex flex-col items-center justify-center">
           <GiPositionMarker
@@ -38,10 +38,10 @@ const Contact = () => {
               height: "60px",
             }}
           />
-          <p className="font-semibold text-xl mt-3 text-headingColor">
+          <p className="font-semibold text-lg mt-3 text-headingColor">
             {t("contact.position")}
           </p>
-          <p className="text-md mt-1">Ha Noi, Viet Nam</p>
+          <p className="text-sm mt-1">Ha Noi, Viet Nam</p>
         </div>
         <div className="flex flex-col items-center justify-center">
           <FaFax
@@ -53,8 +53,8 @@ const Contact = () => {
               height: "60px",
             }}
           />
-          <p className="font-semibold text-xl mt-3 text-headingColor">Fax</p>
-          <p className="text-md mt-1">0796 065 535</p>
+          <p className="font-semibold text-lg mt-3 text-headingColor">Fax</p>
+          <p className="text-sm mt-1">0796 065 535</p>
         </div>
       </div>
 

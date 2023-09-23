@@ -8,14 +8,13 @@ import { FilterMatchMode, FilterOperator } from "primereact/api";
 
 import { FaTimes } from "react-icons/fa";
 import { useParams, useLocation } from "react-router";
-import { Header, Rating } from "components";
+import { Header, Loading, Rating } from "components";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import {
   addCart,
   deleteAllCarts,
   deleteCart,
-  deleteManyCart,
   updateCart,
 } from "reduxToolkit/cartSlice";
 import { getProductById } from "api/index";
@@ -25,12 +24,16 @@ import { GrFormSubtract, GrAdd } from "react-icons/gr";
 import { BsTrash } from "react-icons/bs";
 import NavBar from "utils/NavBar";
 import { setNavBar } from "reduxToolkit/navBarSlice";
+import { useTranslation } from "react-i18next";
+import { UniqueComponentId } from "primereact/utils";
 
 const ScreenCart = () => {
   const location = useLocation();
+  const { t, i18n } = useTranslation();
 
+  const [loading, setLoading] = useState(true);
   const navigation = useSelector((state) => state.navbarReducer.keyNavBar);
-  const keyNavigate = location?.pathname?.split("/")[1];
+  const keyNavigate = i18n.language === "en" ? "Cart" : "Giỏ hàng";
 
   const dispatch = useDispatch();
   const id = useParams();
@@ -45,10 +48,6 @@ const ScreenCart = () => {
   const [filters1, setFilters1] = useState(null);
   const [globalFilterValue1, setGlobalFilterValue1] = useState("");
   const [selectedProducts8, setSelectedProducts8] = useState(null);
-
-  // console.log(selectedProducts8);
-
-  localStorage.setItem("cart", JSON.stringify(carts));
 
   useEffect(() => {
     if (id.id) {
@@ -67,11 +66,17 @@ const ScreenCart = () => {
             qty,
           })
         );
+        setLoading(false);
       });
+    } else {
+      setLoading(false);
     }
     initFilters1();
-    dispatch(setNavBar(keyNavigate));
   }, []);
+
+  useEffect(() => {
+    dispatch(setNavBar(keyNavigate));
+  }, [i18n.language]);
 
   const handleUpdateCart = (qty, dataProduct) => {
     let count = 0;
@@ -98,36 +103,15 @@ const ScreenCart = () => {
     );
   };
 
-  const handleRemoveCart = (product) => {
-    if (!Array.isArray(product) && product) {
-      let count = 0;
-      for (let i = 0; i < carts.length; i++) {
-        if (carts[i]?.product === product) {
-          count = i;
-          break;
-        }
-      }
-      dispatch(deleteCart(count));
-      setSelectedProducts8([]);
-      navigate("/cart");
-    } else if (Array.isArray(product)) {
-      if (product?.length > 0) {
-        if (product.length === carts?.length) {
-          dispatch(deleteAllCarts([]));
-        } else {
-          let reduxCart = [];
-          product.forEach((item) => {
-            reduxCart.push(item.product);
-          });
-          console.log(reduxCart);
-          dispatch(deleteManyCart(reduxCart));
-        }
-        setSelectedProducts8([]);
-        navigate("/cart");
-      }
+  const handleRemoveCart = (data) => {
+    console.log(data);
+    if (data?.length === carts?.length) {
+      dispatch(deleteAllCarts());
+    } else {
+      dispatch(deleteCart(data));
     }
-
-    // dispatch(deleteCart(index));
+    setSelectedProducts8(null);
+    navigate("/cart");
   };
 
   //data tables
@@ -205,18 +189,14 @@ const ScreenCart = () => {
   };
 
   const deleteTemplate = (rowData) => {
-    // console.log(rowData);
     return (
-      <div className="">
-        <BsTrash
-          className={`text-2xl cursor-pointer ${
-            selectedProducts8?.length === 1 &&
-            selectedProducts8[0]?.product === rowData?.product
-              ? "block"
-              : "hidden"
-          }`}
-          onClick={() => handleRemoveCart(selectedProducts8[0]?.product)}
-        />
+      <div className="flex items-center justify-center">
+        {selectedProducts8[0]?.product === rowData?.product && (
+          <BsTrash
+            className={`text-lg cursor-pointer`}
+            onClick={() => handleRemoveCart([rowData])}
+          />
+        )}
       </div>
     );
   };
@@ -242,6 +222,7 @@ const ScreenCart = () => {
   const clearFilter1 = () => {
     initFilters1();
     setGlobalFilterValue1("");
+    setSelectedProducts8(null);
   };
   const onGlobalFilterChange1 = (e) => {
     const value = e.target.value;
@@ -253,31 +234,34 @@ const ScreenCart = () => {
   };
   const renderHeader1 = () => {
     return (
-      <div className="flex justify-between">
+      <div className="flex justify-between sm:flex-col sm:items-start sm:justify-center sm:gap-3">
         <div className="flex items-center justify-start gap-8">
           <Button
             type="button"
             icon="pi pi-filter-slash"
-            label="Clear"
+            label={`${i18n.language === "en" ? "Clear" : "Đặt lại"}`}
             className="p-button-outlined"
             onClick={clearFilter1}
           />
-          <Button
-            type="button"
-            // icon="pi pi-filter-slash"
-            label="Delete"
-            className={`p-button-outlined ${
-              selectedProducts8?.length >= 1 ? "" : "disabled"
-            }`}
-            onClick={() => handleRemoveCart(selectedProducts8)}
-          />
+          {selectedProducts8?.length > 1 && (
+            <Button
+              type="button"
+              label={`${i18n.language === "en" ? "Delete" : "Xoá"}`}
+              className={`p-button-outlined`}
+              onClick={() => handleRemoveCart(selectedProducts8)}
+            />
+          )}
         </div>
         <span className="p-input-icon-left">
           <i className="pi pi-search" />
           <InputText
             value={globalFilterValue1}
             onChange={onGlobalFilterChange1}
-            placeholder="Search By Name..."
+            placeholder={`${
+              i18n.language === "en"
+                ? "Search by name...: "
+                : "Tìm kiếm theo tên..."
+            }`}
           />
         </span>
       </div>
@@ -290,40 +274,46 @@ const ScreenCart = () => {
     <div>
       <Header />
       <div style={{ height: "65px", width: "100%" }}></div>
+      {navigation && (
+        <div className="sm:hidden w-4/5 mt-3 ml-[5%]">
+          <NavBar navigation={navigation} />
+        </div>
+      )}
 
-      <div
-        className="w-full flex flex-col mx-auto p-8"
-        style={{ maxWidth: "90%", width: "90%" }}
-      >
-        {carts.length === 0 ? (
+      <div className="flex flex-col mx-auto pt-1 w-[90%] sm:w-[98%]">
+        {loading ? (
+          <Loading />
+        ) : carts.length === 0 ? (
           <div className="flex flex-col items-center mt-8">
-            <span className="text-xl text-blue-500 font-semibold mb-4">
-              Don't have cart.
+            <span className="xl:text-xl lg:text-lg md:text-lg text-md text-blue-500 font-semibold mb-4">
+              {i18n.language === "en"
+                ? "Don't have cart"
+                : "Không có sản phẩm trong giỏ hàng"}
             </span>
             <NavLink to="/" className="w-full flex items-center justify-center">
               <Button
                 type="button"
                 // icon="pi pi-filter-slash"
-                label="GO SHOPPING"
-                className="p-button-outlined"
-                style={{ width: "50%" }}
+                label={i18n.language === "en" ? "Go Shopping" : "Mua sắm"}
+                className="p-button-outlined text-lg"
+                style={{ width: "50%", fontSize: "20px" }}
               />
             </NavLink>
           </div>
         ) : (
           <>
-            {navigation && (
-              <div className="w-4/5">
-                <NavBar navigation={navigation} />
-              </div>
-            )}
             <div className="w-full mt-8">
               <DataTable
                 value={carts}
                 paginator
-                responsiveLayout="scroll"
+                responsiveLayout="stack"
+                breakpoint="960px"
                 paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
-                currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
+                currentPageReportTemplate={`${
+                  i18n.language === "en"
+                    ? "Showing {first} to {last} of {totalRecords}"
+                    : "Hiển thị {first} đến {last} trong {totalRecords}"
+                }`}
                 rows={10}
                 rowsPerPageOptions={[10, 20, 50]}
                 paginatorLeft={paginatorLeft}
@@ -332,13 +322,17 @@ const ScreenCart = () => {
                 filterDisplay="menu"
                 globalFilterFields={["name"]}
                 header={header1}
-                emptyMessage="No customers found."
+                emptyMessage={`${
+                  i18n.language === "en"
+                    ? "No products found."
+                    : "Không có sản phẩm"
+                }`}
                 selectionMode="checkbox"
                 selection={selectedProducts8}
                 onSelectionChange={(e) => setSelectedProducts8(e.value)}
                 resizableColumns
                 columnResizeMode="fit"
-                // showGridlines
+                showGridlines
                 // dataKey="id"
               >
                 <Column
@@ -346,45 +340,47 @@ const ScreenCart = () => {
                   headerStyle={{ width: "3em" }}
                 ></Column>
                 <Column
-                  header="Image"
+                  header={`${i18n.language === "en" ? "Image" : "Ảnh"}`}
                   body={imageBodyTemplate}
-                  style={{ width: "10%" }}
                 ></Column>
                 <Column
                   field="name"
-                  header="Name Product"
-                  style={{ width: "40%" }}
+                  header={`${
+                    i18n.language === "en" ? "Name Product" : "Tên sản phẩm"
+                  }`}
                 ></Column>
                 <Column
-                  // sortable
-                  // field="countInStock"
-                  // header="Count In Stock"
-                  style={{ width: "10%" }}
-                ></Column>
-                <Column
-                  header="Quantity"
+                  header={`${i18n.language === "en" ? "Quantity" : "Số lượng"}`}
                   body={statusQuantityTemplate}
-                  style={{ width: "20%" }}
                 ></Column>
-                <Column field="price" header="Price" sortable></Column>
                 <Column
-                  header="Rating"
+                  field="price"
+                  header={`${i18n.language === "en" ? "Price" : "Giá"}`}
+                  sortable
+                ></Column>
+                <Column
+                  field="rating"
+                  header={`${i18n.language === "en" ? "Rating" : "Đánh giá"}`}
                   sortable
                   body={ratingBodyTemplate}
-                  style={{ width: "15%" }}
                 ></Column>
-                {selectedProducts8 && (
+                {selectedProducts8 && selectedProducts8?.length === 1 && (
                   <Column
+                    header={`${
+                      i18n.language === "en" ? "Action" : "Hành động"
+                    }`}
                     body={deleteTemplate}
-                    style={{ width: "2%" }}
                   ></Column>
                 )}
               </DataTable>
             </div>
 
             <div className="w-full mr-4 p-4 mb-8 sm:mb-4 sm:mr-0 sm:flex sm:items-center sm:justify-center">
-              <span className="float-right text-lg font-semibold text-red-500 flex items-center justify-center gap-0.5">
-                Totals:{" "}
+              <span className="float-right text-lg font-semibold text-red-500 flex items-center justify-center gap-1">
+                <span>
+                  {" "}
+                  {`${i18n.language === "en" ? "Total: " : "Tổng: "}`}
+                </span>
                 <span>
                   {carts?.reduce(
                     (acc, item) => acc + item?.qty * item?.price,
@@ -397,14 +393,18 @@ const ScreenCart = () => {
 
             <div
               className="flex items-center justify-evenly 
-            sm:flex-col sm:justify-center sm:items-center sm:gap-3"
+                sm:flex-col sm:justify-center sm:items-center sm:gap-3"
             >
-              <NavLink to="/" className="w-1/3">
+              <NavLink to="/" className="w-1/3 sm:w-c-1">
                 <button
                   type="button"
                   class="py-2.5 w-full px-5 mr-2 mb-2 text-lg font-medium text-white outline-none bg-blue-500 opacity-70 rounded-lg hover:opacity-100"
                 >
-                  Continue To Shopping
+                  {`${
+                    i18n.language === "en"
+                      ? "Continue to shopping"
+                      : "Tiếp tục mua sắm"
+                  }`}
                 </button>
               </NavLink>
               <NavLink
@@ -413,13 +413,13 @@ const ScreenCart = () => {
                     ? "/deliveryAddress"
                     : "/login?redirect=/deliveryAddress"
                 }`}
-                className="w-1/3"
+                className="w-1/3 sm:w-c-1"
               >
                 <button
                   type="button"
                   class="py-2.5 w-full px-5 mr-2 mb-2 text-lg font-medium text-white opacity-70 outline-none bg-red-600 rounded-lg hover:opacity-100"
                 >
-                  Buy
+                  {`${i18n.language === "en" ? "Checkout" : "Mua ngay"}`}
                 </button>
               </NavLink>
             </div>

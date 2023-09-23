@@ -92,7 +92,7 @@ module.exports = {
       // => @media (min-width: 1024px and max-width: 1279px) { ... }
       medium: { min: "768px", max: "1280px" },
 
-      lg: { max: "1280px" },
+      lg: { min: "1023px", max: "1280px" },
       // => @media (min-width: 1280px and max-width: 1535px) { ... }
 
       xl: { min: "1280px" },

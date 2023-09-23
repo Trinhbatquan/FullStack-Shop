@@ -25,13 +25,13 @@ const BannerTip = () => {
       >
         <div className="flex flex-col items-center justify-center text-center w-full">
           <h2
-            className="text-2xl font-semibold mb-1 opacity-90"
+            className="text-2xl sm:text-lg font-semibold mb-1 opacity-90"
             style={{ color: "#fff", textShadow: "0 0 #fff", fontWeight: "800" }}
           >
             {t("banner.tip")}
           </h2>
           <p
-            className="text-lg pb-4 opacity-90"
+            className="text-lg sm:text-sm pb-4 opacity-90"
             style={{ color: "#fff", textShadow: "0 0 #fff", fontWeight: "800" }}
           >
             {t("banner.sign")}
@@ -46,7 +46,7 @@ const BannerTip = () => {
               type="email"
               name="email"
               className="banner-tip-input text-center py-3 opacity-90 placeholder:text-slate-500
-                    rounded-3xl outline-none focus:opacity-100 focus:shadow-lg placeholder:text-md text-md duration-300 transition-all
+                    rounded-3xl outline-none focus:opacity-100 focus:shadow-lg placeholder:text-md text-md sm:text-sm sm:placeholder:text-sm duration-300 transition-all
                     focus:bg-white"
               style={{
                 minWidth: "80%",
@@ -57,7 +57,7 @@ const BannerTip = () => {
               value={t("banner.yes")}
               name="subscribe"
               type="submit"
-              className="banner-tip-submit-input xl:absolute sm:mt-3 medium:absolute right-16 px-10 py-3.5 rounded-3xl text-sm
+              className="banner-tip-submit-input xl:absolute sm:mt-3 medium:absolute right-16 px-10 py-3.5 rounded-3xl text-sm sm:text-xs
                     backdrop-blur-md cursor-pointer hover:bg-green-600 hover:text-white transition-all duration-300 font-semibold"
               style={{
                 backgroundColor: "rgb(48, 180, 29)",

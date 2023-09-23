@@ -65,9 +65,9 @@ const Notification = () => {
     <div style={{ height: "100vh", backgroundColor: "rgb(245,245,245)" }}>
       <Header />
       <div style={{ height: "65px", width: "100%" }}></div>
-      <div className="w-full px-[10%] mx-auto pb-8 pt-3 flex flex-col items-start justify-center">
+      <div className="w-full px-[10%] md:px-[5%] sm:px-[2%] mx-auto pb-8 pt-3 flex flex-col items-start justify-center">
         {navigation && (
-          <div className="w-full mx-auto mb-3">
+          <div className="w-full mx-auto mb-3 sm:hidden">
             <NavBar navigation={navigation} />
           </div>
         )}
@@ -76,7 +76,7 @@ const Notification = () => {
           <Loading />
         ) : (
           <>
-            <p className="text-lg font-semibold py-2 w-full">{`${
+            <p className="text-lg sm:text-md font-semibold py-2 w-full">{`${
               i18n.language === "en"
                 ? `List of Notification (${notifications?.length})`
                 : `Danh sách thông báo (${notifications?.length})`
@@ -86,7 +86,7 @@ const Notification = () => {
                 <div className="flex flex-col items-start justify-center">
                   <div
                     className=" w-full
-                            border border-gray-200 px-3 py-5 h-[40px] hover:text-red-700 transition-all duration-300 flex items-center justify-end text-md text-headingColor bg-white"
+                            border border-gray-200 px-3 py-5 h-[40px] hover:text-red-700 transition-all duration-300 flex items-center justify-end text-md sm:text-md text-headingColor bg-white"
                   >
                     <span
                       className="cursor-pointer"
@@ -118,7 +118,7 @@ const Notification = () => {
                             />
                             <div className="flex-1">
                               <p
-                                className="text-lg"
+                                className="text-lg sm:text-sm"
                                 style={{
                                   color: "rgba(0,0,0,.8)",
                                   fontWeight: "400",
@@ -130,7 +130,7 @@ const Notification = () => {
                                   : item?.titleVn}
                               </p>
                               <p
-                                className="w-4/5"
+                                className="w-4/5 md:w-[96%] sm:text-xs"
                                 style={{
                                   color: "rgba(0,0,0,.54)",
                                   marginBottom: "1px",
@@ -140,7 +140,10 @@ const Notification = () => {
                                   ? item?.detailEn
                                   : item?.detailVn}
                               </p>
-                              <p style={{ color: "rgba(0,0,0,.54)" }}>
+                              <p
+                                className="sm:text-xs"
+                                style={{ color: "rgba(0,0,0,.54)" }}
+                              >
                                 {i18n.language === "en"
                                   ? moment(item?.updatedAt)
                                       .locale("en")
@@ -148,7 +151,7 @@ const Notification = () => {
                                   : moment(item?.updatedAt).format("LLL")}
                               </p>
                             </div>
-                            <div className="cursor-pointer flex items-center justify-center w-28 h-10 absolute border border-gray-200 top-1/2 right-3 bg-white text-md text-headingColor opacity-80 rounded-sm hover:border-red-700 hover:text-red-700 transition-all duration-300">
+                            <div className="sm:hidden cursor-pointer flex items-center justify-center w-28 h-10 absolute md:relative border border-gray-200 top-1/2 right-3 bg-white text-md sm:text-xs text-headingColor opacity-80 rounded-sm hover:border-red-700 hover:text-red-700 transition-all duration-300">
                               {i18n.language === "en"
                                 ? "View details"
                                 : "Chi tiết"}

@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import { i18n, t } from "i18next";
+import { BsArrowDown, BsArrowUp } from "react-icons/bs";
 
 import { FaBars, FaShippingFast } from "react-icons/fa";
 import { MdPlace } from "react-icons/md";
@@ -16,6 +17,7 @@ import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from "react-icons/md";
 import { FiFilter } from "react-icons/fi";
 import { RxSlash } from "react-icons/rx";
+import { AiOutlineFileSearch } from "react-icons/ai";
 import { getAllProductsBySearch } from "api";
 
 import { ToastContainer, toast } from "react-toastify";
@@ -261,17 +263,17 @@ const FindBySearch = () => {
   };
 
   return (
-    <>
+    <div style={{ height: "100%", backgroundColor: "rgb(245,245,245)" }}>
       <Header />
       <ToastContainer />
       <div
-        className="mx-auto py-8"
-        style={{ minWidth: "90%", width: "90%", marginTop: "65px" }}
+        className="mx-auto py-8 w-[90%] sm:w-[98%]"
+        style={{ marginTop: "65px" }}
       >
         <div className="row row-small-Gutters">
-          <div className="col l-2 m-grid-2 c-0">
+          <div className="col l-2 m-grid-0 c-0">
             <div
-              className="category bg-white flex flex-col items-center"
+              className="category bg-white flex flex-col items-center py-5"
               style={{
                 // borderRadius: "2px",
                 // boxShadow: "0 1px 2px rgb(232,229,229)",
@@ -295,7 +297,7 @@ const FindBySearch = () => {
                   }}
                 >
                   <FiFilter className="text-lg" />
-                  SEARCH FILTER
+                  {i18n.language === "en" ? "Search Filter" : "Bộ lọc tìm kiếm"}
                 </div>
               </div>
               <div
@@ -312,14 +314,14 @@ const FindBySearch = () => {
                   }}
                 >
                   {/* <MdPlace className="text-xl" /> */}
-                  By Position
+                  {i18n.language === "en" ? "By Position" : "Theo vị trí"}
                 </div>
                 <Select
                   isMulti
                   value={position}
                   name="position"
                   options={positionOptions}
-                  className="mx-auto text-md pt-0.5"
+                  className="mx-auto text-md pt-0.5 text-headingColor"
                   onChange={(e) => setPosition(e)}
                   // className="basic-multi-select"
                   // classNamePrefix="select"
@@ -337,13 +339,16 @@ const FindBySearch = () => {
                   }}
                 >
                   {/* <FaShippingFast className="text-xl" /> */}
-                  Shipping Options
+                  {i18n.language === "en"
+                    ? "By shipping options"
+                    : "Phương thức vận chuyển"}
                 </div>
                 <div className="select-option flex flex-col justify-center items-center gap-4 mx-auto">
                   <div className="item w-full flex items-center justify-start gap-3">
                     <input
                       type="checkbox"
                       checked={transport[0].isCheck}
+                      className="text-headingColor"
                       onChange={(e) =>
                         handleTransportOption(
                           "express",
@@ -352,12 +357,15 @@ const FindBySearch = () => {
                         )
                       }
                     />
-                    <label className="text-md flex-1">Express</label>
+                    <label className="text-md flex-1 text-headingColor">
+                      Express
+                    </label>
                   </div>
                   <div className="item w-full flex items-center justify-start gap-3">
                     <input
                       type="checkbox"
                       checked={transport[1].isCheck}
+                      className="text-headingColor"
                       onChange={(e) =>
                         handleTransportOption(
                           "fast",
@@ -366,7 +374,9 @@ const FindBySearch = () => {
                         )
                       }
                     />
-                    <label className="text-md flex-1">Fast</label>
+                    <label className="text-md flex-1 text-headingColor">
+                      Fast
+                    </label>
                   </div>
                   <div className="item w-full flex items-center justify-start gap-3">
                     <input
@@ -380,7 +390,9 @@ const FindBySearch = () => {
                         )
                       }
                     />
-                    <label className="text-md flex-1">Economical</label>
+                    <label className="text-md text-headingColor flex-1">
+                      Economical
+                    </label>
                   </div>
                 </div>
               </div>
@@ -411,22 +423,27 @@ const FindBySearch = () => {
               <div className="py-2 w-full flex items-center justify-center">
                 <button
                   type="text"
-                  className="text-md bg-red-700 text-white text-sm font-semibold text-center py-2 rounded-sm"
+                  className="text-md bg-red-600 opacity-80 hover:opacity-100 text-white text-sm font-semibold text-center py-2 rounded-sm"
                   style={{ width: "70%" }}
                   onClick={() => handleRemoveAll(transport)}
                 >
-                  Remove all
+                  {i18n.language === "en" ? "Remove all" : "Đặt lại"}
                 </button>
               </div>
             </div>
           </div>
           <div
-            className="products col l-10 m-grid-10 c-12 pt-10"
+            className="products col l-10 m-grid-12 c-12 my-5 sm:mt-2 md:mt-2"
             // style={{ minWidth: "90%", width: "90%" }}
           >
             <div className="flex items-center justify-start mb-3 text-md gap-1">
               <span className="flex text-md items-center justify-center gap-1">
-                RESULT OF SEARCH{" "}
+                <AiOutlineFileSearch className="text-lg text-headingColor" />
+                <span className="text-md text-headingColor">
+                  {i18n.language === "en"
+                    ? "Search result for"
+                    : "Kết quả tìm kiếm cho"}
+                </span>
                 <span className="text-md text-red-600">
                   {`"${valueSearchRedux}"`}
                 </span>
@@ -444,15 +461,15 @@ const FindBySearch = () => {
                 marginTop: "22px",
               }}
             >
-              <div className="flex items-center gap-6 justify-start w-2/3 h-full">
+              <div className="flex items-center gap-6 sm:gap-[10px] justify-start flex-1 h-full">
                 <span
-                  className="content-filterControl__sort text-md"
-                  style={{ margin: "0 20px", color: "#333" }}
+                  className="content-filterControl__sort text-md h-fit md:hidden sm:hidden lg:hidden block"
+                  style={{ margin: "0 0 0 10px", color: "#333" }}
                 >
-                  Sort by
+                  {t("sort.by")}
                 </span>
                 <div
-                  className="text-md block cursor-pointer"
+                  className="text-md block cursor-pointer sm:ml-1 md:ml-1 lg:ml-1"
                   style={
                     filterOfProducts === "normal"
                       ? { color: "#fff", backgroundColor: "rgb(247, 70, 46)" }
@@ -460,8 +477,8 @@ const FindBySearch = () => {
                   }
                   onClick={() => handleFilter("normal")}
                 >
-                  <span className="w-28 block px-1.5 py-1.5 text-center">
-                    Normal
+                  <span className="w-28 md:w-24 sm:w-20 block px-1.5 py-1.5 text-center">
+                    {t("sort.normal")}
                   </span>
                 </div>
                 <div
@@ -473,8 +490,8 @@ const FindBySearch = () => {
                   }
                   onClick={() => handleFilter("newest")}
                 >
-                  <span className="w-28 block px-1.5 py-1.5 text-center">
-                    Newest
+                  <span className="w-28 md:w-24 sm:w-20 block px-1.5 py-1.5 text-center">
+                    {t("sort.newest")}
                   </span>
                 </div>
                 <div
@@ -486,18 +503,45 @@ const FindBySearch = () => {
                   }
                   onClick={() => handleFilter("rating")}
                 >
-                  <span className="w-28 block px-1.5 py-1.5 text-center">
-                    Rating
+                  <span className="w-28 md:w-24 sm:w-20 block px-1.5 py-1.5 text-center">
+                    {t("sort.rating")}
                   </span>
                 </div>
                 <div
-                  className=" cursor-pointer flex items-center justify-between w-52 px-1.5 py-1.5 rounded-sm relative"
-                  // style={
-                  //   sort && (sort === "desc" || sort === "asc")
-                  //     ? { color: "#fff", backgroundColor: "rgb(247, 70, 46)" }
-                  //     : { color: "#333", backgroundColor: "#fff" }
-                  // }
-                  // onClick={() => handleShowPrice()}
+                  className="xl:hidden lg:hidden md:hidden sm:block mr-1"
+                  style={
+                    filterOfProducts === "asc" || filterOfProducts === "desc"
+                      ? { color: "#fff", backgroundColor: "rgb(247, 70, 46)" }
+                      : { color: "#333", backgroundColor: "#fff" }
+                  }
+                  onClick={() =>
+                    filterOfProducts === "asc"
+                      ? handleFilter("desc")
+                      : handleFilter("asc")
+                  }
+                >
+                  <div class="text-md sm:text-sm">
+                    <span className="text-md sm:text-sm w-28 sm:w-20 block px-1.5 py-1.5 text-center sm:flex sm:items-center sm:justify-center sm:gap-1">
+                      {t("sort.price")}
+                      {(filterOfProducts === "desc" ||
+                        filterOfProducts === "asc") && (
+                        <>
+                          {filterOfProducts === "desc" ? (
+                            <span>
+                              <BsArrowDown className="text-lg" />
+                            </span>
+                          ) : (
+                            <span>
+                              <BsArrowUp className="text-lg" />
+                            </span>
+                          )}
+                        </>
+                      )}
+                    </span>
+                  </div>
+                </div>
+                <div
+                  className="sm:hidden cursor-pointer flex items-center justify-between w-52 sm:w-48 md:w-48 px-1.5 py-1.5 rounded-sm relative"
                   style={
                     filterOfProducts === "asc" || filterOfProducts === "desc"
                       ? { color: "#fff", backgroundColor: "rgb(247, 70, 46)" }
@@ -506,13 +550,13 @@ const FindBySearch = () => {
                   onClick={handleShowPrice}
                 >
                   <span className="text-md">
-                    {filterOfProducts
-                      ? filterOfProducts === "desc"
-                        ? "From max to min"
-                        : filterOfProducts === "asc"
-                        ? "From min to max"
-                        : "Price"
-                      : "Price"}
+                    {!filterOfProducts
+                      ? t("sort.price")
+                      : filterOfProducts === "desc"
+                      ? t("sort.desc")
+                      : filterOfProducts === "asc"
+                      ? t("sort.asc")
+                      : t("sort.price")}
                   </span>
                   {showPrice ? (
                     <IoIosArrowUp className="text-md" />
@@ -542,7 +586,7 @@ const FindBySearch = () => {
                           }
                           onClick={() => handleFilter("desc")}
                         >
-                          <span>From max to min</span>
+                          <span>{t("sort.desc")}</span>
                         </div>
                         <hr />
                         <div
@@ -557,7 +601,7 @@ const FindBySearch = () => {
                           }
                           onClick={() => handleFilter("asc")}
                         >
-                          <span>From min to max</span>
+                          <span>{t("sort.asc")}</span>
                         </div>
                       </motion.ul>
                     )}
@@ -565,7 +609,7 @@ const FindBySearch = () => {
                 </div>
               </div>
               {result?.length > 0 && (
-                <div className="w-1/4 flex items-center justify-end gap-4 pr-5">
+                <div className="w-1/4 sm:hidden flex items-center justify-end gap-4 pr-5">
                   <div className="page-number flex items-center justify-center">
                     <span>{+pageOfNumber}</span>
                     <RxSlash />
@@ -666,10 +710,92 @@ const FindBySearch = () => {
             )}
           </div>
         </div>
+        {result?.length > 0 && (
+          <nav
+            aria-label="Page navigation example py-3"
+            className="hidden sm:block"
+          >
+            <ul class="flex items-center -space-x-px h-104text-base">
+              <li
+                onClick={() => +pageOfNumber > 1 && setPage(+pageOfNumber - 1)}
+              >
+                <div
+                  href="#"
+                  class={`flex items-center justify-center px-4 h-10 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 ${
+                    +pageOfNumber === 1 ? "cursor-text" : "cursor-pointer"
+                  }`}
+                >
+                  <span class="sr-only text-lg">Previous</span>
+                  <svg
+                    class="w-4 h-4"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 6 10"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 1 1 5l4 4"
+                    />
+                  </svg>
+                </div>
+              </li>
+              {[...Array(pages).keys()]?.map((pageItem, index) => {
+                return (
+                  <li key={index} onClick={() => setPage(+pageOfNumber + 1)}>
+                    <div
+                      href="#"
+                      class={`flex text-lg items-center cursor-pointer justify-center px-4 h-10 leading-tight  border border-gray-300 hover:bg-gray-100 hover:text-gray-700 ${
+                        +pageOfNumber === +pageItem + 1
+                          ? "text-gray-700 bg-gray-200"
+                          : "text-gray-500 bg-white"
+                      }`}
+                    >
+                      {+pageItem + 1}
+                    </div>
+                  </li>
+                );
+              })}
+              <li
+                onClick={() =>
+                  +pageOfNumber < +pages && setPage(+pageOfNumber + 1)
+                }
+              >
+                <div
+                  href="#"
+                  class={`flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 ${
+                    +pageOfNumber === +pages ? "cursor-text" : "cursor-pointer"
+                  }`}
+                >
+                  <span class="sr-only text-lg">Next</span>
+                  <svg
+                    class="w-4 h-4"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 6 10"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m1 9 4-4-4-4"
+                    />
+                  </svg>
+                </div>
+              </li>
+            </ul>
+          </nav>
+        )}
       </div>
+
       <hr />
       <Contact />
-    </>
+    </div>
   );
 };
 

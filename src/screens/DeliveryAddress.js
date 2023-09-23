@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import { addDeliveryAddress } from "reduxToolkit/cartSlice";
+import { useTranslation } from "react-i18next";
 
 const DeliveryAddress = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -12,6 +13,7 @@ const DeliveryAddress = () => {
   const [city, setCity] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [country, setCountry] = useState("");
+  const { i18n } = useTranslation();
 
   const addressRef = useRef();
   const cityRef = useRef();
@@ -40,9 +42,18 @@ const DeliveryAddress = () => {
 
   const handleAddDeliveryAddress = () => {
     if (!address || !city || !postalCode || !country) {
-      toast.error("Please enter all fields", {
-        autoClose: 2000,
-      });
+      toast.error(
+        `${
+          i18n.language === "en"
+            ? "Please enter all fields."
+            : "Vui lòng nhập tất cả các trường."
+        }`,
+        {
+          autoClose: 2000,
+          position: "bottom-right",
+          theme: "colored",
+        }
+      );
     } else {
       setIsLoading(true);
       dispatch(
@@ -146,7 +157,7 @@ const DeliveryAddress = () => {
                 width: "90%",
               }}
             >
-              Continue
+              {i18n.language === "en" ? "Continue" : "Tiếp tục"}
             </button>
           </form>
         </div>
