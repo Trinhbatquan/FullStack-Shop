@@ -85,14 +85,25 @@ orderRouter.put("/:id/pay", checkingToken, async (req, res) => {
 
 //get order by user
 orderRouter.get("/", checkingToken, async (req, res) => {
-  const ordersByUser = await Order.find({ user: req.user._id }).sort({
-    _id: -1,
-  });
-  if (ordersByUser) {
-    res.status(200).send(ordersByUser);
-  } else {
-    res.status(401).send({
-      mess: "No get orders by user",
+  try {
+    const ordersByUser = await Order.find({ user: req.user._id }).sort({
+      _id: -1,
+    });
+    if (ordersByUser) {
+      res.status(200).send({
+        code: 0,
+        orderData: ordersByUser,
+      });
+    } else {
+      res.status(401).send({
+        code: 0,
+        mess: "No get orders by user",
+      });
+    }
+  } catch (e) {
+    res.status(504).send({
+      code: -1,
+      mess: "Error. Contact with admin page.",
     });
   }
 });

@@ -125,56 +125,65 @@ userRoutes.post("/verify_user_update_pass", async (req, res) => {
 });
 
 userRoutes.get("/profile", checkingToken, async (req, res) => {
-  if (req.user) {
-    const user = await User.findById({
-      _id: req.user._id,
-    });
-    if (user) {
-      res.status(200).send({
-        name: user.name,
-        email: user.email,
-        isAdmin: user.isAdmin,
-        createdAt: user.createdAt,
+  try {
+    if (req.user) {
+      const user = await User.findById({
+        _id: req.user._id,
       });
-    } else {
-      res.status(404).send({
-        mess: "Error. Contact with admin page.",
-      });
+      if (user) {
+        res.status(200).send({
+          code: 0,
+          profile: {
+            name: user.name,
+            email: user.email,
+            createdAt: user.createdAt,
+          },
+        });
+      } else {
+        res.status(404).send({
+          code: 1,
+          mess: "Error. Contact with admin page.",
+        });
+      }
     }
+  } catch (e) {
+    res.status(504).send({
+      code: -1,
+      mess: "Error. Contact with admin page.",
+    });
   }
 });
 
 userRoutes.put("/updateProfile", checkingToken, async (req, res) => {
-  console.log(req.body);
-  if (req.user) {
-    const user = await User.findById({
-      _id: req.user._id,
-    });
-    if (user) {
-      try {
-        user.name = (await req.body.name) || user.name;
-        user.email = (await req.body.email) || user.email;
-        user.password =
-          (await bcrypt.hashSync(req.body.password, 10)) || user.password;
+  try {
+    if (req.user) {
+      const user = await User.findById({
+        _id: req.user._id,
+      });
+      if (user) {
+        user.password = bcrypt.hashSync(req.body.password, 10);
         const updateUser = await user.save();
         res.status(200).send({
-          _id: updateUser._id,
-          name: updateUser.name,
-          email: updateUser.email,
-          isAdmin: updateUser.isAdmin,
-          createdAt: updateUser.createdAt,
-          token: await AuthTokenRandom(updateUser._id),
+          code: 0,
+          user: {
+            _id: updateUser._id,
+            name: updateUser.name,
+            email: updateUser.email,
+            createdAt: updateUser.createdAt,
+            token: await AuthTokenRandom(updateUser._id),
+          },
         });
-      } catch (error) {
-        res.status(404).send({
-          mess: "No update User",
+      } else {
+        res.status(504).send({
+          code: 1,
+          mess: "Error. Contact admin",
         });
       }
-    } else {
-      res.status(404).send({
-        mess: "Error. Contact with admin page.",
-      });
     }
+  } catch (error) {
+    res.status(404).send({
+      mess: "No update User",
+    });
   }
 });
 

@@ -3,7 +3,7 @@ const Product = require("../Model/ProductModel");
 const getProductNormal = async () => {
   try {
     // console.log(2);
-    const pageSize = 10;
+    const pageSize = 16;
     const page = 1;
     const count = await Product.countDocuments();
     const products = await Product.find({}).limit(pageSize);
@@ -15,7 +15,7 @@ const getProductNormal = async () => {
 
 const getProductByPage = async (numberOfPage) => {
   try {
-    const pageSize = 10;
+    const pageSize = 16;
     const page = numberOfPage;
     const count = await Product.countDocuments();
     const products = await Product.find({})
@@ -30,7 +30,7 @@ const getProductByPage = async (numberOfPage) => {
 const getProductByType = async (type) => {
   try {
     const products = await Product.find({ type });
-    const pageSize = 10;
+    const pageSize = 16;
     const page = 1;
     const count = products.length;
     return { products, page, pages: Math.ceil(count / pageSize) };
@@ -41,7 +41,7 @@ const getProductByType = async (type) => {
 
 const getProductBySort = async (sortProduct) => {
   try {
-    const pageSize = 10;
+    const pageSize = 16;
     const page = 1;
     const count = await Product.countDocuments();
     let products;
@@ -65,7 +65,7 @@ const getProductBySort = async (sortProduct) => {
 
 const getProductByPageAndType = async (numberOfPage, type) => {
   try {
-    const pageSize = 10;
+    const pageSize = 16;
     let page = numberOfPage;
     let products = await Product.find({ type });
     // .skip(pageSize * (page - 1));
@@ -96,7 +96,7 @@ const getProductByPageAndType = async (numberOfPage, type) => {
 
 const getProductByPageAndSort = async (numberOfPage, sortProduct) => {
   try {
-    const pageSize = 10;
+    const pageSize = 16;
     const page = numberOfPage;
     const count = await Product.countDocuments();
     let products;
@@ -134,7 +134,7 @@ const getProductByPageAndSort = async (numberOfPage, sortProduct) => {
 
 const getProductByTypeAndSort = async (type, sortProduct) => {
   try {
-    const pageSize = 10;
+    const pageSize = 16;
     const page = 1;
     //   const count = await Product.countDocuments();
     let products;
@@ -168,7 +168,7 @@ const getProductByTypeAndSort = async (type, sortProduct) => {
 
 const getProductByFull = async (numberOfPage, type, sortProduct) => {
   try {
-    const pageSize = 10;
+    const pageSize = 16;
     let page = numberOfPage;
     //   const count = await Product.countDocuments();
     let products = await Product.find({ type });
@@ -269,7 +269,7 @@ const getProductService = async (page, type, sort) => {
 
         data = await getProductByPageAndSort(page, sort);
       } else if (sort && type && +page === 0) {
-        // console.log(10);
+        // console.log(16);
 
         data = await getProductByTypeAndSort(type, sort);
       }
@@ -292,7 +292,7 @@ const getProductBySearchService = (data) => {
     // transport.forEach((item) => (item = item.toLowerCase()));
     try {
       let result;
-      const pageSize = 10;
+      const pageSize = 16;
       let minPageSize = pageSize * (page - 1);
 
       // const page = numberOfPage;
