@@ -1,47 +1,79 @@
-# SERVER
+# Sales Shop
 
-## Shop
+This is a personal project that I spent over three months finishing it. This project is built with basic features of a online sale shop, in fact.
 
-## ReactJs, ExpressJs, MongoDB
+## Demo
 
-## Url:
+Insert gif or link to demo
 
-### bcryptjs
+## Features
 
-Một dạng hash pasword thường được sử dụng để mã hoá password với mục đích tăng cường bảo mật sử dụng thuật toán blowfish xuất bản bới Bruce Schneier (1993)
+- Login, register, secured by token.
+- Render UI, CURD Database.
+- Handle pagination, lazy load image
+- Provide user with purchase by paypal and when delivering.
+- Basic Responsive.
+- Some other features.
 
-### express-async-handler
+## Tech Stack
 
-1 phần mềm trung gian cho việc xử lý ngoại lệ cho các sự kiện bất đồng bộ và đưa chúng tới trình xử lý lồi của express
+**Client:** React, ReduxToolkit, TailwindCSS.
 
-### jsonwebtoken
+**Server:** Node, Express.
 
-Tạo random token qua một mã ẩn
+**Database:** MongoDb with Mongoose.
 
-### Luồng LOGIN
+## License
 
-User login ==> request (email + password) ==> server check comparePassword ==>
-(oke) send res (token) ==> next request (headers: Authorization: Bearer + Token) ==> Server verify ==> oke (res data)
-Mỗi lần user login ==> tạo token mới ==> mỗi token tạo ra có thời gian hết hạn nhất định.
+[MIT](https://choosealicense.com/licenses/mit/)
 
-### Luồng REGISTER
+## Feedback
 
-Register ==>check trùng ==> Lưu DB ==> res (token + data)
+If you have any feedback, please reach out to us at
 
-### Các request đều gửi token để verify
+- Email: trinhbv09022001@gmail.com
+- Linkedin: https://www.linkedin.com/in/trinhbatquan/
 
-### Các chức năng chính
+## Lessons Learned
 
-#### Đăng ký, đăng nhập, render UI, phân trang, GPUD Database, Mua hàng qua Paypal
+- About system security issues.
+- About the appropriate way of display view.
+- About handling the purchase of customers.
 
-#### https://www.paypal.com/sdk/js?client-id=...
+## Run Locally
 
-##### Đây là một phần của PayPal JavaScript SDK, được sử dụng để tích hợp chức năng thanh toán PayPal vào trang web của bạn. Cụ thể, JavaScript SDK có các chức năng sau:
+Clone the project
 
-###### Tạo Giao diện Thanh toán: JavaScript SDK cho phép bạn tạo giao diện trực quan cho người dùng chọn thanh toán bằng PayPal trên trang web của bạn. Người dùng có thể nhấp vào nút thanh toán PayPal để chuyển đến trang thanh toán PayPal.
+```bash
+  git clone https://link-to-project
+```
 
-###### Xử lý Thanh toán: Sau khi người dùng chuyển đến trang thanh toán PayPal và nhập thông tin thanh toán, PayPal sẽ xử lý thanh toán và trừ tiền từ tài khoản của người dùng. JavaScript SDK không thực hiện quy trình thanh toán thực sự mà chỉ tạo ra giao diện cho quy trình này.
+Go to the project directory
 
-###### Trả kết quả: Sau khi thanh toán hoàn tất, PayPal sẽ trả về kết quả thanh toán cho trang web của bạn thông qua các hàm callback hoặc promises, cho phép bạn xác minh và lưu trữ thông tin về giao dịch thanh toán.
+```bash
+  cd my-project
+```
 
-###### Tóm lại, JavaScript SDK của PayPal là một công cụ giúp bạn tích hợp khả năng thanh toán PayPal vào trang web của bạn, tạo ra giao diện cho người dùng để thực hiện thanh toán và cung cấp các phương tiện để truy cập thông tin về giao dịch sau khi thanh toán đã hoàn tất. Tuy nó không xử lý thanh toán trực tiếp, nhưng nó là một phần quan trọng trong quá trình tích hợp PayPal vào trang web của bạn.
+Install dependencies
+
+```bash
+  npm install
+```
+
+Start the server
+
+```bash
+  npm run start
+```
+
+## Running Tests
+
+To run tests, run the following command
+
+```bash
+  npm run test
+```
+
+## Thanks
+
+Thanks a lot for your attention.
