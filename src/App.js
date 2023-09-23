@@ -32,8 +32,8 @@ import {
 
 import { BsArrowUpCircleFill } from "react-icons/bs";
 
-import { initializeApp } from "firebase/app";
 import FindBySearch from "screens/FindBySearch";
+// Import the functions you need from the SDKs you need
 
 // TODO: Add SDKs for Firebase products that you want to use
 
@@ -41,23 +41,28 @@ import FindBySearch from "screens/FindBySearch";
 
 // Your web app's Firebase configuration
 
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_APIKEY,
-
-  authDomain: process.env.REACT_APP_DOMAIN,
-
-  projectId: "fullstack-shop-a4c7e",
-
-  storageBucket: "fullstack-shop-a4c7e.appspot.com",
-
-  messagingSenderId: "467052879807",
-
-  appId: "1:467052879807:web:9b517d4d3124c0614e0b0a",
+  apiKey: "AIzaSyAS25GmA2uMDcO2nGnsH6BfGPWq5kv3bNo",
+  authDomain: "fullstack-shop-621c2.firebaseapp.com",
+  projectId: "fullstack-shop-621c2",
+  storageBucket: "fullstack-shop-621c2.appspot.com",
+  messagingSenderId: "406344348934",
+  appId: "1:406344348934:web:f2a9d7dbd2dd79612b5a87",
+  measurementId: "G-MXF2WD1SJR",
 };
 
 // Initialize Firebase
-
 const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 
 function App() {
   const [appearScrollTop, setAppearScrollTop] = useState(false);

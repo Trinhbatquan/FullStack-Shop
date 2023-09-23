@@ -1,7 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "http://localhost:4000/";
-// https://full-stack-shop-git-backend-trinhbatquan.vercel.app/
+const baseUrl = process.env.REACT_APP_BE_DOMAIN;
 export const getAllProducts = async ({ page, type, sort }) => {
   try {
     const allProducts = await axios.get(

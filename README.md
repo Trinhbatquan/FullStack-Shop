@@ -1,32 +1,79 @@
-# CLIENT
-## Shop
-## ReactJs, ExpressJs, MongoDB
-## Url: 
+# Sales Shop
 
-### bcryptjs
+This is a personal project that I spent over three months finishing it. This project is built with basic features of a online sale shop, in fact.
 
-Một dạng hash pasword thường được sử dụng để mã hoá password với mục đích tăng cường bảo mật sử dụng thuật toán blowfish xuất bản bới Bruce Schneier (1993)
+## Demo
 
-### express-async-handler
+Insert gif or link to demo
 
-1 phần mềm trung gian cho việc xử lý ngoại lệ cho các sự kiện bất đồng bộ và đưa chúng tới trình xử lý lồi của express
+## Features
 
-### jsonwebtoken
+- Login, register, secured by token.
+- Render UI, CURD Database.
+- Handle pagination, lazy load image
+- Provide user with purchase by paypal and when delivering.
+- Basic Responsive.
+- Some other features.
 
-Tạo random token qua một mã ẩn
+## Tech Stack
 
-### Luồng LOGIN
+**Client:** React, ReduxToolkit, TailwindCSS.
 
-User login ==> request (email + password) ==> server check comparePassword ==> 
-(oke) send res (token) ==> next request (headers: Authorization: Bearer + Token) ==> Server verify ==> oke (res data)
-Mỗi lần user login ==> tạo token mới ==> mỗi token tạo ra có thời gian hết hạn nhất định.
+**Server:** Node, Express.
 
-### Luồng REGISTER
+**Database:** MongoDb with Mongoose.
 
-Register ==>check trùng ==> Lưu DB ==> res (token + data)
+## License
 
-### Các request đều gửi token để verify
+[MIT](https://choosealicense.com/licenses/mit/)
 
-### Các chức năng chính
+## Feedback
 
-#### Đăng ký, đăng nhập, render UI, phân trang, GPUD Database, Mua hàng qua Paypal
+If you have any feedback, please reach out to us at
+
+- Email: trinhbv09022001@gmail.com
+- Linkedin: https://www.linkedin.com/in/trinhbatquan/
+
+## Lessons Learned
+
+- About system security issues.
+- About the appropriate way of display view.
+- About handling the purchase of customers.
+
+## Run Locally
+
+Clone the project
+
+```bash
+  git clone https://link-to-project
+```
+
+Go to the project directory
+
+```bash
+  cd my-project
+```
+
+Install dependencies
+
+```bash
+  npm install
+```
+
+Start the server
+
+```bash
+  npm run start
+```
+
+## Running Tests
+
+To run tests, run the following command
+
+```bash
+  npm run test
+```
+
+## Thanks
+
+Thanks a lot for your attention.
