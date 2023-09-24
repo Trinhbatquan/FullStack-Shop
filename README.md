@@ -4,9 +4,7 @@ This is a personal project that I spent over three months finishing it. This pro
 
 ## Demo
 
-Insert gif or link to demo
-
-Use Account: (Email: hoan73550@gmail.com  --- Pass: Bodoicuho@3) to visit my website
+https://fullstack-shop-621c2.web.app
 
 ## Features
 
