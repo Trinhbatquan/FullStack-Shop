@@ -32,7 +32,6 @@ dataImport.post(
         res.status(200).send(data);
       }
     } catch (error) {
-      console.log(error);
       res.status(404).send("Import Product failed");
     }
   })
