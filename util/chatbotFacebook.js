@@ -113,7 +113,7 @@ async function callSendAPI(sender_psid, response) {
         {
           messaging_type: "RESPONSE",
           recipient: {
-            id: recipient,
+            id: sender_psid,
           },
         },
         messages[i]["payload"]
