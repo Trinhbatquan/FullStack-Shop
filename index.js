@@ -78,7 +78,7 @@ async function callSendAPI(sender_psid, response) {
   };
 
   // Send the HTTP request to the Messenger Platform
-  console.log("send: " + request_body);
+  console.log("send: " + JSON.stringify(request_body));
   await request(
     {
       uri: "https://graph.facebook.com/v2.6/me/messages",
@@ -139,7 +139,7 @@ async function handleMessage(sender_psid, received_message) {
   }
 
   // Send the response message
-  console.log("response: " + response);
+  console.log("response: " + JSON.stringify(response));
   await callSendAPI(sender_psid, response);
 }
 
