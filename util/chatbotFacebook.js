@@ -37,7 +37,7 @@ const request = require("request");
 // gettingStarted();
 
 //handleGetStarted
-const getProfileSender = (sender_psid) => {
+const getProfileSender = async (sender_psid) => {
   return new Promise(async (resolve, reject) => {
     try {
       let userName = "";
@@ -48,15 +48,16 @@ const getProfileSender = (sender_psid) => {
         },
         async (err, res, body) => {
           if (!err) {
-            console.log("get profile oke!");
             const data = await JSON.parse(body);
-            userName = `${data.last_name} ${data.first_name}`;
+            userName = `${data.first_name} ${data.last_name}`;
+            console.log(userName);
+            resolve(userName);
           } else {
             console.error("Unable to send message:" + err);
+            reject(err);
           }
         }
       );
-      resolve(userName);
     } catch (e) {
       reject(e);
     }
@@ -66,7 +67,7 @@ const handleGetStarted = async (sender_psid) => {
   try {
     const userName = await getProfileSender(sender_psid);
     const response = `Welcome ${userName} to go the my shop. Have a good day! :))`;
-    await callSendAPI(sender_psid, response);
+    return response;
   } catch (e) {
     console.log("error get started: " + e);
   }
@@ -105,7 +106,7 @@ async function callSendAPI(sender_psid, response) {
 }
 
 // Handles messaging_postbacks events
-function handlePostback(sender_psid, received_postback) {
+async function handlePostback(sender_psid, received_postback) {
   let response;
 
   // Get the payload for the postback
@@ -120,7 +121,7 @@ function handlePostback(sender_psid, received_postback) {
       response = { text: "Oops, try sending another image." };
       break;
     case "GET_STARTED":
-      handleGetStarted(sender_psid);
+      response = await handleGetStarted(sender_psid);
       break;
     default:
       response = { text: `Opps, I don't know what is the payload: ${payload}` };
