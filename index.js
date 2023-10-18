@@ -10,7 +10,7 @@ const orderRoutes = require("./Routes/OrderRoutes");
 const favoriteRoutes = require("./Routes/FavoriteRoutes");
 const notificationRoutes = require("./Routes/NotificationRoutes");
 
-import request from "request";
+const request = require("request");
 
 // const Notification = require("./Model/Notification");
 
