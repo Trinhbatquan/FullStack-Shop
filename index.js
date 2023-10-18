@@ -120,7 +120,7 @@ app.get("/webhook", (req, res) => {
   }
 });
 
-handlePostback("7605071802841718", { payload: "GET_STARTED" });
+// handlePostback("7605071802841718", { payload: "GET_STARTED" });
 
 app.listen(4000, () => {
   console.log("server running....");
