@@ -104,10 +104,9 @@ async function callSendAPI(sender_psid, response) {
   //   } catch (e) {
   //     console.log(e);
   //   }
-  axios
+  await axios
     .post(
-      "https://graph.facebook.com/v2.6/me/messages/?access_token=" +
-        process.env.PAGE_ACCESS_TOKEN,
+      `https://graph.facebook.com/v2.6/me/messages/?access_token=${process.env.PAGE_ACCESS_TOKEN}`,
       Object.assign(
         {},
         {
@@ -116,18 +115,23 @@ async function callSendAPI(sender_psid, response) {
             id: sender_psid,
           },
         },
-        messages[i]["payload"]
+        response.text
       )
     )
     .then(
       (response) => {
         console.log("sent message");
-        if (i < messages.length)
-          sendMessage(recipient, messages, accessToken, i + 1);
+        // if (i < messages.length)
+        //   sendMessage(recipient, messages, accessToken, i + 1);
       },
-      (error) => {}
+      (error) => {
+        console.log("error" + error);
+      },
+      console.log("setn")
     )
-    .catch((error) => {});
+    .catch((error) => {
+      console.log("error1");
+    });
 }
 
 // Handles messaging_postbacks events

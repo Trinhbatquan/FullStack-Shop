@@ -121,6 +121,7 @@ app.get("/webhook", (req, res) => {
 });
 
 // handlePostback("7605071802841718", { payload: "GET_STARTED" });
+// handleMessage("7605071802841718", { text: "hello" });
 
 app.listen(4000, () => {
   console.log("server running....");
