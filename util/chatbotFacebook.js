@@ -74,64 +74,60 @@ const handleGetStarted = async (sender_psid) => {
   }
 };
 
+// async function callSendAPI(sender_psid, response) {
+//   // Construct the message body
+//   let request_body = {
+//     recipient: {
+//       id: sender_psid,
+//     },
+//     message: response,
+//   };
+
+//   // Send the HTTP request to the Messenger Platform
+//   console.log("send: " + JSON.stringify(request_body));
+//   // request
+//     try {
+//       await request(
+//         {
+//           uri: "https://graph.facebook.com/v2.6/me/messages",
+//           qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
+//           method: "POST",
+//           json: request_body,
+//         },
+//         (err, res, body) => {
+//           if (!err) {
+//             console.log("message sent!");
+//           } else {
+//             console.error("Unable to send message:" + err);
+//           }
+//         }
+//       );
+//     } catch (e) {
+//       console.log(e);
+//     }
+
+// }
+
 async function callSendAPI(sender_psid, response) {
   // Construct the message body
-  let request_body = {
+  const request_body = {
+    messaging_type: "RESPONSE",
     recipient: {
       id: sender_psid,
     },
     message: response,
   };
 
-  // Send the HTTP request to the Messenger Platform
-  console.log("send: " + JSON.stringify(request_body));
-  //   try {
-  //     await request(
-  //       {
-  //         uri: "https://graph.facebook.com/v2.6/me/messages",
-  //         qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
-  //         method: "POST",
-  //         json: request_body,
-  //       },
-  //       (err, res, body) => {
-  //         if (!err) {
-  //           console.log("message sent!");
-  //         } else {
-  //           console.error("Unable to send message:" + err);
-  //         }
-  //       }
-  //     );
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  await axios
-    .post(
-      `https://graph.facebook.com/v2.6/me/messages/?access_token=${process.env.PAGE_ACCESS_TOKEN}`,
-      Object.assign(
-        {},
-        {
-          messaging_type: "RESPONSE",
-          recipient: {
-            id: sender_psid,
-          },
-        },
-        response.text
-      )
-    )
-    .then(
-      (response) => {
-        console.log("sent message");
-        // if (i < messages.length)
-        //   sendMessage(recipient, messages, accessToken, i + 1);
-      },
-      (error) => {
-        console.log("error" + error);
-      },
-      console.log("setn")
-    )
-    .catch((error) => {
-      console.log("error1");
-    });
+  try {
+    const response = await axios.post(
+      `https://graph.facebook.com/v2.6/me/messages?access_token=${process.env.PAGE_ACCESS_TOKEN}`,
+      request_body
+    );
+
+    console.log("Sent message:", response.data);
+  } catch (error) {
+    console.error("Error sending message:", error);
+  }
 }
 
 // Handles messaging_postbacks events
