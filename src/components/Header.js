@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import React,{ useEffect,useState } from "react";
+import { Link,NavLink } from "react-router-dom";
 
-import { BsFacebook, BsSearch } from "react-icons/bs";
+import { BsFacebook,BsSearch } from "react-icons/bs";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation,useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import {
@@ -20,8 +20,8 @@ import { BsXLg } from "react-icons/bs";
 import { BsChevronDown } from "react-icons/bs";
 import { BiLogOutCircle } from "react-icons/bi";
 import { FaShopify } from "react-icons/fa";
-import { AnimatePresence, motion } from "framer-motion";
-import { useSelector, useDispatch } from "react-redux";
+import { AnimatePresence,motion } from "framer-motion";
+import { useSelector,useDispatch } from "react-redux";
 import { loginUserShop } from "reduxToolkit/userSlice";
 import { getProductsBySearch } from "reduxToolkit/productSlice";
 import { AiOutlineHeart } from "react-icons/ai";
@@ -31,7 +31,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { FaBars } from "react-icons/fa";
 import { MdOutlineArrowBackIosNew } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
-import { getAllNotification, getFavoriteByUser } from "api";
+import { getAllNotification,getFavoriteByUser } from "api";
 import { getAllFavorites } from "reduxToolkit/favoriteSlice";
 import { saveTotalNotification } from "reduxToolkit/notificationSlice";
 import { setValueSearchRedux } from "reduxToolkit/searchProductSlice";
@@ -73,22 +73,22 @@ const Header = () => {
     "giày",
   ];
 
-  const [input, setInput] = useState("");
+  const [input,setInput] = useState("");
 
-  const [isProfile, setIsProfile] = useState(false);
+  const [isProfile,setIsProfile] = useState(false);
 
-  const [showTranslate, setShowTranslate] = useState(false);
+  const [showTranslate,setShowTranslate] = useState(false);
 
-  const [isShowLoginRegister, setIsShowLoginRegister] = useState(false);
+  const [isShowLoginRegister,setIsShowLoginRegister] = useState(false);
 
-  const [showNavbarMobile, setShowNavbarMobile] = useState(false);
+  const [showNavbarMobile,setShowNavbarMobile] = useState(false);
 
-  const [inputSearch, setInputSearch] = useState(false);
+  const [inputSearch,setInputSearch] = useState(false);
 
-  const [searchMobile, setSearchMobile] = useState(false);
+  const [searchMobile,setSearchMobile] = useState(false);
 
   //i18n
-  const { i18n, t } = useTranslation();
+  const { i18n,t } = useTranslation();
 
   useEffect(() => {
     if (user && user?.name) {
@@ -103,9 +103,10 @@ const Header = () => {
         }
       });
     }
-  }, []);
+  },[]);
   const handleProfile = () => {
     setIsProfile(!isProfile);
+    console.log("demo")
   };
 
   const handleShowLoginRegister = () => {
@@ -130,7 +131,7 @@ const Header = () => {
 
   const handleLogOut = () => {
     dispatch(loginUserShop(null));
-    localStorage.setItem("userShop", null);
+    localStorage.setItem("userShop",null);
   };
 
   const handleShowTranslate = () => {
@@ -242,11 +243,10 @@ const Header = () => {
           </div>
           <div className="xl:flex-1 lg:flex-1 md:flex-1 sm:pl-1 cursor-pointer flex items-center justify-end sm:justify-end py-6 gap-6">
             <div
-              className={`sm:hidden rounded-3xl relative w-1/2 flex items-center justify-start ${
-                inputSearch
+              className={`sm:hidden rounded-3xl relative w-1/2 flex items-center justify-start ${inputSearch
                   ? "bg-white duration-200 transition-all"
                   : "bg-gray-200 duration-200 transition-all"
-              }`}
+                }`}
             >
               <CiSearch className="h-8 w-8 pl-2 sm:hidden" />
               <input
@@ -258,22 +258,21 @@ const Header = () => {
                 autoComplete="on"
                 placeholder={t("header.search")}
                 className={`flex-1 sm:w-full sm:px-2 rounded-3xl py-2 pl-1 pr-2 placeholder:text-sm sm:placeholder:n text-black outline-none
-              text-sm sm:text-xs ${
-                inputSearch
-                  ? "bg-white duration-200 transition-all"
-                  : "bg-gray-200 duration-200 transition-all"
-              }`}
+              text-sm sm:text-xs ${inputSearch
+                    ? "bg-white duration-200 transition-all"
+                    : "bg-gray-200 duration-200 transition-all"
+                  }`}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyUp={(e) => handleEnterEvent(e)}
               />
               <datalist id="browsers">
                 {i18n.language === "en"
-                  ? dataListSearchEn.map((item, index) => {
-                      return <option key={index} value={item} />;
-                    })
-                  : dataListSearchVn.map((item, index) => {
-                      return <option key={index} value={item} />;
-                    })}
+                  ? dataListSearchEn.map((item,index) => {
+                    return <option key={index} value={item} />;
+                  })
+                  : dataListSearchVn.map((item,index) => {
+                    return <option key={index} value={item} />;
+                  })}
               </datalist>
 
               {/* <BsSearch
@@ -285,7 +284,7 @@ const Header = () => {
               <div
                 className="cursor-pointer flex items-center justify-center gap-1 relative"
                 onClick={handleShowTranslate}
-                // style={{ minWidth: "90px" }}
+              // style={{ minWidth: "90px" }}
               >
                 <span className="cursor-pointer text-gray-600 block sm:text-sm">
                   {i18n.language === "en" ? "EN" : "VN"}
@@ -301,21 +300,19 @@ const Header = () => {
                     className="absolute -right-2 top-8 bg-white w-32 sm:w-28 shadow-sm rounded-md z-20"
                   >
                     <li
-                      className={`px-0.5 transition-all sm:text-sm duration-500 py-2 text-center hover:text-blue-700 border-b border-gray-200 ${
-                        i18n.language === "en"
+                      className={`px-0.5 transition-all sm:text-sm duration-500 py-2 text-center hover:text-blue-700 border-b border-gray-200 ${i18n.language === "en"
                           ? "text-blue-700"
                           : "text-headingColor"
-                      } `}
+                        } `}
                       onClick={() => i18n.changeLanguage("en")}
                     >
                       {t("header.english")}
                     </li>
                     <li
-                      className={`px-0.5 transition-all sm:text-sm duration-500 py-2 text-center hover:text-blue-700 ${
-                        i18n.language === "en"
+                      className={`px-0.5 transition-all sm:text-sm duration-500 py-2 text-center hover:text-blue-700 ${i18n.language === "en"
                           ? "text-headingColor"
                           : "text-blue-700"
-                      }`}
+                        }`}
                       onClick={() => i18n.changeLanguage("vi")}
                     >
                       {t("header.vietnamese")}
@@ -330,7 +327,7 @@ const Header = () => {
               >
                 <AiOutlineBell className="h-8 w-6 cursor-pointer text-gray-600" />
                 {totalNotifications &&
-                totalNotifications - readNotifications?.length ? (
+                  totalNotifications - readNotifications?.length ? (
                   <span
                     style={{
                       fontSize: "14px",
@@ -338,9 +335,8 @@ const Header = () => {
                       top: "5px",
                       opacity: 0.6,
                     }}
-                  >{`(${
-                    totalNotifications - readNotifications?.length
-                  })`}</span>
+                  >{`(${totalNotifications - readNotifications?.length
+                    })`}</span>
                 ) : (
                   ""
                 )}
@@ -382,10 +378,10 @@ const Header = () => {
                     <AnimatePresence>
                       {isProfile && (
                         <motion.div
-                          initial={{ opacity: 0, translateY: -50 }}
-                          animate={{ opacity: 1, translateY: 0 }}
-                          exit={{ opacity: 0, translateY: -50 }}
-                          transition={{ duration: 0.5, delay: 0.1 }}
+                          initial={{ opacity: 0,translateY: -50 }}
+                          animate={{ opacity: 1,translateY: 0 }}
+                          exit={{ opacity: 0,translateY: -50 }}
+                          transition={{ duration: 0.5,delay: 0.1 }}
                           className="avatar-modal absolute top-9 right-0 z-50 rounded-lg  w-fit bg-white"
                           style={{ boxShadow: "0 4px 20px rgba(0,0,0,.25)" }}
                         >
@@ -403,13 +399,13 @@ const Header = () => {
                                 <div
                                   className="flex items-center justify-center rounded-full bg-blue-700 text-white
                           absolute top-0 right-0 bottom-0 left-0 w-full h-full m-auto"
-                                  style={{ width: "35px", height: "35px" }}
+                                  style={{ width: "35px",height: "35px" }}
                                 >
                                   <span
                                     className=""
                                     style={{ fontSize: "30px" }}
                                   >
-                                    {user?.name?.slice(0, 1)}
+                                    {user?.name?.slice(0,1)}
                                   </span>
                                 </div>
                               </div>
@@ -462,10 +458,10 @@ const Header = () => {
                     <AnimatePresence>
                       {isShowLoginRegister && (
                         <motion.div
-                          initial={{ opacity: 0, translateY: -50 }}
-                          animate={{ opacity: 1, translateY: 0 }}
-                          exit={{ opacity: 0, translateY: -50 }}
-                          transition={{ duration: 0.5, delay: 0.1 }}
+                          initial={{ opacity: 0,translateY: -50 }}
+                          animate={{ opacity: 1,translateY: 0 }}
+                          exit={{ opacity: 0,translateY: -50 }}
+                          transition={{ duration: 0.5,delay: 0.1 }}
                           className="avatar-modal absolute top-9 right-0 z-50 rounded-lg  w-git bg-white"
                           style={{ boxShadow: "0 4px 20px rgba(0,0,0,.25)" }}
                         >
@@ -483,7 +479,7 @@ const Header = () => {
                                 <div
                                   className="flex items-center justify-center rounded-full bg-blue-700 text-white
                           absolute top-0 right-0 bottom-0 left-0 w-full h-full m-auto"
-                                  style={{ width: "35px", height: "35px" }}
+                                  style={{ width: "35px",height: "35px" }}
                                 >
                                   <span
                                     className=""
@@ -552,10 +548,10 @@ const Header = () => {
           {searchMobile && (
             <motion.div
               className="hidden sm:block absolute top-full left-0 right-0 z-10"
-              initial={{ opacity: 0, translateY: "-100%" }}
-              animate={{ opacity: 1, translateY: 0 }}
-              exit={{ opacity: 0, translateY: "-100%" }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              initial={{ opacity: 0,translateY: "-100%" }}
+              animate={{ opacity: 1,translateY: 0 }}
+              exit={{ opacity: 0,translateY: "-100%" }}
+              transition={{ duration: 0.5,delay: 0.2 }}
             >
               <input
                 list="browsers"
@@ -566,22 +562,21 @@ const Header = () => {
                 autoComplete="on"
                 placeholder={t("header.search")}
                 className={`flex-1 sm:w-full sm:px-2  py-3 pl-1 pr-2 placeholder:text-sm  text-black outline-none
-               sm:text-xs ${
-                 inputSearch
-                   ? "bg-white duration-200 transition-all"
-                   : "bg-gray-200 duration-200 transition-all"
-               }`}
+               sm:text-xs ${inputSearch
+                    ? "bg-white duration-200 transition-all"
+                    : "bg-gray-200 duration-200 transition-all"
+                  }`}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyUp={(e) => handleEnterEvent(e)}
               />
               <datalist id="browsers">
                 {i18n.language === "en"
-                  ? dataListSearchEn.map((item, index) => {
-                      return <option key={index} value={item} />;
-                    })
-                  : dataListSearchVn.map((item, index) => {
-                      return <option key={index} value={item} />;
-                    })}
+                  ? dataListSearchEn.map((item,index) => {
+                    return <option key={index} value={item} />;
+                  })
+                  : dataListSearchVn.map((item,index) => {
+                    return <option key={index} value={item} />;
+                  })}
               </datalist>
             </motion.div>
           )}
@@ -590,10 +585,10 @@ const Header = () => {
         <AnimatePresence>
           {showNavbarMobile && (
             <motion.div
-              initial={{ opacity: 0, translateX: "-100%" }}
-              animate={{ opacity: 1, translateX: 0 }}
-              exit={{ opacity: 0, translateX: "-100%" }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              initial={{ opacity: 0,translateX: "-100%" }}
+              animate={{ opacity: 1,translateX: 0 }}
+              exit={{ opacity: 0,translateX: "-100%" }}
+              transition={{ duration: 0.5,delay: 0.2 }}
               className="w-full xl:hidden lg:hidden md:block sm:block
                 absolute top-0 left-0 right-0 bottom-0 sm:z-10 flex flex-col items-start cursor-text justify-start h-[100vh] px-2 py-4"
               style={{ backgroundColor: "#f5f5f5" }}
@@ -615,9 +610,8 @@ const Header = () => {
                 />
               </div>
               <div
-                className={`text-headingColor px-2 py-3 hover:text-blue-600 cursor-pointer ${
-                  paramNavigate === "inform" ? "text-blue-600" : ""
-                }`}
+                className={`text-headingColor px-2 py-3 hover:text-blue-600 cursor-pointer ${paramNavigate === "inform" ? "text-blue-600" : ""
+                  }`}
                 style={{ borderBottom: "1px solid #ebebeb" }}
                 onClick={() => {
                   handleShowMobile();
@@ -627,9 +621,8 @@ const Header = () => {
                 {t("header.inform")}
               </div>
               <div
-                className={`text-headingColor px-2 py-3 hover:text-blue-600 cursor-pointer ${
-                  paramNavigate === "connect" ? "text-blue-600" : ""
-                }`}
+                className={`text-headingColor px-2 py-3 hover:text-blue-600 cursor-pointer ${paramNavigate === "connect" ? "text-blue-600" : ""
+                  }`}
                 style={{ borderBottom: "1px solid #ebebeb" }}
                 onClick={() => {
                   handleShowMobile();
@@ -640,9 +633,8 @@ const Header = () => {
               </div>
               <div
                 className={`hidden sm:flex items-center justify-between
-                text-headingColor px-2 py-3 hover:text-blue-600 cursor-pointer ${
-                  paramNavigate === "notification" ? "text-blue-600" : ""
-                }`}
+                text-headingColor px-2 py-3 hover:text-blue-600 cursor-pointer ${paramNavigate === "notification" ? "text-blue-600" : ""
+                  }`}
                 style={{ borderBottom: "1px solid #ebebeb" }}
                 onClick={handleNotificationProductList}
               >
@@ -650,7 +642,7 @@ const Header = () => {
                   {i18n.language === "en" ? "Notification" : "Thông báo"}
                 </span>
                 {totalNotifications &&
-                totalNotifications - readNotifications?.length ? (
+                  totalNotifications - readNotifications?.length ? (
                   <span
                     style={{
                       fontSize: "14px",
@@ -658,18 +650,16 @@ const Header = () => {
                       // top: "5px",
                       opacity: 0.6,
                     }}
-                  >{`(${
-                    totalNotifications - readNotifications?.length
-                  })`}</span>
+                  >{`(${totalNotifications - readNotifications?.length
+                    })`}</span>
                 ) : (
                   ""
                 )}
               </div>
               <div
                 className={`hidden sm:flex items-center justify-between
-                text-headingColor px-2 py-3 hover:text-blue-600 cursor-pointer ${
-                  paramNavigate === "favorite" ? "text-blue-600" : ""
-                }`}
+                text-headingColor px-2 py-3 hover:text-blue-600 cursor-pointer ${paramNavigate === "favorite" ? "text-blue-600" : ""
+                  }`}
                 style={{ borderBottom: "1px solid #ebebeb" }}
                 onClick={handleFavoriteProductList}
               >
