@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const baseUrl = process.env.REACT_APP_BE_DOMAIN;
-export const getAllProducts = async ({ page, type, sort }) => {
+export const getAllProducts = async ({ page,type,sort }) => {
   try {
     const allProducts = await axios.get(
       `${baseUrl}api/products?page=${page}&type=${type}&sort=${sort}`
@@ -10,13 +10,13 @@ export const getAllProducts = async ({ page, type, sort }) => {
       return allProducts.data;
     }
   } catch (error) {
-    console.log("allProducts" + error);
+    console.log("allProducts demo" + error);
   }
 };
 
 export const getAllProductsBySearch = async (data) => {
   try {
-    const allProducts = await axios.post(`${baseUrl}api/products/type`, {
+    const allProducts = await axios.post(`${baseUrl}api/products/type`,{
       ...data,
     });
     if (allProducts) {
@@ -39,10 +39,10 @@ export const getProductById = async (id) => {
 };
 
 //user api
-export const loginUser = async (email, password) => {
-  console.log(email, password);
+export const loginUser = async (email,password) => {
+  console.log(email,password);
   try {
-    const user = await axios.post(`${baseUrl}api/users/login`, {
+    const user = await axios.post(`${baseUrl}api/users/login`,{
       email,
       password,
     });
@@ -55,9 +55,9 @@ export const loginUser = async (email, password) => {
     console.log("login" + error);
   }
 };
-export const registerUser = async (name, email, password) => {
+export const registerUser = async (name,email,password) => {
   try {
-    const user = await axios.post(`${baseUrl}api/users/register`, {
+    const user = await axios.post(`${baseUrl}api/users/register`,{
       name,
       email,
       password,
@@ -73,7 +73,7 @@ export const registerUser = async (name, email, password) => {
 };
 
 //identify
-export const identify = async (email, token) => {
+export const identify = async (email,token) => {
   try {
     const user = await axios.get(
       `${baseUrl}api/users/identify?email=${email}&token=${token}`
@@ -105,7 +105,7 @@ export const forgetPassword = async (email) => {
 };
 
 //verify and update password
-export const verifyAndUpdatePass = async (email, token, password) => {
+export const verifyAndUpdatePass = async (email,token,password) => {
   try {
     const user = await axios.post(
       `${baseUrl}api/users/verify_user_update_pass`,
@@ -129,7 +129,7 @@ export const profileUser = async () => {
   const token = JSON.parse(localStorage.getItem("userShop")).token;
   console.log(token);
   try {
-    const user = await axios.get(`${baseUrl}api/users/profile`, {
+    const user = await axios.get(`${baseUrl}api/users/profile`,{
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -144,7 +144,7 @@ export const profileUser = async () => {
   }
 };
 
-export const updateProfileUser = async (name, email, password) => {
+export const updateProfileUser = async (name,email,password) => {
   const token = JSON.parse(localStorage.getItem("userShop")).token;
   try {
     const user = await axios.put(
@@ -199,7 +199,7 @@ export const createNewOrder = async (order) => {
 export const orderById = async (id) => {
   const token = JSON.parse(localStorage.getItem("userShop")).token;
   try {
-    const orderId = await axios.get(`${baseUrl}api/orders/getOrder?id=${id}`, {
+    const orderId = await axios.get(`${baseUrl}api/orders/getOrder?id=${id}`,{
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -215,7 +215,7 @@ export const orderById = async (id) => {
 };
 
 //update order pay by id
-export const updateOrderWhenPay = async (id, pay) => {
+export const updateOrderWhenPay = async (id,pay) => {
   const token = JSON.parse(localStorage.getItem("userShop")).token;
   try {
     const orderId = await axios.put(
@@ -243,7 +243,7 @@ export const updateOrderWhenPay = async (id, pay) => {
 export const ordersByUser = async () => {
   const token = JSON.parse(localStorage.getItem("userShop")).token;
   try {
-    const ordersByUser = await axios.get(`${baseUrl}api/orders/`, {
+    const ordersByUser = await axios.get(`${baseUrl}api/orders/`,{
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -259,7 +259,7 @@ export const ordersByUser = async () => {
 };
 
 //review to product
-export const createReview = async (id, review) => {
+export const createReview = async (id,review) => {
   const token = JSON.parse(localStorage.getItem("userShop")).token;
   try {
     const reviewProduct = await axios.post(
@@ -289,7 +289,7 @@ export const createReview = async (id, review) => {
 export const getFavoriteByUser = async () => {
   const token = JSON.parse(localStorage.getItem("userShop")).token;
   try {
-    const res = await axios.get(`${baseUrl}api/favorites/getByUser`, {
+    const res = await axios.get(`${baseUrl}api/favorites/getByUser`,{
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -378,7 +378,7 @@ export const removeFavorite = async (productId) => {
 export const getAllNotification = async () => {
   const token = JSON.parse(localStorage.getItem("userShop")).token;
   try {
-    const res = await axios.get(`${baseUrl}api/notifications`, {
+    const res = await axios.get(`${baseUrl}api/notifications`,{
       headers: {
         Authorization: `Bearer ${token}`,
       },
